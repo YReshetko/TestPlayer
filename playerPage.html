@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        div{border: 1px dashed black; background: silver;}
+    </style>
+    <script src="source/lib/ObjTree.js"></script>
+    <script src="source/lib/jquery-2.1.3.min.js"></script>
+    <script src="source/lib/kinetic-v5.1.0.min.js"></script>
+    <script src="source/lib/kinetic.editable.js"></script>
+    <script src="source/lib/CanvasInput.js"></script>
+
+    <script src="source/initPlayer.js"></script>
+
+    <script src="source/player/PlayerWindowController.js"></script>
+    <script src="source/player/Utils/PlayerAnimation.js"></script>
+    <script src="source/player/Utils/Utils.js"></script>
+    <script src="source/player/Utils/Const.js"></script>
+    <script src="source/player/Utils/PlayerEvents.js"></script>
+    <script src="source/player/Utils/PlayerLibrary.js"></script>
+    <script src="source/player/Utils/ControlButtons.js"></script>
+    <script src="source/player/Utils/PlayerFrames.js"></script>
+    <script src="source/player/Utils/PlayerTimer.js"></script>
+    <script src="source/player/Utils/PlayerHealth.js"></script>
+    <script src="source/player/Utils/PlayerTestProgress.js"></script>
+    <script src="source/player/TaskComponents/PlayerPalitra.js"></script>
+    <script src="source/player/TaskComponents/PlayerUserTan.js"></script>
+    <script src="source/player/TaskComponents/PlayerTable.js"></script>
+    <script src="source/player/TaskComponents/PlayerPictureTan.js"></script>
+    <script src="source/player/TaskComponents/PlayerCheckBox.js"></script>
+    <script src="source/player/TaskComponents/PlayerMark.js"></script>
+    <script src="source/player/TaskComponents/PlayerPointsDraw.js"></script>
+    <script src="source/player/TaskComponents/PlayerTextField.js"></script>
+    <script src="source/player/TaskComponents/PlayerShiftField.js"></script>
+    <script src="source/player/TaskComponents/PlayerPuzzle.js"></script>
+    <script src="source/player/TaskComponents/PlayerGroupField.js"></script>
+    <script src="source/player/TaskComponents/PlayerChoiceBox.js"></script>
+    <script src="source/player/TaskComponents/TextInput.js"></script>
+
+    <script src="source/player/TaskComponents/PlayerPositioning.js"></script>
+    <script src="source/player/TaskComponents/PlayerListingImages.js"></script>
+
+
+</head>
+<body onmousedown="return false;">
+      <!--<canvas id="playerCanvas" width="742" height="530">Браузер не поддерживает элемент Canvas</canvas>-->
+    <div id="container" align="center"> </div>
+    <div id="progressContainer" align="center"></div>
+      <script>
+          function loadPlayer(){
+              initTaskPlayer("TestTask/", "Images/", "container");
+              console.log(player);
+          }
+          window.onload = loadPlayer();
+      </script>
+     <!-- <button onclick="onfullscreenchange()">fullscreen</button>
+      <button onclick="restart()">Сначала</button>
+      <button onclick="dontKnow()">Не знаю</button>
+      <button onclick="understand()">Я понял</button> -->
+      <button onclick="logDOMObject()">Remove Stage</button>
+      <button onclick="loadPlayer()">AddStage</button>
+</body>
+</html>

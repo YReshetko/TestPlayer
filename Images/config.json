@@ -1,0 +1,124 @@
+{
+
+	"RESTART_BUTTON_POSITION" : "x, y, width, height фреймов кнопки рестарт. Каждая строка описывает состояние: mouseOut, mouseOver, mouseDown соответственно",
+	"RESTART_BUTTON_POSITION" : [  0,   0, 60, 41,
+			       	       60,  0, 60, 41,
+			       	       120, 0, 60, 41],
+
+	"DONT_KNOW_BUTTON_POSITION" : "x, y, width, height фреймов кнопки не знаю. Каждая строка описывает состояние: mouseOut, mouseOver, mouseDown соответственно",
+	"DONT_KNOW_BUTTON_POSITION" : [  0,   0, 60, 41,
+			       		 60,  0, 60, 41,
+			       		 120, 0, 60, 41],
+
+	"UNDERSTAND_BUTTON_POSITION" : "x, y, width, height фреймов кнопки я понял. Каждая строка описывает состояние: mouseOut, mouseOver, mouseDown соответственно",
+	"UNDERSTAND_BUTTON_POSITION" : [  0,   0, 60, 41,
+			       		  60,  0, 60, 41,
+			       		  120, 0, 60, 41],
+
+	"CHECK_BUTTON_POSITION" : "x, y, width, height фреймов кнопки проверить. Каждая строка описывает состояние: mouseOut, mouseOver, mouseDown соответственно",
+	"CHECK_BUTTON_POSITION" : [  0, 0, 117, 29,
+				     117, 0, 117, 29,
+				    234, 0, 117, 29],
+	
+	"SOUND_BUTTON_POSITION" : "x, y, width, height фреймов кнопки повторения звука. Каждая строка описывает состояние: mouseOut, mouseOver, mouseDown соответственно",
+	"SOUND_BUTTON_POSITION" : [  0,   0, 60, 41,
+			       	     60,  0, 60, 41,
+			       	     120, 0, 60, 41],
+
+	"FULLSCREEN_BUTTON_POSITION" : "x, y, width, height фреймов кнопки полноэкранного режима",
+	"FULLSCREEN_BUTTON_POSITION" : [   0, 0, 60, 41,
+					60, 0, 60, 41,
+					120, 0, 60, 41],
+
+
+	"HEALTH_POSITION" : "x, y, width, height фреймов для жизней. Каждая строка описывает состояние жизни: не использована, использована соответственно",
+	"HEALTH_POSITION" : [ 0,  0, 45, 34,
+			      45, 0, 45, 34],
+
+	"PROGRESS_POSITION" : "x, y, width, height фреймов для точки прогресса. Каждая строка описывает состояние точки: не проходил тест, текущий тест, тест завершен успешно, тест провален соответственно",
+	"PROGRESS_POSITION" : [ 0,   0, 34, 35,
+			        34,  0, 34, 35,
+			        68,  0, 34, 35,
+			        102, 0, 34, 35],
+
+	"CHECKBOX_BUTTON_POSITION" : "x, y, width, height фреймов для radioButton и checkButton. 1 строка - элемент не выделен, 2 - выделен",
+	"CHECKBOX_BUTTON_POSITION" : [ 0, 0, 15, 15,
+				       15, 0, 15, 15],
+
+	"DELTA_BOTTOM" : "отступ в пикселях снизу экрана плеера для функциональных кнопок (рестарт, не знаю, я понял, повтор звука)",
+	"DELTA_BOTTOM" : 5,
+
+	"DELTA_RIGHT" : "отступ в пикселях справа экрана плеера для функциональных кнопок (рестарт, не знаю, я понял, повтор звука). Также влияет на отступ между кнопками",
+	"DELTA_RIGHT" : 5,
+
+	"SOUND_VERTICAL_ALIGN" : "Допустимые константы для выравнивания кнопки звука по вертикали: top, center, bottom",
+	"SOUND_VERTICAL_ALIGN" : "top",
+	"SOUND_HORIZONTAL_ALIGN" : "Допустимые константы для выравнивания кнопки звука по горизонтали: left, center, right",
+	"SOUND_HORIZONTAL_ALIGN" : "left",
+	
+	"SOUND_DELTA_X" : "Отступ кнопки звука от определенного края по оси Х",
+	"SOUND_DELTA_X" : 70,
+	"SOUND_DELTA_Y" : "Отступ кнопки звука от определенного края по оси Y",
+	"SOUND_DELTA_Y" : 5,
+
+	
+
+
+	"FULLSCREEN_VERTICAL_ALIGN" : "Допустимые константы для выравнивания кнопки полноэкранного режима: top, center, bottom",
+	"FULLSCREEN_VERTICAL_ALIGN" : "top",
+	"FULLSCREEN_HORIZONTAL_ALIGN" : "Допустимые константы для выравнивания кнопки полноэкранного режима: left, center, right",
+	"FULLSCREEN_HORIZONTAL_ALIGN" : "left",
+	
+	"FULLSCREEN_DELTA_X" : "Отступ кнопки полноэкранного режима от определенного края по оси Х",
+	"FULLSCREEN_DELTA_X" : 5,
+	"FULLSCREEN_DELTA_Y" : "Отступ кнопки полноэкранного режима от определенного края по оси Y",
+	"FULLSCREEN_DELTA_Y" : 5,
+
+	"HEALTH_START_X" : "отступ в пикселях слева от экрана плеера для жизней",
+	"HEALTH_START_X" : 10,
+
+	"HEALTH_START_Y" : "отступ в пикселях сверху от экрана плеера для жизней",
+	"HEALTH_START_Y" : 10,
+
+	"HEALTH_DELTA_X" : "отступ в пикселях между жизнями",
+	"HEALTH_DELTA_X" : 5,
+
+	"HEALTH_WIDTH" : "реальная ширина изображения жизни. Не всего изображения а только видимой части (фрейма)",
+	"HEALTH_WIDTH" : 45,
+
+	"HEALTH_HEIGHT" : "реальная высота изображения жизни. Не всего изображения а только видимой части (фрейма)",
+	"HEALTH_HEIGHT" : 34,
+
+	"CHECKBOX_BUTTON_SIZE" : "размер radioButton и checkButton (считается что отображаемый фрейм квадратный)",
+	"CHECKBOX_BUTTON_SIZE" : 15,
+
+	"TEST_PROGRESS_WIDTH" : "реальная ширина изображения точки прогресса. Не всего изображения а только видимой части (фрейма)",	
+	"TEST_PROGRESS_WIDTH" : 34,
+
+	"TEST_PROGRESS_HEIGHT" : "реальная высота изображения точки прогресса. Не всего изображения а только видимой части (фрейма)",
+	"TEST_PROGRESS_HEIGHT" : 35,
+
+	"TEST_PROGRESS_DELTA_X" : "отступ в пикселях между точками прогресса",
+	"TEST_PROGRESS_DELTA_X" : 5,
+	
+	"PROGRESS_POINT_DEFAULT_POSITION" : "Номер фрейма для точки прогресса где учащийся ещё не добрался до теста",
+	"PROGRESS_POINT_DEFAULT_POSITION" : 0,
+
+	"PROGRESS_POINT_CURRENT_POSITION" : "Номер фрейма для точки прогресса когда учащийся находится на текущем тесте",
+	"PROGRESS_POINT_CURRENT_POSITION" : 1,
+
+	"PROGRESS_POINT_SUCCESS_POSITION" : "Номер фрейма для точки прогресса когда учащийся успешно прошел тест",
+	"PROGRESS_POINT_SUCCESS_POSITION" : 2,
+
+	"PROGRESS_POINT_FAIL_POSITION" : "Номер фрейма для точки прогресса когда учащийся не прошел тест",
+	"PROGRESS_POINT_FAIL_POSITION" : 3,
+	
+	"SHOWING_FINAL_FRAME_TIME" : "Время в милисекундах показа финального окна между тестами",
+	"SHOWING_FINAL_FRAME_TIME" : 2000,
+	
+	"DECREASING_COEFFICIENT" : "Коэффициент понижения баллов при использовании подводящих заданий",
+	"DECREASING_COEFFICIENT" : 0.9,
+	
+	"ANIMATION_FRAME_RATE" : "Количество кадров в секунду для анимации (только анимация перемещения и иже с нею, созданная в конструкторе)",
+	"ANIMATION_FRAME_RATE" : 24
+}
