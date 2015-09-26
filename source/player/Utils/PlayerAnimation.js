@@ -13,6 +13,8 @@ InteractiveTask.AnimationController = function(){
 	this.playAnimation = new Array();
 
 	this.layersAnimation = new Array();
+
+	this.isRuning = false;
 };
 
 /**
@@ -66,95 +68,53 @@ InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 	    };
 	};
 	//this.animateLayers = layers;
-	//  Сохраняем ссылку на массив анимаций проигрывания
-	var animations = this.playAnimation;
-	var buffer =  this.bufferAnimation;
-	var layers =  this.layersAnimation;
-	//  Создаем анимацию фреймворка
+	this._run();
 
-	kinetikAnimation = function(){
-		moveToBuffer = function(i){
-			buffer.push(animations[i]);
-			animations.splice(i,1);
-		};
-		var i,l;
-		l = animations.length;
-		if(l>0){
-			//  По всем анимациям проигрывания перемещаем объекты в новые точки
-			for(i=0;i<l;i++){
-				//console.log(animations[i]);
-				animations[i].gotoNextPoint();
-				if(animations[i].isComplate()){
-					if(animations[i].multiple){
-						animations[i].isPointsPrepared = false;
-						moveToBuffer(i);
-						//console.log("push back to buffer");
-					}else{
-						animations.splice(i,1);
-					};
-					--i;
-					--l;
-				}else{
-					if(animations[i].isStopOnFrame){
-						animations[i].isStopOnFrame = false;
-						moveToBuffer(i);
-						--i;
-						--l;
-					};
-				};
-			};
-			l = layers.length;
-			for(i=0;i<l;i++){
-				layers[i].batchDraw();
-			};
-		};
-		//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
-		if(buffer.length != 0 || animations.length != 0){
-			setTimeout(kinetikAnimation, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
-		};
-	};
-	kinetikAnimation();
-	/*
-	this.kineticAnimation = new Kinetic.Animation(function(frame){
-		this.moveToBuffer = function(i){
-			buffer.push(animations[i]);
-			animations.splice(i,1);
-		};
-	    var i,l;
-		l = animations.length;
+};
+InteractiveTask.AnimationController.prototype.moveToBuffer = function(i){
+	this.bufferAnimation.push(this.playAnimation[i]);
+	this.playAnimation.splice(i,1);
+};
+InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
+	console.log("animation play");
+	var i,l;
+	l = this.playAnimation.length;
+	if(l>0){
 		//  По всем анимациям проигрывания перемещаем объекты в новые точки
 		for(i=0;i<l;i++){
 			//console.log(animations[i]);
-			animations[i].gotoNextPoint();
-			if(animations[i].isComplate()){
-				if(animations[i].multiple){
-					animations[i].isPointsPrepared = false;
+			this.playAnimation[i].gotoNextPoint();
+			if(this.playAnimation[i].isComplate()){
+				if(this.playAnimation[i].multiple){
+					this.playAnimation[i].isPointsPrepared = false;
 					this.moveToBuffer(i);
 					//console.log("push back to buffer");
 				}else{
-					animations.splice(i,1);
+					this.playAnimation.splice(i,1);
 				};
 				--i;
 				--l;
 			}else{
-				if(animations[i].isStopOnFrame){
-					animations[i].isStopOnFrame = false;
+				if(this.playAnimation[i].isStopOnFrame){
+					this.playAnimation[i].isStopOnFrame = false;
 					this.moveToBuffer(i);
 					--i;
 					--l;
 				};
 			};
 		};
-		//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
-		if(buffer.length == 0 && animations.length == 0){
-			this.stop();
-			//console.log("Animation full stop");
+		l = this.layersAnimation.length;
+		for(i=0;i<l;i++){
+			this.layersAnimation[i].batchDraw();
 		};
-	},layers);
-    */
-	//  Стартуем анимацию
-	//this.kineticAnimation.start();
-	//alert("total play");
+	};
+	//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
+	var self = this;
+	if(this.playAnimation.length != 0){
+		setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+	}else{
+		this.isRuning = false;
+	};
 };
 InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 	//console.log("run by label = |" + label + "|");
@@ -189,6 +149,13 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 			--l;
 			--i;
 		};
+	};
+	this._run();
+};
+InteractiveTask.AnimationController.prototype._run = function(){
+	if(this.playAnimation.length>0 && !this.isRuning){
+		this.isRuning = true;
+		this.kinetikAnimation();
 	};
 };
 InteractiveTask.AnimationController.prototype.clear = function(){
