@@ -252,6 +252,16 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         }
     });
 	this.colorTan.opacity(alpha);
+	this.colorTan.dragBoundFunc(function(pos){
+		var X=pos.x;
+		var Y=pos.y;
+
+		if(X<0){X=0;};
+		if(X>InteractiveTask.STAGE.width()){X=InteractiveTask.STAGE.width();};
+		if(Y<0){Y=0;};
+		if(Y>InteractiveTask.STAGE.height()){Y=InteractiveTask.STAGE.height();};
+		return({x:X, y:Y});
+	});
 //	console.log("this.colorTan.strokeAlpha() = " + this.colorTan.strokeAlpha());
     this.blackTan = new Kinetic.Shape({
         fill: blackTanFillColor,
