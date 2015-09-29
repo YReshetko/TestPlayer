@@ -181,10 +181,13 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 	this.colorTan.dragBoundFunc(function(pos){
 		var X=pos.x;
 		var Y=pos.y;
-		if(X<width/2){X=width/2;};
-		if(X>InteractiveTask.STAGE.width()-width/2){X=InteractiveTask.STAGE.width()-width/2;};
-		if(Y<height/2){Y=height/2;};
-		if(Y>InteractiveTask.STAGE.height()-height/2){Y=InteractiveTask.STAGE.height()-height/2;};
+		var scaleX =InteractiveTask.STAGE.scaleX();
+		var scaleY =InteractiveTask.STAGE.scaleY();
+
+		if(X<width*scaleX/2){X=width*scaleX/2;};
+		if(X>InteractiveTask.STAGE.width()-width*scaleX/2){X=InteractiveTask.STAGE.width()-width*scaleX/2;};
+		if(Y<height*scaleY/2){Y=height*scaleY/2;};
+		if(Y>InteractiveTask.STAGE.height()-height*scaleY/2){Y=InteractiveTask.STAGE.height()-height*scaleY/2;};
 		return({x:X, y:Y});
 	});
 
