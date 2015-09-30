@@ -232,7 +232,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
 	    height : parseFloat(this.xml.HEIGHT),
         draggable : true,
         fillPriority : "pattern",
-        drawFunc : function(context){
+	    sceneFunc : function(context){
             //alert("begin path");
             context.beginPath();
 
@@ -269,7 +269,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         strokeWidth:thickLine,
         x:parseInt(this.xml.BLACK.X),
         y:parseInt(this.xml.BLACK.Y),
-        drawFunc : function(context){
+	    sceneFunc : function(context){
             //alert("begin path");
             context.beginPath();
 
