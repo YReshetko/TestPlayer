@@ -60,7 +60,7 @@ InteractiveTask.BoxSystem = function(options){
 	this.format = this.xml.FORMAT;
 	this.xmlBoxArray = InteractiveTask.getArrayObjectsByTag(this.xml, "BOX");
 
-	this.boxSystem = new Kinetic.Group();
+	this.boxSystem = new Konva.Group();
 	this.boxSystem.x(parseFloat(this.xml["-x"]));
 	this.boxSystem.y(parseFloat(this.xml["-y"]));
 
@@ -126,7 +126,7 @@ InteractiveTask.OneBox = function(options){
 		image = InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.RADIO_BUTTON);
 	};
 
-	this.point = new Kinetic.Sprite({
+	this.point = new Konva.Sprite({
 		x : 0,
 		y : 0,
 		image : image,
@@ -147,7 +147,7 @@ InteractiveTask.OneBox = function(options){
 			boxText = this.xml.TEXT["#cdata-section"];
 		};
 	};
-	this.textField = new Kinetic.Text({
+	this.textField = new Konva.Text({
 		x: InteractiveTask.CONST.CHECKBOX_BUTTON_SIZE + 5,
 		y: 0,
 		fontFamily: this.format.FONT,
@@ -159,7 +159,7 @@ InteractiveTask.OneBox = function(options){
 
 	this.createBackground();
 
-	this.group = new Kinetic.Group();
+	this.group = new Konva.Group();
 
 	this.textField.y((InteractiveTask.CONST.CHECKBOX_BUTTON_SIZE - this.textField.height())/2);
 	this.backgroung.y((InteractiveTask.CONST.CHECKBOX_BUTTON_SIZE - this.backgroung.height())/2);
@@ -195,7 +195,7 @@ InteractiveTask.OneBox.prototype.createBackground = function(){
 	}else{
 		fill = InteractiveTask.formatColorFlashToCanvasRGBA(this.format.BACKGROUNDCOLOR, 0);
 	};
-	this.backgroung = new Kinetic.Rect({
+	this.backgroung = new Konva.Rect({
 		x : 0,
 		y : 0,
 		width : parseFloat(this.xml["-width"]),

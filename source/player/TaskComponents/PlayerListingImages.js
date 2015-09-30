@@ -31,7 +31,7 @@ InteractiveTask.ListingImagesController.prototype.init = function () {
     handler.addToLayer(layer);
 
     //creating rectangle with count of completed images
-    resultArea = new Kinetic.Rect({
+    resultArea = new Konva.Rect({
         width: 100,
         height: 30,
         stroke: 'black',
@@ -40,7 +40,7 @@ InteractiveTask.ListingImagesController.prototype.init = function () {
         y: pheight - 35
     });
     layer.add(resultArea);
-    resultText = new Kinetic.Text({
+    resultText = new Konva.Text({
         x: resultArea.getX(),
         y: resultArea.getY(),
         text: handler.completedImagesCount + ' / ' + picturesCount,
@@ -152,7 +152,7 @@ function PieceItem(data) {
     var that = this;
 
     that.imageId = data.imageId;
-    that.imgObj = new Kinetic.Image({
+    that.imgObj = new Konva.Image({
         image: data.imageObjects[that.imageId].img,
         crop: {
             x: data.i * data.pieceWidth,

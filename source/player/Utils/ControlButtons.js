@@ -209,7 +209,7 @@ InteractiveTask.ButtonSystem.prototype.clear = function(){
 
 
 InteractiveTask.OneButton = function(options){
-    this.button = new Kinetic.Sprite({
+    this.button = new Konva.Sprite({
         x : options.x,
         y : options.y,
         image : options.image,

@@ -33,7 +33,7 @@ InteractiveTask.PalitraController.prototype.init = function(){
     }else{
         widthPanel = 7*(pickerSize+deltaX) + deltaX;
     };
-    this.background = new Kinetic.Rect({
+    this.background = new Konva.Rect({
         x : 0,
         y : 0,
         width : widthPanel,
@@ -47,7 +47,7 @@ InteractiveTask.PalitraController.prototype.init = function(){
     for(i=0;i<xmlColor.length;i++){
         this.pickerArray[i] = new InteractiveTask.SamplePicker(xmlColor[i], this);
     };
-    this.panel = new Kinetic.Group();
+    this.panel = new Konva.Group();
     this.panel.add(this.background);
     for(i=0;i<this.pickerArray.length;i++){
 
@@ -90,7 +90,7 @@ InteractiveTask.SamplePicker = function(xml, controller){
         this.color = "0"+this.color;
     };
     this.color = "#"+this.color;
-    this.picker = new Kinetic.Rect({
+    this.picker = new Konva.Rect({
         width : pickerSize,
         height : pickerSize,
         strokeWidth : 1,

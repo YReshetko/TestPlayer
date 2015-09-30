@@ -68,7 +68,7 @@ InteractiveTask.SampleTextField = function(options){
 
     this.xml = options.xml;
 
-    this.textField = new Kinetic.Text({
+    this.textField = new Konva.Text({
         x: 3,
         y: 3,
         fontFamily: this.xml.FONT,
@@ -87,7 +87,7 @@ InteractiveTask.SampleTextField = function(options){
     };
     this.textField.fontStyle(style);
 
-    this.field = new Kinetic.Group();
+    this.field = new Konva.Group();
 
     if((this.xml.BORDER=="true")||(this.xml.BACKGROUND=="true")){
         var borderColor = InteractiveTask.formatColorFlashToCanvasRGBA(this.xml.BORDERCOLOR, 0);
@@ -100,7 +100,7 @@ InteractiveTask.SampleTextField = function(options){
         };
         console.log("border color", borderColor);
         console.log("background color", backGroundColor);
-        this.background = new Kinetic.Rect({
+        this.background = new Konva.Rect({
             width : parseFloat(this.xml.WIDTH),
             height : parseFloat(this.xml.HEIGHT),
             stroke : borderColor,
@@ -124,7 +124,7 @@ InteractiveTask.SampleTextField = function(options){
     if(this.xml.TYPE["-name"]=="STATIC"){
         if(this.xml.TYPE.DRAGANDDROP["-tan"] == "true"){
             this.enterArea = false;
-            this.blackTan = new Kinetic.Rect({
+            this.blackTan = new Konva.Rect({
                 width : parseFloat(this.xml.WIDTH),
                 height : parseFloat(this.xml.HEIGHT),
                 x :  parseFloat(this.xml.TYPE.DRAGANDDROP.X),

@@ -51,8 +51,8 @@ InteractiveTask.SampleGroupField = function(options){
     this.xml = options.xml;
     this.diap = options.diap;
 
-    this.colorTan = new Kinetic.Group();
-    this.blackTan = new Kinetic.Group();
+    this.colorTan = new Konva.Group();
+    this.blackTan = new Konva.Group();
 
     this.isTan = (this.xml.TAN == "true");
     this.isField = (this.xml.FIELD == "true");

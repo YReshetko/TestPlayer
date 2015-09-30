@@ -9,11 +9,11 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 	this.width = width;
 	this.height = height;
 	this.fullscreenLayer = buttons.fullscreen;
-	this.successFrame = new Kinetic.Group();
-	this.failFrame = new Kinetic.Group();
-	this.waitFrame = new Kinetic.Group();
+	this.successFrame = new Konva.Group();
+	this.failFrame = new Konva.Group();
+	this.waitFrame = new Konva.Group();
 
-	var successBackground = new Kinetic.Rect({
+	var successBackground = new Konva.Rect({
 		width : this.width,
 		height : this.height,
 		fill : InteractiveTask.formatColorFlashToCanvasRGBA("0x999999", 0.2),
@@ -21,7 +21,7 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 		strokeWidth : 1
 	});
 
-	var failBackground = new Kinetic.Rect({
+	var failBackground = new Konva.Rect({
 		width : this.width,
 		height : this.height,
 		fill : InteractiveTask.formatColorFlashToCanvasRGBA("0x999999", 0.2),
@@ -29,7 +29,7 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 		strokeWidth : 1
 	});
 
-	var waitBackground = new Kinetic.Rect({
+	var waitBackground = new Konva.Rect({
 		width : this.width,
 		height : this.height,
 		fill : InteractiveTask.formatColorFlashToCanvasRGBA("0xBBBBBB", 1),
@@ -37,13 +37,13 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 		strokeWidth : 1
 	});
 
-	var successImage = new Kinetic.Image({
+	var successImage = new Konva.Image({
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.GOOD_FRAME)
 	});
-	var failImage = new Kinetic.Image({
+	var failImage = new Konva.Image({
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.BAD_FRAME)
 	});
-	this.waitSprite = new Kinetic.Sprite({
+	this.waitSprite = new Konva.Sprite({
 		x : 0,
 		y : 0,
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.WAIT_FRAME),
@@ -73,7 +73,7 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 	this.isWait = false;
 	this.isSuccess = false;
 	this.isFail = false;
-	this.layer = new Kinetic.Layer();
+	this.layer = new Konva.Layer();
 };
 
 InteractiveTask.TestChangeFrame.prototype.success = function(){

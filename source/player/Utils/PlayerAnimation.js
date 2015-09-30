@@ -130,7 +130,7 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 			this.bufferAnimation[i].middlePointsAnimation();
 			//console.log("add layer");
 			//  Запоминаем слои анимаций
-			//this.kineticAnimation.addLayer(this.bufferAnimation[i].layer);
+			//this.KonvaAnimation.addLayer(this.bufferAnimation[i].layer);
 			n = this.layersAnimation.length;
 			var flag = true;
 			for(j=0;j<n;j++){

@@ -69,13 +69,13 @@ InteractiveTask.Player = function(options){
     };
     //Try to create canvas element into div container
    // try{
-    InteractiveTask.STAGE = new Kinetic.Stage({
+    InteractiveTask.STAGE = new Konva.Stage({
         container : options.containerID,
         width: this.width,
         height: this.height
     });
-	InteractiveTask.BACKGROUND = new Kinetic.Layer();
-	var bgRectangle = new Kinetic.Rect({
+	InteractiveTask.BACKGROUND = new Konva.Layer();
+	var bgRectangle = new Konva.Rect({
 		width : this.width,
 		height : this.height,
 		fill : InteractiveTask.formatColor("0", 0)
@@ -185,13 +185,13 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
     //this.library.printImages();
     //this.successCallback()
 	this.buttonLayers = {
-		restart : new Kinetic.Layer(),
-		dontknow : new Kinetic.Layer(),
-		understand : new Kinetic.Layer(),
-		check : new Kinetic.Layer(),
-		sound : new Kinetic.Layer(),
-		fullscreen : new Kinetic.Layer(),
-		pause : new Kinetic.Layer()
+		restart : new Konva.Layer(),
+		dontknow : new Konva.Layer(),
+		understand : new Konva.Layer(),
+		check : new Konva.Layer(),
+		sound : new Konva.Layer(),
+		fullscreen : new Konva.Layer(),
+		pause : new Konva.Layer()
 	};
 	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, this.buttonLayers);
 	 try{
@@ -339,14 +339,14 @@ InteractiveTask.Player.prototype.calculateResultForTask = function(i){
  * Block of start task                                                 *
  ***********************************************************************/
 InteractiveTask.Player.prototype.startTask = function(){
-   // this.buttonLayer = new Kinetic.Layer();
+   // this.buttonLayer = new Konva.Layer();
 	/*this.buttonLayers = {
-		restart : new Kinetic.Layer(),
-		dontknow : new Kinetic.Layer(),
-		understand : new Kinetic.Layer(),
-		check : new Kinetic.Layer(),
-		sound : new Kinetic.Layer(),
-		fullscreen : new Kinetic.Layer()
+		restart : new Konva.Layer(),
+		dontknow : new Konva.Layer(),
+		understand : new Konva.Layer(),
+		check : new Konva.Layer(),
+		sound : new Konva.Layer(),
+		fullscreen : new Konva.Layer()
 	}; */
     this.buttonSystem = new InteractiveTask.ButtonSystem(this.buttonLayers, this.width, this.height, this);
     this.prepareArrayTaskOptions();
@@ -1339,14 +1339,14 @@ InteractiveTask.SampleTask.prototype.getLayersArray = function(){
 /**
  * If you take layer by name, automaticly this layer will be include into stack output
  * @param name
- * @returns layer{layer:Kinetic.Layer, name:string, index:int, isUse:Boolean}
+ * @returns layer{layer:Konva.Layer, name:string, index:int, isUse:Boolean}
  */
 InteractiveTask.SampleTask.prototype.getLayerByName = function(name){
     for(i=0;i<this.layers.length;i++){
         if(name == this.layers[i].name){
             if(!this.layers[i].isUse){
                 this.layers[i].isUse = true;
-                this.layers[i].layer = new Kinetic.Layer();
+                this.layers[i].layer = new Konva.Layer();
             };
             return this.layers[i].layer;
         };
@@ -1356,7 +1356,7 @@ InteractiveTask.SampleTask.prototype.getLayerByName = function(name){
 /**
  * You can get layer from full stack layers by index without changes
  * @param index of necessary layer from all layers
- * @returns layer{layer:Kinetic.Layer, name:string, index:int, isUse:Boolean}
+ * @returns layer{layer:Konva.Layer, name:string, index:int, isUse:Boolean}
  */
 InteractiveTask.SampleTask.prototype.getLayerByIndex = function(index){
     for(i=0;i<this.layers.length;i++){

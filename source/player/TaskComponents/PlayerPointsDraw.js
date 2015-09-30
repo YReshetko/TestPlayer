@@ -59,14 +59,14 @@ InteractiveTask.PointsSystem.prototype.setReport = function(isComplate){
 
 InteractiveTask.PointsSystem.prototype.init = function(options){
     this.controller = options.controller;
-    this.system = new Kinetic.Group();
+    this.system = new Konva.Group();
     this.system.x(parseFloat(this.xml.X));
     this.system.y(parseFloat(this.xml.Y));
     this.selectLastPoint = (this.xml.LASTPOINT == "true");
 
 
 
-    this.plane = new Kinetic.Shape({
+    this.plane = new Konva.Shape({
         x : 0,
         y : 0,
         fillEnabled : false,
@@ -250,14 +250,14 @@ InteractiveTask.SamplePoint = function(options){
         this.deselectColor = "rgba(0, 0, 0, 0)";
     };
     this.isSelect = false;
-    this.center = new Kinetic.Circle({
+    this.center = new Konva.Circle({
         radius : this.options.radiusCenter,
         fill : this.deselectColor,
         stroke : "rgba(0, 0, 0, 0)",
         x : 0,
         y : 0,
     });
-    this.area = new Kinetic.Circle({
+    this.area = new Konva.Circle({
         radius : this.options.radiusArea,
         fill : "rgba(0, 0, 0, 0)",
         stroke : "rgba(0, 0, 0, 0)",
@@ -265,7 +265,7 @@ InteractiveTask.SamplePoint = function(options){
         y : 0,
     });
 
-    this.point = new Kinetic.Group();
+    this.point = new Konva.Group();
     this.point.x(parseFloat(this.options.xml["-x"]));
     this.point.y(parseFloat(this.options.xml["-y"]));
     this.point.controller = this.options.controller;

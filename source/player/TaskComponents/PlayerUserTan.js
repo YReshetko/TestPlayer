@@ -222,7 +222,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         points = this.xml.POINTS[0];
     };
 
-    this.colorTan = new Kinetic.Shape({
+    this.colorTan = new Konva.Shape({
         fill:colorTanFillColor,
         stroke: colorTanLineColor,
         strokeWidth:thickLine,
@@ -263,7 +263,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
 		return({x:X, y:Y});
 	});
 //	console.log("this.colorTan.strokeAlpha() = " + this.colorTan.strokeAlpha());
-    this.blackTan = new Kinetic.Shape({
+    this.blackTan = new Konva.Shape({
         fill: blackTanFillColor,
         stroke: blackTanLineColor,
         strokeWidth:thickLine,

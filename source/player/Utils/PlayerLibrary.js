@@ -145,8 +145,8 @@ InteractiveTask.ImageLibrary.prototype.startLoading = function(){
 };
 InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
     trace("label loading complate");
-    this.layer = new Kinetic.Layer();
-    this.loadingLabel = new Kinetic.Sprite({
+    this.layer = new Konva.Layer();
+    this.loadingLabel = new Konva.Sprite({
         x : (parseFloat(this.xml.WIDTH)-100)/2,
         y : (parseFloat(this.xml.HEIGHT)-100)/2,
         image : image,

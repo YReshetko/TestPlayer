@@ -87,9 +87,9 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
     if(this.fieldsArray.length != this.numComplate) return;  */
      //console.log("CELL is created") ;
     var i;
-    this.field = new Kinetic.Group();
+    this.field = new Konva.Group();
 
-    var background = new Kinetic.Rect({
+    var background = new Konva.Rect({
         width : this.xml["-width"],
         height :  this.xml["-height"],
         fill : "rgba(0, 0, 0, 0)",
@@ -252,7 +252,7 @@ InteractiveTask.UnitField = function(xml, controller){
     this.j = parseInt(this.xml["-j"]);
     this.width = parseInt(this.xml["-width"]);
     this.height = parseInt(this.xml["-height"]);
-    this.group = new Kinetic.Group();
+    this.group = new Konva.Group();
     var flag = false;
     this.isFree = true;
     //console.log(basePath);
@@ -312,7 +312,7 @@ InteractiveTask.UnitField.prototype.complateLoadingTask = function(){
     } catch(e){}*/
 };
 InteractiveTask.UnitField.prototype.createCell = function(){
-    var background = new Kinetic.Rect({
+    var background = new Konva.Rect({
         width : this.xml["-width"],
         height :  this.xml["-height"],
         fill : "rgba(0, 0, 0, 0)",
@@ -324,7 +324,7 @@ InteractiveTask.UnitField.prototype.createCell = function(){
 };
 
 InteractiveTask.UnitField.prototype.createFrame = function(){
-    this.frame = new Kinetic.Rect({
+    this.frame = new Konva.Rect({
         width : this.xml["-width"],
         height :  this.xml["-height"],
         fill : "rgba(0, 0, 0, 0)",

@@ -38,7 +38,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 
 
 
-    helpImg = new Kinetic.Image({
+    helpImg = new Konva.Image({
         image: imageObj,
         x: x,
         y: y,
@@ -58,14 +58,14 @@ InteractiveTask.PuzzleController.prototype.init = function(){
         net[i] = [];
         pic[i] = [];
         for(j=0;j<numLine;j++){
-            net[i][j] = new Kinetic.Rect({
+            net[i][j] = new Konva.Rect({
                 x: x+i*stepX,
                 y: y+j*stepY,
                 width: stepX,
                 height: stepY,
                 stroke: 'black',
             });
-            pic[i][j] = new Kinetic.Image({
+            pic[i][j] = new Konva.Image({
                 image: imageObj,
                 x: stepX+Math.random()*((pwidth-2*stepX)+1),
                 y: stepY+Math.random()*((pheight-2*stepY)+1),

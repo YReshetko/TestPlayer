@@ -97,7 +97,7 @@ InteractiveTask.SampleTable.prototype.init = function(){
     H = this.hTable;
     numLine = this.numLine;
     numCol = this.numColumn;
-    this.table = new Kinetic.Shape({
+    this.table = new Konva.Shape({
         fillEnabled : false,
         strokeWidth : this.tTable,
         stroke : this.tColor,

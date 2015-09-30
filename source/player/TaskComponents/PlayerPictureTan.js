@@ -155,12 +155,12 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     var x = parseFloat(this.xml.COLOR.X);
     var y = parseFloat(this.xml.COLOR.Y);
 
-    this.colorTan = new Kinetic.Group();
+    this.colorTan = new Konva.Group();
 	this.colorTan.setAttrs({
 		width : width,
 		height : height
 	});
-    var colorImageTan = new Kinetic.Image({
+    var colorImageTan = new Konva.Image({
         x : -width/2,
         y : -height/2,
         image : InteractiveTask.LIBRARY.getImage(this.xml.IMAGE)/*,
@@ -199,9 +199,9 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     };
 
    // console.log("Color tan was added");
-    this.blackTan = new Kinetic.Group();
+    this.blackTan = new Konva.Group();
 
-    var blackImageTan = new Kinetic.Image({
+    var blackImageTan = new Konva.Image({
         x : -width/2,
         y : -height/2,
         image :  InteractiveTask.LIBRARY.getImage(this.xml.IMAGE),
@@ -216,7 +216,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.blackLayer.add(this.blackTan);
         this.blackTan.draw();
         blackImageTan.cache();
-        blackImageTan.filters([Kinetic.Filters.RGB]);
+        blackImageTan.filters([Konva.Filters.RGB]);
     };
 
     if(this.xml.BLACK.ALPHA == "1"){

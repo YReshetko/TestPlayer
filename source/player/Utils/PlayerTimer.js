@@ -47,14 +47,14 @@ InteractiveTask.Timer.prototype.setHealth = function(health){
 
 InteractiveTask.Timer.prototype.start = function(){
 	//var totalTimer = parseInt(this.xml.TIMER.substr(0,2))*60 +  parseInt(this.xml.TIMER.substr(3,2));
-	this.field = new Kinetic.Text({
+	this.field = new Konva.Text({
 		x: 10,
 		y: InteractiveTask.STAGE.height() - 30,
 		fontSize: 30,
 		fontFamily: 'Calibri',
 		fill: 'green'
 	});
-	this.layer = new Kinetic.Layer();
+	this.layer = new Konva.Layer();
 	this.layer.add(this.field);
 	InteractiveTask.STAGE.add(this.layer);
 	this.currentSeconds = 0;

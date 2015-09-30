@@ -30,14 +30,14 @@ InteractiveTask.PositioningController.prototype.init = function(){
         net2[i] = [];
         idMas[i] = [];
         for(j=0;j<numcolumn;j++){
-            net1[i][j] = new Kinetic.Rect({
+            net1[i][j] = new Konva.Rect({
                 x : x1 + i*stepX,
                 y : y1 + j*stepY,
                 width : stepX,
                 height : stepY,
                 stroke : "black",
             });
-            net2[i][j] = new Kinetic.Rect({
+            net2[i][j] = new Konva.Rect({
                 x : x2 + i*stepX,
                 y : y2 + j*stepY,
                 width : stepX,
@@ -52,28 +52,28 @@ InteractiveTask.PositioningController.prototype.init = function(){
     };
 
 // Свойства картинок ///////////////////////////////////////////////////////////////////////////////////////////////////
-    img1 = new Kinetic.Image({
+    img1 = new Konva.Image({
         image: image1,
         x: x1,
         y: y1,
         width: width,
         height: height
     });
-    img2 = new Kinetic.Image({
+    img2 = new Konva.Image({
         image: image2,
         x: x2,
         y: y2,
         width: width,
         height: height
     });
-    imgAltQuestion = new Kinetic.Image({
+    imgAltQuestion = new Konva.Image({
         image: altQuestionImg,
         x: net2[0][0].getX(),
         y: net2[0][0].getY(),
         width: stepX,
         height: stepY
     });
-    imgFail = new Kinetic.Image({
+    imgFail = new Konva.Image({
         image: failImg,
         x: x1,
         y: x2,
@@ -84,14 +84,14 @@ InteractiveTask.PositioningController.prototype.init = function(){
         width: 46,
         height: 46
     });
-    imgQuestion = new Kinetic.Image({
+    imgQuestion = new Konva.Image({
         image: questionImg,
         x: net2[0][0].getX(),
         y: net2[0][0].getY(),
         width: stepX,
         height: stepY
     });
-    imgTrue = new Kinetic.Image({
+    imgTrue = new Konva.Image({
         image: trueImg,
         x: x1,
         y: y1,

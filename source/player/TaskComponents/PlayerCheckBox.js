@@ -56,8 +56,8 @@ InteractiveTask.SampleCheckBox = function(layer, xml){
 
 InteractiveTask.SampleCheckBox.prototype.init = function(json){
     this.controller = json.controller;
-    this.checkBox = new Kinetic.Group();
-    var checkBoxBackground = new Kinetic.Rect({
+    this.checkBox = new Konva.Group();
+    var checkBoxBackground = new Konva.Rect({
         x : 0,
         y : 0,
         width : this.xml.WIDTH,
@@ -67,7 +67,7 @@ InteractiveTask.SampleCheckBox.prototype.init = function(json){
         fill : InteractiveTask.formatColorFlashToCanvas(this.xml.BGCOLOR)
     });
 
-    var checkBoxText = new Kinetic.Text({
+    var checkBoxText = new Konva.Text({
          x: parseFloat(this.xml.WIDTH)/2.7,
          y: parseFloat(this.xml.HEIGHT)/10,
          text: '?',

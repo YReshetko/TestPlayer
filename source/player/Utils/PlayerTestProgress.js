@@ -10,12 +10,12 @@ InteractiveTask.TestProgress = function(options){
 	this.contID = options.containerID;
 	this.width = InteractiveTask.STAGE.width();
 	this.height = InteractiveTask.CONST.TEST_PROGRESS_HEIGHT;
-	this.progressStage = new Kinetic.Stage({
+	this.progressStage = new Konva.Stage({
 		container : this.contID,
 		width: this.width,
 		height: this.height
 	});
-	this.layer = new Kinetic.Layer();
+	this.layer = new Konva.Layer();
 	var tasksArray = InteractiveTask.getArrayObjectsByTag(this.xml, "TASK");
 	this.equalsArray = new Array();
 	var i,l;
@@ -116,12 +116,12 @@ InteractiveTask.TestProgress.prototype.clear = function(){
 
 InteractiveTask.TestProgressPoint = function(options){
 	this.number = options.number;
-	this.group = new Kinetic.Group({
+	this.group = new Konva.Group({
 	    x : options.x,
 		y : options.y
 	});
 
-	this.point = new Kinetic.Sprite({
+	this.point = new Konva.Sprite({
 		x : 0,
 		y : 0,
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.TEST_PROGRESS),
@@ -132,7 +132,7 @@ InteractiveTask.TestProgressPoint = function(options){
 		frameRate :10,
 		frameIndex : InteractiveTask.CONST.PROGRESS_POINT_DEFAULT_POSITION
 	});
-	this.text = new Kinetic.Text({
+	this.text = new Konva.Text({
 		x : 0,
 		y : 0,
 		text : this.number,

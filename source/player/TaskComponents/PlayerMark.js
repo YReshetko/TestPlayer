@@ -81,7 +81,7 @@ InteractiveTask.SampleMark = function(options){
     var y = parseFloat(this.xml.Y);
     var scaleX = width/100;
     var scaleY = height/100;
-    this.mark = new Kinetic.Sprite({
+    this.mark = new Konva.Sprite({
         x : x,
         y : y,
         image : this.image,

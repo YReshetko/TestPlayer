@@ -16,7 +16,7 @@ InteractiveTask.Health = function(options){
 	this.isTest = this.controller.isTest();
 	this.isFirstLevel = (this.xml["-level"] == "1");
 
-	this.layer = new Kinetic.Layer();
+	this.layer = new Konva.Layer();
 	this.healthes = new Array();
 };
 InteractiveTask.Health.prototype.isInitHealth = function(){
@@ -55,7 +55,7 @@ InteractiveTask.Health.prototype.start = function(){
 	for(i=0;i<this.totalHealth;i++){
 		x = InteractiveTask.CONST.HEALTH_START_X + i*(InteractiveTask.CONST.HEALTH_WIDTH+InteractiveTask.CONST.HEALTH_DELTA_X);
 		y = InteractiveTask.CONST.HEALTH_START_Y;
-		this.healthes[i] = new Kinetic.Sprite({
+		this.healthes[i] = new Konva.Sprite({
 			x : x,
 			y : y,
 			image : image,
