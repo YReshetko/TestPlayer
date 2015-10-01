@@ -90,6 +90,8 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 					this.moveToBuffer(i);
 					//console.log("push back to buffer");
 				}else{
+					InteractiveTask.disposeObject(this.playAnimation[i]);
+					this.playAnimation[i] = null;
 					this.playAnimation.splice(i,1);
 				};
 				--i;
