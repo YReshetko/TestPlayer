@@ -126,16 +126,6 @@ InteractiveTask.ButtonSystem.prototype.replace = function(){
 			this.buttons[i].y(startY);
 		};
 	};
-	/*this.buttonAditionalPositioning(this.sound,
-		InteractiveTask.CONST.SOUND_HORIZONTAL_ALIGN,
-		InteractiveTask.CONST.SOUND_VERTICAL_ALIGN,
-		InteractiveTask.CONST.SOUND_DELTA_X,
-		InteractiveTask.CONST.SOUND_DELTA_Y);
-	this.buttonAditionalPositioning(this.fullscreen,
-		InteractiveTask.CONST.FULLSCREEN_HORIZONTAL_ALIGN,
-		InteractiveTask.CONST.FULLSCREEN_VERTICAL_ALIGN,
-		InteractiveTask.CONST.FULLSCREEN_DELTA_X,
-		InteractiveTask.CONST.FULLSCREEN_DELTA_Y); */
 	this.positionCompositeConst(this.sound, "SOUND");
 	this.positionCompositeConst(this.fullscreen, "FULLSCREEN");
 	this.positionCompositeConst(this.pause, "PAUSE");

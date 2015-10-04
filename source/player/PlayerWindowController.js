@@ -11,6 +11,7 @@ InteractiveTask.VERSION = "1.8.1";
 
 InteractiveTask.STAGE;
 InteractiveTask.BACKGROUND;
+InteractiveTask.DRAG_LAYER;
 InteractiveTask.LIBRARY;
 InteractiveTask.PATH;
 InteractiveTask.CONST;
@@ -740,7 +741,9 @@ InteractiveTask.Player.prototype.visibleButtonsControl = function(){
 		this.buttonSystem.sound.visible(false);
 	};
 	this.buttonSystem.pause.visible(false);
+	this.buttonSystem.fullscreen.visible(true);
 	this.buttonSystem.replace();
+
 };
 /********************************************
  * устанавливаем снижающий балл на задние
@@ -1390,6 +1393,9 @@ InteractiveTask.SampleTask.prototype.addLayersToStage = function(){
     if(this.shiftFieldController!=undefined){
         this.shiftFieldController.initCache();
     };
+	InteractiveTask.DRAG_LAYER = new Konva.Layer();
+	InteractiveTask.STAGE.add(InteractiveTask.DRAG_LAYER);
+	//InteractiveTask.DRAG_LAYER.batchDraw();
 	/**
 	 * Перерисовка кнопок интерфейса
 	 */
@@ -1478,6 +1484,9 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 			this.layers[i].isUse = false;
 		};
 	};
+	InteractiveTask.DRAG_LAYER.destroyChildren();
+	InteractiveTask.DRAG_LAYER.destroy();
+	InteractiveTask.DRAG_LAYER = null;
 	/*******************************************************/
 	if(this.timer!=undefined){
 		this.timer.clear();
@@ -1500,6 +1509,7 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 	this.buttonLayers.dontknow.remove();
 	this.buttonLayers.understand.remove();
 	this.buttonLayers.check.remove();
+	this.buttonLayers.fullscreen.remove();
     //this.buttonLayer.remove();
 };
 

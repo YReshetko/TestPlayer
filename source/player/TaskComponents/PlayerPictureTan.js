@@ -1,5 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
+/** Created with IntelliJ IDEA.
  * User: Yurchik
  * Date: 27.02.15
  * Time: 10:39
@@ -176,8 +175,8 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     colorImageTan.width(width);
     colorImageTan.height(height);
     this.colorTan.colorImageTan = colorImageTan;
-    this.colorTan.draggable(true);
-
+   // this.colorTan.draggable(true);
+	/*
 	this.colorTan.dragBoundFunc(function(pos){
 		var X=pos.x;
 		var Y=pos.y;
@@ -190,7 +189,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 		if(Y>InteractiveTask.STAGE.height()-height*scaleY/2){Y=InteractiveTask.STAGE.height()-height*scaleY/2;};
 		return({x:X, y:Y});
 	});
-
+      */
     this.colorTan.add(colorImageTan);
     this.colorTan.x(x);
     this.colorTan.y(y);
@@ -274,13 +273,13 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     this.colorTan.controller =  this.controller;
     this.colorTan.startLabelMouseDown = this.startLabelMouseDown;
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
+	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
     this.colorTan.layer = this.colorLayer;
 
 
 
     if(this.xml.BLACK.DELETE == "1"){
-        this.colorTan.draggable(false);
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
 	    this.setReport(true);
@@ -302,7 +301,9 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.colorTan.isFree = true;
         this.blackTan.isFree = true;
         this.colorTan.on("mousedown touchstart", function(event){
-	         InteractiveTask.extendsDragRotate(this, event);
+	         //InteractiveTask.extendsDragRotate(this, event);
+	        InteractiveTask.tansDragRotateInterface(this, event);
+
         });
     };
 
@@ -517,8 +518,6 @@ InteractiveTask.SamplePictureTan.prototype.setPosition = function(position){
     if(!this.isEnterArea()){
         this.colorTan.setAttrs(position);
         this.colorLayer.draw();
-
-        this.colorTan.draggable(false);
         this.colorTan.off("mousedown touchstart");
         this.colorTan.off("mouseout mouseup touchend");
         this.colorTan.isFree = false;

@@ -230,7 +230,6 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         y:parseInt(this.xml.COLOR.Y),
 	    width : parseFloat(this.xml.WIDTH),
 	    height : parseFloat(this.xml.HEIGHT),
-        draggable : true,
         fillPriority : "pattern",
 	    sceneFunc : function(context){
             //alert("begin path");
@@ -335,6 +334,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
     this.colorTan.controller =  this.controller;
     this.colorTan.startLabelMouseDown = this.startLabelMouseDown;
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
+	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
     if(this.colorLayer!=null)this.colorLayer.add(this.colorTan);
     if(this.blackLayer!=null)this.blackLayer.add(this.blackTan);
@@ -342,7 +342,6 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
     this.colorTan.layer = this.colorLayer;
 
     if(this.xml.BLACK.DELETE == "1"){
-        this.colorTan.draggable(false);
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
         this.blackTan.remove();
@@ -352,7 +351,8 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.blackTan.isFree = true;
         this.colorTan.touchStart = false;
         this.colorTan.on("mousedown touchstart", function(event){
-	        InteractiveTask.extendsDragRotate(this, event);
+	        //InteractiveTask.extendsDragRotate(this, event);
+	        InteractiveTask.tansDragRotateInterface(this, event);
         });
 
     };
@@ -478,7 +478,6 @@ InteractiveTask.SampleUserTan.prototype.initBackgroundImage = function(){
 
 /* some Error   */
 InteractiveTask.SampleUserTan.prototype.colorableEnabled = function(){
-    this.colorTan.draggable(false);
     try{
         this.colorTan.isFree = true;
         this.blackTan.isFree = true;
@@ -519,18 +518,17 @@ InteractiveTask.SampleUserTan.prototype.colorableDisabled = function(){
     };
     try{    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if(this.xml.BLACK.DELETE == "1"){
-            this.colorTan.draggable(false);
             this.colorTan.isFree = false;
             this.blackTan.isFree = false;
         }else{
-            this.colorTan.draggable(true);
             this.colorTan.isFree = true;
             this.blackTan.isFree = true;
             if(this.isEnterArea()){
                 this.blackTan.isFree = false;
             };
             this.colorTan.on("mousedown touchstart", function(event){
-	            InteractiveTask.extendsDragRotate(this, event);
+	           // InteractiveTask.extendsDragRotate(this, event);
+	            InteractiveTask.tansDragRotateInterface(this, event);
             });
         };
     }catch(error){
@@ -716,8 +714,6 @@ InteractiveTask.SampleUserTan.prototype.setPosition = function(position){
     if(!this.isEnterArea()){
         this.colorTan.setAttrs(position);
         this.colorLayer.draw();
-
-        this.colorTan.draggable(false);
         this.colorTan.off("mousedown touchstart");
         this.colorTan.off("mouseout mouseup touchend");
         this.colorTan.isFree = false;

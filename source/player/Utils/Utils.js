@@ -167,6 +167,163 @@ InteractiveTask.getIDLessons = function(xml){
 	return out;
 
 };
+/**
+ * функция для установки вращения и перемещения танов (пользовательских и цветных)
+ * @param self - объект тана который должен перемещаться
+ * @param event - событие нажатия на тан для определения сенсорного события
+ */
+InteractiveTask.tansDragRotateInterface = function(self, event){
+	if(self.startLabelMouseDown!=""){
+		self.controller.runLabelAnimation(self.startLabelMouseDown);
+		self.startLabelMouseDown = "";
+	};
+	if(event.evt.type == "touchstart"){
+		if(self.touchStart) return;
+		self.touchStart = true;
+	};
+	self.controller.select(self);
+	InteractiveTask.setDragRotate(self, {
+		isRotate : self.isRotation,
+		isDrag : self.isDrag,
+		layer : self.layer,
+		callback : function(){
+			self.touchStart = false;
+			var r = Math.round(self.rotation()/22.5) * 22.5;
+			if(r == 360) r = 0;
+			self.rotation(r);
+			self.controller.tanMouseUp(self);
+		},
+		rotate : function(degree){
+			self.controller.rotate(degree);
+		}
+	});
+};
+/**
+ *
+ * @param target
+ * @param options = {
+ *    isRotate : boolean,           - Нужноли поворачивать объект
+ *    isDrag : boolean,             - Нужно ли перемещать объект
+ *    layer : Konva.Layer,          - Слой в котором находится объект до этой функции
+ *    callback() : Function         - Функция, которую нужно вызвать после заверщения работы с объектом
+ *    rotate(degree) : Function     - Функция выполняемая при элементарном повороте
+ * }
+ */
+InteractiveTask.setDragRotate = function(target, options){
+	if(!options.isRotate && !options.isDrag){
+		options.callback();
+		return;
+	};
+	var dragLayer = InteractiveTask.DRAG_LAYER || options.layer || new Konva.Layer();
+	var zIndex = target.getZIndex();
+
+
+
+	var targetRect = target.getClientRect();
+	var cacheOffset = Math.abs(targetRect.width/2 - targetRect.height/2);
+
+	target.moveTo(dragLayer);
+
+	options.layer.batchDraw();
+	dragLayer.draw();
+	target.cache({
+		x : -targetRect.width/2,
+		y : -targetRect.height/2,
+		width : targetRect.width,
+		height : targetRect.height,
+		offset : cacheOffset,
+		drawBorder : false
+	});
+
+	InteractiveTask.STAGE.on("mouseup touchend contentTouchend", function(){
+		this.off("mousemove touchmove");
+		this.off("mouseup touchend");
+		target.dragBoundFunc(function(pos){return pos;});
+		target.stopDrag();
+		target.clearCache();
+		target.moveTo(options.layer);
+		target.setZIndex(zIndex);
+
+		dragLayer.batchDraw();
+		options.layer.batchDraw();
+		options.callback();
+	});
+
+
+	if(!options.isRotate){
+		InteractiveTask.dragFunction(target);
+	}else if(!options.isDrag){
+		InteractiveTask.rotateFunction(target, options.rotate, dragLayer);
+	}else{
+		InteractiveTask.rotateOrDragFunction(target, options.rotate, dragLayer);
+	};
+};
+InteractiveTask.rotateFunction = function(target, callback, draglayer){
+	var touchPos = InteractiveTask.STAGE.getPointerPosition();
+	var mcXc = touchPos.x;
+	var mcYc = touchPos.y;
+	var mouseStartXFromCenter =   mcXc - target.getAbsolutePosition()["x"];
+	var mouseStartYFromCenter =  mcYc - target.getAbsolutePosition()["y"];
+	var mouseStartAngle = Math.atan2(mouseStartYFromCenter, mouseStartXFromCenter);
+
+	InteractiveTask.STAGE.on("mousemove touchmove", function(e){
+		var touchPos = InteractiveTask.STAGE.getPointerPosition();
+		var mcX = touchPos.x;
+		var mcY = touchPos.y;
+		var mouseXFromCenter =  mcX - target.getAbsolutePosition()["x"];
+		var mouseYFromCenter = mcY - target.getAbsolutePosition()["y"];
+		var mouseAngle = Math.atan2(mouseYFromCenter, mouseXFromCenter);
+		var rotateAngle = mouseAngle - mouseStartAngle;
+		mouseStartAngle = mouseAngle;
+		var degree = rotateAngle*(180/Math.PI);
+		console.log("Current rotation" + degree);
+		callback(degree);
+		draglayer.batchDraw();
+	});
+};
+InteractiveTask.dragFunction = function(target){
+	var boundRectangle = target.getClientRect();
+	var width = boundRectangle.width;
+	var height = boundRectangle.height;
+	target.dragBoundFunc(function(pos){
+		var X=pos.x;
+		var Y=pos.y;
+		var scaleX =InteractiveTask.STAGE.scaleX();
+		var scaleY =InteractiveTask.STAGE.scaleY();
+
+		if(X<width*scaleX/2){X=width*scaleX/2;};
+		if(X>InteractiveTask.STAGE.width()-width*scaleX/2){X=InteractiveTask.STAGE.width()-width*scaleX/2;};
+		if(Y<height*scaleY/2){Y=height*scaleY/2;};
+		if(Y>InteractiveTask.STAGE.height()-height*scaleY/2){Y=InteractiveTask.STAGE.height()-height*scaleY/2;};
+		return({x:X, y:Y});
+	});
+	target.startDrag();
+};
+InteractiveTask.rotateOrDragFunction = function(target, callback, dragLayer){
+	var boundRectangle = target.dragBoundRectangle = target.dragBoundRectangle || target.getClientRect();
+	console.log(target);
+	var scaleX = target.scale().x;
+	var scaleY = target.scale().y;
+	var r = (boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX<boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY)?((boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX/2)*0.7):((boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY/2)*0.7);
+	var touchPos = InteractiveTask.STAGE.getPointerPosition();
+	var mcXc = touchPos.x;
+	var mcYc = touchPos.y;
+	var mouseStartXFromCenter =   mcXc - target.getAbsolutePosition()["x"];
+	var mouseStartYFromCenter =  mcYc - target.getAbsolutePosition()["y"];
+	var mouseStartAngle = Math.atan2(mouseStartYFromCenter, mouseStartXFromCenter);
+	if( mcXc>=parseInt(target.getAbsolutePosition()["x"]-r) &&
+		mcXc<=parseInt(target.getAbsolutePosition()["x"]+r) &&
+		mcYc>=parseInt(target.getAbsolutePosition()["y"]-r) &&
+		mcYc<=parseInt(target.getAbsolutePosition()["y"]+r)){
+			InteractiveTask.dragFunction(target);
+	}else{
+		InteractiveTask.rotateFunction(target, callback, dragLayer);
+	};
+};
+
+
+
+
 /***********************************************
  * Добавление методов вращения и перемещения тана
  * @param self - непосредственно перемещаемый объект
@@ -184,17 +341,26 @@ InteractiveTask.extendsDragRotate = function(self, event){
 		if(self.touchStart) return;
 		self.touchStart = true;
 	};
-	self.moveToTop();
+	//self.moveToTop();
+	self.moveTo(InteractiveTask.DRAG_LAYER);
+	self.layer.batchDraw();
+	InteractiveTask.DRAG_LAYER.batchDraw();
 	InteractiveTask.STAGE.on("mouseup touchend", function(){
 		this.off("mousemove touchmove");
 		this.off("mouseup touchend");
+		self.moveTo(self.layer);
+
+
 		self.touchStart = false;
 		var r = Math.round(self.rotation()/22.5) * 22.5;
 		if(r == 360) r = 0;
 		self.rotation(r);
 		self.controller.tanMouseUp(self);
+
+		InteractiveTask.DRAG_LAYER.batchDraw();
+		self.layer.batchDraw();
 		//self.layer.batchDraw();
-		this.batchDraw();
+		//this.batchDraw();
 
 	});
 	if(!self.isRotation) return;
@@ -211,9 +377,12 @@ InteractiveTask.extendsDragRotate = function(self, event){
 	var mouseStartAngle = Math.atan2(mouseStartYFromCenter, mouseStartXFromCenter);
 	if(mcXc>=parseInt(self.getAbsolutePosition()["x"]-r) && mcXc<=parseInt(self.getAbsolutePosition()["x"]+r) &&
 		mcYc>=parseInt(self.getAbsolutePosition()["y"]-r) && mcYc<=parseInt(self.getAbsolutePosition()["y"]+r)){
-		self.draggable(true);
-		self.on("mousemove touchmove", function(event){
-			self.layer.batchDraw();
+		self.startDrag();
+		//self.draggable(true);
+		InteractiveTask.STAGE.on("mousemove touchmove", function(event){
+			//self.layer.batchDraw();
+			InteractiveTask.DRAG_LAYER.batchDraw();
+			console.log("tan on drag");
 		});
 	} else {
 		self.draggable(false);
