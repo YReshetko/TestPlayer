@@ -100,11 +100,11 @@ InteractiveTask.SampleGroupField = function(options){
             switch (node){
                 case "USERTAN":
 
-                    this.content.push(new InteractiveTask.SampleUserTan(null, null, element));
+                    this.content.push(new InteractiveTask.SampleUserTan(element));
                     break;
                 case "PICTURETAN":
                     console.log("add picture tan");
-                    this.content.push(new InteractiveTask.SamplePictureTan(null, null, element));
+                    this.content.push(new InteractiveTask.SamplePictureTan(element));
                     break;
 
             };

@@ -107,7 +107,7 @@ InteractiveTask.SampleTable.prototype.init = function(){
         stroke : this.tColor,
         x : 0,
         y : 0,
-        drawFunc : function(context){
+        sceneFunc : function(context){
             context.beginPath();
             var i,j;
             context.moveTo(X,Y);

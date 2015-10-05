@@ -197,7 +197,8 @@ InteractiveTask.SampleTextField = function(options){
  Установка области внесения в случае если это нобходимо  ///////////////////////////////////////////////////////////////////////////////////
  */
 InteractiveTask.SampleTextField.prototype.area = function(value){
-    if(this.xml.TYPE.DRAGANDDROP["-tan"] != "true") return;
+    if(!this.xml.TYPE.DRAGANDDROP) return;
+	if(this.xml.TYPE.DRAGANDDROP["-tan"] != "true") return;
     this.arrTruePosition = new Array();
     this.arrFalsePosition = new Array();
     var x,y;

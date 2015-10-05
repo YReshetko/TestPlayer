@@ -114,11 +114,12 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
 
         this.fieldsArray[i].group.oldX = this.coordinates[i].x;
         this.fieldsArray[i].group.oldY = this.coordinates[i].y;
-
+	   // var fieldLayer =this.field
         this.fieldsArray[i].group.back = function(){
             this.x(this.oldX);
             this.y(this.oldY);
-            this.getLayer().draw();
+	        InteractiveTask.COMPONENTS_LAYER.batchDraw();
+           // try{this.getLayer().draw();}catch(e){};
         };
 
         this.field.add(this.fieldsArray[i].group);
@@ -258,7 +259,7 @@ InteractiveTask.UnitField = function(xml, controller){
     this.isFree = true;
     //console.log(basePath);
     if(this.xml.USERTAN!=undefined){
-        this.content = new InteractiveTask.SampleUserTan(null, null, this.xml.USERTAN);
+        this.content = new InteractiveTask.SampleUserTan(this.xml.USERTAN);
         this.content.init({
             controller : this
         });
@@ -280,7 +281,7 @@ InteractiveTask.UnitField = function(xml, controller){
 
     };
     if(this.xml.PICTURETAN!=undefined){
-        this.content = new InteractiveTask.SamplePictureTan(null, null, this.xml.PICTURETAN);
+        this.content = new InteractiveTask.SamplePictureTan(this.xml.PICTURETAN);
         this.content.init({
             controller : this
         });

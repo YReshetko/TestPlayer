@@ -76,7 +76,7 @@ InteractiveTask.PointsSystem.prototype.init = function(options){
         fillEnabled : false,
         strokeWidth : parseInt(this.xml.THICK),
         stroke : InteractiveTask.formatColorFlashToCanvas(this.xml.COLOR),
-        drawFunc : function(context){
+        sceneFunc : function(context){
             context.beginPath();
             var i,l;
             if(this.pointArray==undefined) {

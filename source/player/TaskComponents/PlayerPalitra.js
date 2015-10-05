@@ -76,8 +76,9 @@ InteractiveTask.PalitraController.prototype.allDeselect = function(picker){
 	this.panel.getLayer().draw();
 };
 InteractiveTask.PalitraController.prototype.complatePainting = function(){
+	var layer = this.panel.getLayer();
     this.panel.remove();
-	this.panel.getLayer().draw();
+	layer.draw();
 };
 InteractiveTask.PalitraController.prototype.addToLayer = function(layer){
 	layer.add(this.panel);

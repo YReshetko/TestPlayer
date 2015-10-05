@@ -37,7 +37,7 @@ InteractiveTask.ChoiceBoxController.prototype.isComplate = function(){
 
 InteractiveTask.ChoiceBoxController.prototype.clear = function(){
 	while(this.boxes.length>0){
-		this.boxes.clear();
+		this.boxes[0].clear();
 		InteractiveTask.disposeObject(this.boxes[0]);
 		this.boxes[0] = null;
 		this.boxes.shift();

@@ -11,7 +11,7 @@ InteractiveTask.MarkController = function(options){
     this.xmlMarkArray = new Array();
 
 	var self = this.controller;
-	InteractiveTask.BACKGROUND.on("mousedown touchstart", function(event){
+	InteractiveTask.BACKGROUND_LAYER.on("mousedown touchstart", function(event){
 		self.minusHealth();
 	});
 };
