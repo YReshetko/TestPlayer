@@ -5,10 +5,10 @@
  * Time: 19:26
  * To change this template use File | Settings | File Templates.
  */
-InteractiveTask.TestChangeFrame = function(width, height, buttons){
+InteractiveTask.TestChangeFrame = function(width, height){
 	this.width = width;
 	this.height = height;
-	this.fullscreenLayer = buttons.fullscreen;
+
 	this.successFrame = new Konva.Group();
 	this.failFrame = new Konva.Group();
 	this.waitFrame = new Konva.Group();
@@ -73,31 +73,31 @@ InteractiveTask.TestChangeFrame = function(width, height, buttons){
 	this.isWait = false;
 	this.isSuccess = false;
 	this.isFail = false;
-	this.layer = new Konva.Layer();
+	//this.layer = new Konva.Layer();
+};
+InteractiveTask.TestChangeFrame.prototype.setFscreenButton = function(value){
+	this.button = value;
 };
 
 InteractiveTask.TestChangeFrame.prototype.success = function(){
-	this.layer.add(this.successFrame);
-	InteractiveTask.STAGE.add(this.layer);
-	this.layer.batchDraw();
 	this.isSuccess = true;
-	this.fullscreenLayer.moveToTop();
+	this._addFrame(this.successFrame);
 };
 InteractiveTask.TestChangeFrame.prototype.fail = function(){
-	this.layer.add(this.failFrame);
-	InteractiveTask.STAGE.add(this.layer);
-	this.layer.batchDraw();
 	this.isFail = true;
-	this.fullscreenLayer.moveToTop();
+	this._addFrame(this.failFrame);
 };
 InteractiveTask.TestChangeFrame.prototype.wait = function(){
-	this.layer.add(this.waitFrame);
-	InteractiveTask.STAGE.add(this.layer);
-	this.layer.batchDraw();
 	this.isWait = true;
+	this._addFrame(this.waitFrame);
 	this.waitSprite.start();
-	this.fullscreenLayer.moveToTop();
 };
+InteractiveTask.TestChangeFrame.prototype._addFrame = function(object){
+	InteractiveTask.BUTTONS_LAYER.add(object);
+	if(this.button)this.button.moveToTop();
+	InteractiveTask.BUTTONS_LAYER.batchDraw();
+};
+
 InteractiveTask.TestChangeFrame.prototype.close = function(){
 	if(this.isSuccess){
 		this.successFrame.remove();
@@ -112,7 +112,8 @@ InteractiveTask.TestChangeFrame.prototype.close = function(){
 		this.waitFrame.remove();
 		this.isWait = false;
 	};
-	this.layer.remove();
+	InteractiveTask.BUTTONS_LAYER.batchDraw();
+	//this.layer.remove();
 };
 
 InteractiveTask.TestChangeFrame.prototype.clear = function(){

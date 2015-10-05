@@ -78,7 +78,7 @@ InteractiveTask.Player = function(options){
         width: this.width,
         height: this.height
     });
-	InteractiveTask.BACKGROUND_LAYER = new Konva.FastLayer();
+	InteractiveTask.BACKGROUND_LAYER = new Konva.Layer();
 	var bgRectangle = new Konva.Rect({
 		width : this.width,
 		height : this.height,
@@ -103,6 +103,7 @@ InteractiveTask.Player = function(options){
 	InteractiveTask.DRAGANDDROP_LAYER.canvas._canvas.id = "draganddrop_layer";
 	InteractiveTask.BUTTONS_LAYER.canvas._canvas.id = "buttons_layer";
 
+	InteractiveTask.BACKGROUND_LAYER.draw();
 
    /* }catch(error){
         if(options.errorCallback != 'undefined'){
@@ -213,7 +214,7 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 		fullscreen : new Konva.Layer(),
 		pause : new Konva.Layer()
 	};  */
-	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, InteractiveTask.BUTTONS_LAYER);
+	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height);
 	 try{
 		InteractiveTask.PROGRESS = new InteractiveTask.TestProgress({
 			xml : this.xml,
@@ -368,7 +369,8 @@ InteractiveTask.Player.prototype.startTask = function(){
 		sound : new Konva.Layer(),
 		fullscreen : new Konva.Layer()
 	}; */
-    this.buttonSystem = new InteractiveTask.ButtonSystem(this.buttonLayers, this.width, this.height, this);
+    this.buttonSystem = new InteractiveTask.ButtonSystem(this.width, this.height, this);
+	InteractiveTask.ANSFRAME.setFscreenButton(this.buttonSystem.fullscreen.button);
     this.prepareArrayTaskOptions();
     this.currentTaskID = 0;
 	this.oldTaskID = 0;
@@ -709,7 +711,7 @@ InteractiveTask.Player.prototype.startCurrentTask = function(){
 		this.downScore();
 
 		if(this.currentTask!=null)this.currentTask.clear();
-		this.currentTask = new InteractiveTask.SampleTask(this.xmlTaskArray[this.currentTaskID], this, this.buttonLayers);
+		this.currentTask = new InteractiveTask.SampleTask(this.xmlTaskArray[this.currentTaskID], this);
 		this.visibleButtonsControl();
 		this.progressSelect(this.xmlTaskArray[this.currentTaskID]["-id"]);
 		this.currentTask.checkProto();
@@ -869,8 +871,7 @@ InteractiveTask.Player.prototype.getNoMoreTask = function(){
  * @param xml - <TAST>...</TASK> - tree of one task
  * @constructor - Object of onne task
  */
-InteractiveTask.SampleTask = function(xml, player, buttonLayers){
-    this.buttonLayers = buttonLayers;
+InteractiveTask.SampleTask = function(xml, player){
     this.xml = xml;
     this.player = player;
     this.initLayers();
@@ -1564,7 +1565,9 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 		InteractiveTask.disposeObject(this.tableController);
 		this.tableController = null;
 	};
-	var i,l;
+	InteractiveTask.COMPONENTS_LAYER.destroyChildren();
+
+	/*var i,l;
 	l = this.layers.length;
 	for(i=0;i<l;i++){
 		if(this.layers[i].isUse){
@@ -1574,9 +1577,9 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 			this.layers[i].isUse = false;
 		};
 	};
-	InteractiveTask.DRAG_LAYER.destroyChildren();
-	InteractiveTask.DRAG_LAYER.destroy();
-	InteractiveTask.DRAG_LAYER = null;
+	InteractiveTask.DRAGANDDROP_LAYER.destroyChildren();   */
+	//InteractiveTask.DRAGANDDROP_LAYER.destroy();
+	//InteractiveTask.DRAG_LAYER = null;
 	/*******************************************************/
 	if(this.timer!=undefined){
 		this.timer.clear();
@@ -1595,11 +1598,11 @@ InteractiveTask.SampleTask.prototype.clear = function(){
     this.timerInterval = null;
     this.timerLayer.remove();
     this.timerLayer = null;   */
-	this.buttonLayers.restart.remove();
+	/*this.buttonLayers.restart.remove();
 	this.buttonLayers.dontknow.remove();
 	this.buttonLayers.understand.remove();
 	this.buttonLayers.check.remove();
-	this.buttonLayers.fullscreen.remove();
+	this.buttonLayers.fullscreen.remove();   */
     //this.buttonLayer.remove();
 };
 

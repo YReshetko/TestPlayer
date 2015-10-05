@@ -5,11 +5,10 @@
  * Time: 9:37
  * To change this template use File | Settings | File Templates.
  */
-InteractiveTask.ButtonSystem = function(layers, width, height, controller){
+InteractiveTask.ButtonSystem = function(width, height, controller){
     this.width = width;
     this.height = height;
     this.controller = controller;
-	this.layers = layers;
     this.restart = new InteractiveTask.OneButton({
         x : 0,
         y : 0,
@@ -111,6 +110,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
     this.pause.visible(false);
     this.replace();
 };
+
 InteractiveTask.ButtonSystem.prototype.replace = function(){
     var startX, startY;
     var deltaX;
@@ -191,9 +191,9 @@ InteractiveTask.ButtonSystem.prototype.eventFunction = function(value, event){
 	this.controller.buttonEvents(value, event)
 };
 InteractiveTask.ButtonSystem.prototype.clear = function(){
-	for(var layer in this.layers){
-		try{layer.remove();}catch(e){};
-	};
+	for(button in this.buttons){
+		butoon.visible(false);
+	}
 };
 
 
