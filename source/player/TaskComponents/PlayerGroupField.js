@@ -141,7 +141,7 @@ InteractiveTask.SampleGroupField = function(options){
         this.colorTan.controller = this;
         this.blackTan.x(parseFloat(this.xml.BLACK.X));
         this.blackTan.y(parseFloat(this.xml.BLACK.Y));
-        this.colorTan.on("mouseup touchstop", function(){
+        this.colorTan.on("mouseup touchend", function(){
             this.controller.setBack();
         });
     };
