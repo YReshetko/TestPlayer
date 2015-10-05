@@ -214,7 +214,8 @@ InteractiveTask.setDragRotate = function(target, options){
 		options.callback();
 		return;
 	};
-	var dragLayer = InteractiveTask.DRAG_LAYER || options.layer || new Konva.Layer();
+	var dragLayer = InteractiveTask.DRAGANDDROP_LAYER || options.layer || new Konva.Layer();
+	var layer =  target.getLayer();
 	var zIndex = target.getZIndex();
 
 
@@ -224,7 +225,7 @@ InteractiveTask.setDragRotate = function(target, options){
 
 	target.moveTo(dragLayer);
 
-	options.layer.batchDraw();
+	layer.batchDraw();
 	dragLayer.draw();
 	target.cache({
 		x : -targetRect.width/2,
@@ -241,11 +242,11 @@ InteractiveTask.setDragRotate = function(target, options){
 		target.dragBoundFunc(function(pos){return pos;});
 		target.stopDrag();
 		target.clearCache();
-		target.moveTo(options.layer);
+		target.moveTo(layer);
 		target.setZIndex(zIndex);
 
 		dragLayer.batchDraw();
-		options.layer.batchDraw();
+		layer.batchDraw();
 		options.callback();
 	});
 

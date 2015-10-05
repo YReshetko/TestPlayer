@@ -8,7 +8,6 @@
 
 InteractiveTask.ShiftFieldController = function(options){
     this.controller = options.controller;
-    this.layer = options.layer;
 
     this.diap = options.diap;
     //this.basePath = options.basePath;
@@ -23,7 +22,6 @@ InteractiveTask.ShiftFieldController.prototype.add = function(xml){
     this.shiftFieldArray.push(new InteractiveTask.SampleShiftField({
         xml : xml,
         controller : this,
-        layer : this.layer,
         diap : this.diap,
         //basePath : this.basePath
     }));
@@ -58,11 +56,17 @@ InteractiveTask.ShiftFieldController.prototype.clear = function(){
 	};
 };
 
+InteractiveTask.ShiftFieldController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.shiftFieldArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.shiftFieldArray[i].field);
+	};
+};
 
 /********************************************************************************************************************************/
 
 InteractiveTask.SampleShiftField = function(options){
-    this.layer = options.layer;
     this.controller = options.controller;
     this.xml = options.xml;
     this.diap = options.diap;
@@ -100,7 +104,6 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
     this.field.add(background);
 
     this.coordinates = new Array();
-    var layer = this.layer;
     for(i=0;i<this.fieldsArray.length;i++){
         this.coordinates.push({
             x : this.fieldsArray[i].j * this.fieldsArray[i].width + (this.fieldsArray[i].j+1)*3,
@@ -115,7 +118,7 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
         this.fieldsArray[i].group.back = function(){
             this.x(this.oldX);
             this.y(this.oldY);
-            layer.draw();
+            this.getLayer().draw();
         };
 
         this.field.add(this.fieldsArray[i].group);
@@ -162,12 +165,10 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
         this.fieldsArray[i].group.oldY = this.coordinates[indexes[i]].y;
         this.fieldsArray[i].group.back();
     };
-    this.layer.add(this.field);
+
 
     this.field.x(parseFloat(this.xml["-x"]));
     this.field.y(parseFloat(this.xml["-y"]));
-
-    this.layer.draw();
 };
 InteractiveTask.SampleShiftField.prototype.getObjectByXY = function(x, y){
     var i,l;

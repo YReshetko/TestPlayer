@@ -9,7 +9,6 @@
 /****************************** PALITRA (COLOR PICKER) *******************************/
 /*************************************************************************************/
 InteractiveTask.PalitraController = function(options){
-    this.layer = options.layer;
     this.xml = options.xml;
 };
 InteractiveTask.PalitraController.prototype.init = function(){
@@ -60,7 +59,6 @@ InteractiveTask.PalitraController.prototype.init = function(){
     this.panel.x(parseFloat(this.xml.X));
     this.panel.y(parseFloat(this.xml.Y));
 
-    this.layer.add(this.panel);
 
     this.currentColor = this.pickerArray[0].color;
 };
@@ -75,13 +73,15 @@ InteractiveTask.PalitraController.prototype.allDeselect = function(picker){
         };
     };
     //alert("redraw layer");
-    this.layer.draw();
+	this.panel.getLayer().draw();
 };
 InteractiveTask.PalitraController.prototype.complatePainting = function(){
     this.panel.remove();
-    this.layer.draw();
+	this.panel.getLayer().draw();
 };
-
+InteractiveTask.PalitraController.prototype.addToLayer = function(layer){
+	layer.add(this.panel);
+};
 
 InteractiveTask.SamplePicker = function(xml, controller){
     var pickerSize = 35;

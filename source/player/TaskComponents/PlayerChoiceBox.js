@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.ChoiceBoxController = function(options){
-	this.layer = options.layer;
 	this.controller = options.controller;
 	this.boxes = new Array();
 };
@@ -16,7 +15,6 @@ InteractiveTask.ChoiceBoxController.prototype.add = function(xml){
 
 	this.boxes[id] = new InteractiveTask.BoxSystem({
 		xml : xml,
-		layer : this.layer,
 		controller : this
 	});
 
@@ -46,13 +44,20 @@ InteractiveTask.ChoiceBoxController.prototype.clear = function(){
 	};
 };
 
+InteractiveTask.ChoiceBoxController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.boxes.length;
+	for(i=0;i<l;i++){
+		layer.add(this.boxes[i].boxSystem);
+	};
+};
+
 
 /****************************************************************************/
 /********************************BOX SYSTEM**********************************/
 /****************************************************************************/
 InteractiveTask.BoxSystem = function(options){
 	this.xml = options.xml;
-	this.layer = options.layer;
 	this.controller = options.controller;
 
 	this.isChoice = (this.xml.CHOICE == "true");
@@ -75,15 +80,12 @@ InteractiveTask.BoxSystem = function(options){
 			controller : this
 		});
 	};
-
-	this.layer.add(this.boxSystem);
-	this.layer.batchDraw();
 };
 InteractiveTask.BoxSystem.prototype.minusHealth = function(){
 	this.controller.minusHealth();
 };
 InteractiveTask.BoxSystem.prototype.checkComplate = function(){
-	this.layer.batchDraw();
+	this.boxSystem.getLayer().batchDraw();
 	this.controller.checkComplate();
 };
 InteractiveTask.BoxSystem.prototype.isComplate = function(){

@@ -1,4 +1,8 @@
-
+/**
+ * Исправить работу со слоями
+ * @param options
+ * @constructor
+ */
 InteractiveTask.PuzzleController = function(options){
     this.ObjLayer = options.ObjLayer;
     this.xml = options.xml;

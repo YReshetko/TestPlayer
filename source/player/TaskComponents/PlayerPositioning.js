@@ -1,4 +1,8 @@
-
+/**
+ * Исправить работу с слоем
+ * @param options
+ * @constructor
+ */
 InteractiveTask.PositioningController = function(options) {
     this.layer = options.layer;
     this.xml = options.xml;

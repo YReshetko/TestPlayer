@@ -7,14 +7,13 @@
  */
 
 InteractiveTask.CheckBoxController = function(options){
-    this.layer = options.layer;
     this.controller = options.task;
     this.checkBoxArray = new Array();
 };
 
 InteractiveTask.CheckBoxController.prototype.add = function(xml){
     var id = this.checkBoxArray.length;
-    this.checkBoxArray[id] = new InteractiveTask.SampleCheckBox(this.layer, xml);
+    this.checkBoxArray[id] = new InteractiveTask.SampleCheckBox( xml);
     this.checkBoxArray[id].init({
         controller: this
     });
@@ -45,10 +44,17 @@ InteractiveTask.CheckBoxController.prototype.clear = function(){
 	};
 };
 
+InteractiveTask.CheckBoxController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.checkBoxArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.checkBoxArray[i].checkBox);
+	};
+};
+
 /******************************************************************************************************************************/
 
-InteractiveTask.SampleCheckBox = function(layer, xml){
-    this.layer = layer;
+InteractiveTask.SampleCheckBox = function( xml){
     this.xml = xml;
 };
 
@@ -80,7 +86,6 @@ InteractiveTask.SampleCheckBox.prototype.init = function(json){
     this.checkBox.y(parseFloat(this.xml.Y));
     this.checkBox.add(checkBoxBackground);
     this.checkBox.add(checkBoxText);
-    this.layer.add(this.checkBox);
 
     //console.log("all variant = ", this.xml.ALLVARIANTS.VARIANT[0]["#cdata-section"]);
     var variant = new Array();
@@ -111,7 +116,6 @@ InteractiveTask.SampleCheckBox.prototype.init = function(json){
         this.startLabelMouseDown = this.xml.STARTANIMATIONDOWN;
     };
 
-    var layer = this.layer;
 //    /var text = checkBoxText.text();
     this.checkBox.controller = this;
 
@@ -136,7 +140,7 @@ InteractiveTask.SampleCheckBox.prototype.init = function(json){
 		    i++;
 	    };
         checkBoxText.x((checkBoxBackground.width()-checkBoxText.width())/2);
-        layer.batchDraw();
+        this.getLayer().draw();
         this.controller.setCurrentVariant(currentVariant);
         if(this.controller.startLabelMouseDown != ""){
             this.controller.controller.runLabelAnimation(this.controller.startLabelMouseDown);

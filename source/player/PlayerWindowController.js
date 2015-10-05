@@ -7,11 +7,14 @@
  */
 
 if(typeof(InteractiveTask) == 'undefined') InteractiveTask = function(){};
-InteractiveTask.VERSION = "1.8.1";
+InteractiveTask.VERSION = "1.8.2";
 
 InteractiveTask.STAGE;
-InteractiveTask.BACKGROUND;
-InteractiveTask.DRAG_LAYER;
+InteractiveTask.BACKGROUND_LAYER;
+InteractiveTask.COMPONENTS_LAYER;
+InteractiveTask.ANIMATION_LAYER;
+InteractiveTask.DRAGANDDROP_LAYER;
+InteractiveTask.BUTTONS_LAYER;
 InteractiveTask.LIBRARY;
 InteractiveTask.PATH;
 InteractiveTask.CONST;
@@ -75,15 +78,31 @@ InteractiveTask.Player = function(options){
         width: this.width,
         height: this.height
     });
-	InteractiveTask.BACKGROUND = new Konva.Layer();
+	InteractiveTask.BACKGROUND_LAYER = new Konva.FastLayer();
 	var bgRectangle = new Konva.Rect({
 		width : this.width,
 		height : this.height,
 		fill : InteractiveTask.formatColor("0", 0)
 	});
-	InteractiveTask.BACKGROUND.add(bgRectangle);
-	InteractiveTask.STAGE.add(InteractiveTask.BACKGROUND);
-	InteractiveTask.BACKGROUND.batchDraw();
+	InteractiveTask.BACKGROUND_LAYER.add(bgRectangle);
+
+	InteractiveTask.COMPONENTS_LAYER = new Konva.Layer();
+	InteractiveTask.ANIMATION_LAYER = new Konva.Layer();
+	InteractiveTask.DRAGANDDROP_LAYER = new Konva.Layer();
+	InteractiveTask.BUTTONS_LAYER = new Konva.Layer();
+
+	InteractiveTask.STAGE.add(InteractiveTask.BACKGROUND_LAYER);
+	InteractiveTask.STAGE.add(InteractiveTask.COMPONENTS_LAYER);
+	InteractiveTask.STAGE.add(InteractiveTask.ANIMATION_LAYER);
+	InteractiveTask.STAGE.add(InteractiveTask.DRAGANDDROP_LAYER);
+	InteractiveTask.STAGE.add(InteractiveTask.BUTTONS_LAYER);
+
+	InteractiveTask.BACKGROUND_LAYER.canvas._canvas.id = "background_layer";
+	InteractiveTask.COMPONENTS_LAYER.canvas._canvas.id = "components_layer";
+	InteractiveTask.ANIMATION_LAYER.canvas._canvas.id = "animation_layer";
+	InteractiveTask.DRAGANDDROP_LAYER.canvas._canvas.id = "draganddrop_layer";
+	InteractiveTask.BUTTONS_LAYER.canvas._canvas.id = "buttons_layer";
+
 
    /* }catch(error){
         if(options.errorCallback != 'undefined'){
@@ -185,7 +204,7 @@ InteractiveTask.Player.prototype.progressSetAnswer = function(taskID, flag){
 InteractiveTask.Player.prototype.libraryLoadComplate = function(){
     //this.library.printImages();
     //this.successCallback()
-	this.buttonLayers = {
+	/*this.buttonLayers = {
 		restart : new Konva.Layer(),
 		dontknow : new Konva.Layer(),
 		understand : new Konva.Layer(),
@@ -193,8 +212,8 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 		sound : new Konva.Layer(),
 		fullscreen : new Konva.Layer(),
 		pause : new Konva.Layer()
-	};
-	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, this.buttonLayers);
+	};  */
+	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, InteractiveTask.BUTTONS_LAYER);
 	 try{
 		InteractiveTask.PROGRESS = new InteractiveTask.TestProgress({
 			xml : this.xml,
@@ -870,7 +889,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
 	var marks = this.getArrayObjectsByTag("MARK");
 	if(marks.length!=0){
 		this.markController = new InteractiveTask.MarkController({
-			layer : this.getLayerByName("layer20"),
+			//layer : this.getLayerByName("layer20"),
 			task : this
 		});
 		for(i=0;i<marks.length;i++){
@@ -884,7 +903,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     if(palitra.length!=0){
         //alert("Palitra exist");
         this.palitraController = new InteractiveTask.PalitraController({
-            layer : this.getLayerByName("layer3"),
+            //layer : this.getLayerByName("layer3"),
             xml : palitra[0]
         });
         this.palitraController.init();
@@ -892,8 +911,8 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var userTans = this.getArrayObjectsByTag("USERTAN");
     if(userTans.length!=0){
         this.userTanController = new InteractiveTask.UserTanController({
-            colorLayer:this.getLayerByName("layer18"),
-            blackLayer:this.getLayerByName("layer8"),
+            //colorLayer:this.getLayerByName("layer18"),
+            //blackLayer:this.getLayerByName("layer8"),
             task:this,
             diap:this.getDiapasonOfMovingTan(),
             uniq:this.isUniqTans(),
@@ -911,7 +930,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var tables = this.getArrayObjectsByTag("TABLE");
     if(tables.length!=0){
         this.tableController = new InteractiveTask.TableController({
-            layer : this.getLayerByName("layer10"),
+            //layer : this.getLayerByName("layer10"),
             task : this
         });
         for(i=0;i<tables.length;i++){
@@ -926,8 +945,8 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     if(pictureTans.length!=0){
         ++this.postLoading;
         this.pictureTanController = new InteractiveTask.PictureTanController({
-            colorLayer : this.getLayerByName("layer17"),
-            blackLayer : this.getLayerByName("layer7"),
+            //colorLayer : this.getLayerByName("layer17"),
+            //blackLayer : this.getLayerByName("layer7"),
             task : this,
             diap : this.getDiapasonOfMovingTan(),
             uniq : this.isUniqTans()
@@ -941,7 +960,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     if(checkBoxes.length!=0){
         //alert("Checkbox exist");
         this.checkBoxController = new InteractiveTask.CheckBoxController({
-            layer : this.getLayerByName("layer13"),
+            //layer : this.getLayerByName("layer13"),
             //xml : checkbox[0],
             task: this
         });
@@ -955,7 +974,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var pointsDraw = this.getArrayObjectsByTag("POINTDRAW");
     if(pointsDraw.length!=0){
         this.pointDrawController = new InteractiveTask.PointsDrawController({
-            layer : this.getLayerByName("layer15"),
+            //layer : this.getLayerByName("layer15"),
             task : this
         });
         for(i=0;i<pointsDraw.length;i++){
@@ -966,8 +985,8 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var textFields = this.getArrayObjectsByTag("LABEL");
     if(textFields.length!=0){
         this.textFieldController = new InteractiveTask.TextFieldController({
-            layer : this.getLayerByName("layer12"),
-            blackLayer : this.getLayerByName("layer7"),
+           // layer : this.getLayerByName("layer12"),
+           // blackLayer : this.getLayerByName("layer7"),
             diap : this.getDiapasonOfMovingTan(),
             controller : this
         });
@@ -979,7 +998,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var shiftFields = this.getArrayObjectsByTag("SHIFTFIELD");
     if(shiftFields.length!=0){
         this.shiftFieldController = new InteractiveTask.ShiftFieldController({
-            layer : this.getLayerByName("layer2"),
+            //layer : this.getLayerByName("layer2"),
             controller : this,
             diap : this.getDiapasonOfMovingTan()
         });
@@ -994,8 +1013,8 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
 		 if(puzzle){
 			 //alert("Puzzle exists");
 			 this.puzzleController = new InteractiveTask.PuzzleController({
-				 ObjLayer : this.getLayerByName("layer21"),
-				 TanLayer : this.getLayerByName("layer19"),
+				 //ObjLayer : this.getLayerByName("layer21"),
+				 //TanLayer : this.getLayerByName("layer19"),
 				 xml : swfobject[i],
 				 controller :  this,
 			 });
@@ -1004,7 +1023,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
 
 		 if(listingImages){
 			 this.listingImagesController = new InteractiveTask.ListingImagesController({
-				 ObjLayer : this.getLayerByName("layer21"),
+				 //ObjLayer : this.getLayerByName("layer21"),
 				 xml : swfobject[i],
 				 controller :  this,
 				 path : 'TestTask/demidovich'
@@ -1019,7 +1038,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
 		//alert("Positioning exists");
 		for (i=0;i<positioning.length;i++){
 			this.positioningController = new InteractiveTask.PositioningController({
-				layer : this.getLayerByName("layer1"),
+				//layer : this.getLayerByName("layer1"),
 				xml : positioning[i],
 				controller : this/*,
 				path : "http://localhost:63342/CanvasPlayer/.idea/source/lib/pictures"  */
@@ -1033,8 +1052,8 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
     var groupFields = this.getArrayObjectsByTag("GROUPFIELD");
     if(groupFields.length != 0){
          this.groupFieldController = new InteractiveTask.GroupFieldController({
-             colorLayer : this.getLayerByName("layer5"),
-             blackLayer : this.getLayerByName("layer4"),
+             //colorLayer : this.getLayerByName("layer5"),
+             //blackLayer : this.getLayerByName("layer4"),
              controller : this,
              diap : this.getDiapasonOfMovingTan()
          });
@@ -1046,7 +1065,7 @@ InteractiveTask.SampleTask.prototype.checkProto = function(){
 	var choiceBoxes = this.getArrayObjectsByTag("CHOICEBOX");
 	if(choiceBoxes.length != 0){
 		this.choiceBoxController = new InteractiveTask.ChoiceBoxController({
-			layer : this.getLayerByName("layer14"),
+			//layer : this.getLayerByName("layer14"),
 			controller : this
 		});
 		for(i=0;i<choiceBoxes.length;i++){
@@ -1306,28 +1325,91 @@ InteractiveTask.SampleTask.prototype.isRemoveUnderstandButton = function(){
 
 InteractiveTask.SampleTask.prototype.initLayers = function(){
     this.layers = {
-        0:{     name:"layer1",   index:21, isUse:false   }, //Рисование изображений
-        1:{     name:"layer2",   index:20, isUse:false   }, //Поля перестановки
-        2:{     name:"layer3",   index:19, isUse:false   }, //Кнопки
-        3:{     name:"layer4",   index:18, isUse:false   }, //Групповое поле (Ч)
-        4:{     name:"layer5",   index:17, isUse:false   }, //Групповое поле (Ц)
-        5:{     name:"layer6",   index:1 , isUse:false   }, //Компл. таны (Ч)
-        6:{     name:"layer7",   index:2 , isUse:false   }, //Картинки таны (Ч)
-        7:{     name:"layer8",   index:3 , isUse:false   }, //Польз. таны (Ч)
-        8:{     name:"layer9",   index:14, isUse:false   }, //SWF таны (Ч)
-        9:{     name:"layer10",  index:4 , isUse:false   }, //Таблицы
-        10:{    name:"layer11",  index:5 , isUse:false   }, //Линии
-        11:{    name:"layer12",  index:6 , isUse:false   }, //Надписи
-        12:{    name:"layer13",  index:7 , isUse:false   }, //Перечисл. поля
-        13:{    name:"layer14",  index:16, isUse:false   }, //Выбор ответов
-        14:{    name:"layer15",  index:8 , isUse:false   }, //Точки соединения
-        15:{    name:"layer16",  index:9 , isUse:false   }, //Компл. таны (Ц)
-        16:{    name:"layer17",  index:10, isUse:false   }, //Картинки таны (Ц)
-        17:{    name:"layer18",  index:11, isUse:false   }, //Польз. таны (Ц)
-        18:{    name:"layer19",  index:15, isUse:false   }, //SWF таны (Ц)
-        19:{    name:"layer20",  index:12, isUse:false   }, //Области выделения
-        20:{    name:"layer21",  index:13, isUse:false   }, //SWF объекты
-        21:{    name:"layer22",  index:22, isUse:false   }, //Звук
+        0:{ name:"layer1",   index:21, isUse:false, controller: {
+	        0 : "positioningController",
+	        length : 1
+        },  method:"addToLayer"   }, //Рисование изображений
+        1:{ name:"layer2",   index:20, isUse:false, controller: {
+	        0 : "shiftFieldController",
+	        length : 1
+        },  method:"addToLayer"   }, //Поля перестановки
+        2:{ name:"layer3",   index:19, isUse:false, controller: {
+	        0 : "palitraController",
+	        length : 1
+        },  method:"addToLayer"   }, //Кнопки
+        3:{ name:"layer4",   index:18, isUse:false, controller: {
+	        0 : "groupFieldController",
+            length : 1
+        },  method:"balckAddToLayer"   }, //Групповое поле (Ч)
+        4:{ name:"layer5",   index:17, isUse:false, controller: {
+	        0 : "groupFieldController",
+            length : 1
+        },  method:"colorAddToLayer"   }, //Групповое поле (Ц)
+        5:{ name:"layer6",   index:1 , isUse:false, controller: {
+	        length : 0
+        },  method: null   }, //Компл. таны (Ч)
+        6:{ name:"layer7",   index:2 , isUse:false, controller: {
+	        0 : "pictureTanController",
+	        1 : "textFieldController",
+            length : 2
+        },  method: "balckAddToLayer"   }, //Картинки таны (Ч)
+        7:{ name:"layer8",   index:3 , isUse:false, controller: {
+	        0 : "userTanController",
+			length : 1
+        },  method: "balckAddToLayer"   }, //Польз. таны (Ч)
+        8:{ name:"layer9",   index:14, isUse:false, controller: {
+	        length : 0
+        } , method: null   }, //SWF таны (Ч)
+        9:{ name:"layer10",  index:4 , isUse:false, controller: {
+	        0 : "tableController",
+            length : 1
+        },  method: "addToLayer"  }, //Таблицы
+        10:{name:"layer11",  index:5 , isUse:false, controller: {
+	        length : 0
+        },  method: null   }, //Линии
+        11:{name:"layer12",  index:6 , isUse:false, controller: {
+	        0 : "textFieldController",
+	        length : 1
+        },  method: "addToLayer"   }, //Надписи
+        12:{name:"layer13",  index:7 , isUse:false, controller: {
+	        0 : "checkBoxController",
+	        length : 1
+        },  method: "addToLayer"   }, //Перечисл. поля
+        13:{name:"layer14",  index:16, isUse:false, controller: {
+	        0 : "choiceBoxController",
+	        length : 1
+        },  method: "addToLayer"   }, //Выбор ответов
+        14:{name:"layer15",  index:8 , isUse:false, controller: {
+	        0 : "pointDrawController",
+	        length : 1
+        },  method:"addToLayer"   }, //Точки соединения
+        15:{name:"layer16",  index:9 , isUse:false, controller: {
+	        length : 0
+        },  method: null  }, //Компл. таны (Ц)
+        16:{name:"layer17",  index:10, isUse:false, controller: {
+	        0 : "pictureTanController",
+	        length : 1
+        },  method: "colorAddToLayer"   }, //Картинки таны (Ц)
+        17:{name:"layer18",  index:11, isUse:false, controller: {
+	        0 : "userTanController",
+	        length : 1
+        },  method:"colorAddToLayer"   }, //Польз. таны (Ц)
+        18:{name:"layer19",  index:15, isUse:false, controller: {
+	        0 : "puzzleController",
+	        length : 1
+        },  method:"colorAddToLayer"   }, //SWF таны (Ц)
+        19:{name:"layer20",  index:12, isUse:false, controller: {
+	        0 : "markController",
+	        length : 1
+        },  method:"addToLayer"   }, //Области выделения
+        20:{name:"layer21",  index:13, isUse:false, controller: {
+	        0 : "puzzleController",
+	        1 : "listingImagesController",
+	        length : 2
+        },  method:"addToLayer"   }, //SWF объекты
+        21:{name:"layer22",  index:22, isUse:false, controller:{
+	        length : 0
+        } , method:null   }, //Звук
         length:22
     };
 };
@@ -1344,7 +1426,7 @@ InteractiveTask.SampleTask.prototype.getLayersArray = function(){
  * @param name
  * @returns layer{layer:Konva.Layer, name:string, index:int, isUse:Boolean}
  */
-InteractiveTask.SampleTask.prototype.getLayerByName = function(name){
+/*InteractiveTask.SampleTask.prototype.getLayerByName = function(name){
     for(i=0;i<this.layers.length;i++){
         if(name == this.layers[i].name){
             if(!this.layers[i].isUse){
@@ -1355,7 +1437,7 @@ InteractiveTask.SampleTask.prototype.getLayerByName = function(name){
         };
     };
     return null;
-};
+}; */
 /**
  * You can get layer from full stack layers by index without changes
  * @param index of necessary layer from all layers
@@ -1380,31 +1462,39 @@ InteractiveTask.SampleTask.prototype.addLayersToStage = function(){
     var indexis = this.getLayersArray();
     var leng = indexis.length;
     var getLayer;
+	var j;
     for(i=0;i<leng;i++){
         getLayer = this.getLayerByIndex(parseInt(indexis[i]));
-        if(getLayer.isUse){
+
+	    for(j=0;j<getLayer.controller.length; j++){
+		    if(this[getLayer.controller[j]]){
+			    this[getLayer.controller[j]][getLayer.method](InteractiveTask.COMPONENTS_LAYER);
+		    };
+	    };
+        /*if(getLayer.isUse){
             //alert("add layer = " + getLayer.layer + ", name = " + getLayer.name + ", index = " + getLayer.index);
             InteractiveTask.STAGE.add(getLayer.layer);
             //alert("add complate");
             getLayer.layer.batchDraw();
 
-        };
+        };*/
     };
     if(this.shiftFieldController!=undefined){
         this.shiftFieldController.initCache();
     };
-	InteractiveTask.DRAG_LAYER = new Konva.Layer();
-	InteractiveTask.STAGE.add(InteractiveTask.DRAG_LAYER);
+	InteractiveTask.COMPONENTS_LAYER.batchDraw();
+	//InteractiveTask.DRAG_LAYER = new Konva.Layer();
+	//InteractiveTask.STAGE.add(InteractiveTask.DRAG_LAYER);
 	//InteractiveTask.DRAG_LAYER.batchDraw();
 	/**
 	 * Перерисовка кнопок интерфейса
 	 */
-	for(var lay in this.buttonLayers){
+	/*for(var lay in this.buttonLayers){
 		InteractiveTask.STAGE.add(this.buttonLayers[lay]);
 	};
 	for(var lay in this.buttonLayers){
 		this.buttonLayers[lay].draw();
-	};
+	};*/
 };
 InteractiveTask.SampleTask.prototype.clear = function(){
 	if(this.animationController != undefined){

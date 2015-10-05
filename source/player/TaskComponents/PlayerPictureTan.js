@@ -5,8 +5,6 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.PictureTanController = function(options){
-    this.colorLayer = options.colorLayer;
-    this.blackLayer = options.blackLayer;
     //alert(task);
     this.task = options.task;
     this.diap = options.diap;
@@ -22,7 +20,7 @@ InteractiveTask.PictureTanController = function(options){
 InteractiveTask.PictureTanController.prototype.add = function(xml){
     ++this.balance;
     var id = this.tanArray.length;
-    this.tanArray[id] = new InteractiveTask.SamplePictureTan(this.colorLayer, this.blackLayer, xml);
+    this.tanArray[id] = new InteractiveTask.SamplePictureTan(xml);
     this.tanArray[id].init({
         path : this.basePath,
         controller: this
@@ -130,11 +128,34 @@ InteractiveTask.PictureTanController.prototype.clear = function(){
 		this.tanArray.shift();
 	};
 };
+InteractiveTask.PictureTanController.prototype.balckAddToLayer = function(layer){
+	var length = this.tanArray.length;
+	var i;
+	for(i=0;i<length;i++){
+		if(!this.tanArray[i].isDeletateBlack){
+			layer.add(this.tanArray[i].blackTan);
+			//layer.batchDraw();
+			this.tanArray[i].blackTan.blackImageTan.cache();
+			this.tanArray[i].blackTan.blackImageTan.filters([Konva.Filters.RGB]);
+		}
+	};
+	/*if(this.blackLayer!=null){
+		this.blackLayer.add(this.blackTan);
+		this.blackTan.draw();
+		 blackImageTan.cache();
+		 blackImageTan.filters([Konva.Filters.RGB]);
+	};*/
+};
+InteractiveTask.PictureTanController.prototype.colorAddToLayer = function(layer){
+	var length = this.tanArray.length;
+	var i;
+	for(i=0;i<length;i++){
+		layer.add(this.tanArray[i].colorTan);
+	};
+};
 
 /************************************************************************************************************************************/
-InteractiveTask.SamplePictureTan = function(colorLayer, blackLayer, xml){
-    this.colorLayer = colorLayer;
-    this.blackLayer = blackLayer;
+InteractiveTask.SamplePictureTan = function(xml){
     this.xml = xml;
 
 	this.setReport(false);
@@ -193,9 +214,6 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     this.colorTan.add(colorImageTan);
     this.colorTan.x(x);
     this.colorTan.y(y);
-    if(this.colorLayer!=null) {
-	    this.colorLayer.add(this.colorTan);
-    };
 
    // console.log("Color tan was added");
     this.blackTan = new Konva.Group();
@@ -211,12 +229,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     this.blackTan.add(blackImageTan);
     this.blackTan.x(parseFloat(this.xml.BLACK.X));
     this.blackTan.y(parseFloat(this.xml.BLACK.Y));
-    if(this.blackLayer!=null){
-        this.blackLayer.add(this.blackTan);
-        this.blackTan.draw();
-        blackImageTan.cache();
-        blackImageTan.filters([Konva.Filters.RGB]);
-    };
+
 
     if(this.xml.BLACK.ALPHA == "1"){
         this.blackTan.visible(false);
@@ -275,11 +288,11 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
 	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
-    this.colorTan.layer = this.colorLayer;
 
 
-
+	this.isDeletateBlack = false;
     if(this.xml.BLACK.DELETE == "1"){
+	    this.isDeletateBlack = true;
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
 	    this.setReport(true);
@@ -366,7 +379,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.colorAnimation = this.controller.getAnimation({
             class:this,
             object:this.colorTan,
-            layer:this.colorLayer,
+            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.COLOR.ANIMATION
         });
     };
@@ -421,13 +434,10 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.blackAnimation = this.controller.getAnimation({
             class:this,
             object:this.blackTan,
-            layer:this.blackLayer,
+            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.BLACK.ANIMATION
         });
     };
-
-    if(this.colorLayer!=null) this.colorLayer.draw();
-    if(this.blackLayer!=null) this.blackLayer.draw();
     //this.controller.complateLoadingTask();
 };
 
@@ -505,7 +515,7 @@ InteractiveTask.SamplePictureTan.prototype.backPosition = function(){
     };
     this.colorTan.x(parseFloat(this.xml.COLOR.X));
     this.colorTan.y(parseFloat(this.xml.COLOR.Y));
-    this.colorLayer.draw();
+	this.colorTan.getLayer().draw();
 };
 InteractiveTask.SamplePictureTan.prototype.getPosition = function(){
     var out = {
@@ -517,7 +527,7 @@ InteractiveTask.SamplePictureTan.prototype.getPosition = function(){
 InteractiveTask.SamplePictureTan.prototype.setPosition = function(position){
     if(!this.isEnterArea()){
         this.colorTan.setAttrs(position);
-        this.colorLayer.draw();
+	    this.colorTan.getLayer().draw();
         this.colorTan.off("mousedown touchstart");
         this.colorTan.off("mouseout mouseup touchend");
         this.colorTan.isFree = false;

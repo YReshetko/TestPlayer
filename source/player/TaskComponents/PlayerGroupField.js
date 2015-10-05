@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.GroupFieldController = function(options){
-    this.colorLayer = options.colorLayer;
-    this.blackLayer = options.blackLayer;
     this.controller = options.controller;
     this.diap = options.diap;
 
@@ -16,8 +14,6 @@ InteractiveTask.GroupFieldController = function(options){
 
 InteractiveTask.GroupFieldController.prototype.add = function(xml){
     this.groupFieldArray.push(new InteractiveTask.SampleGroupField({
-        colorLayer : this.colorLayer,
-        blackLayer : this.blackLayer,
         xml : xml,
         controller : this,
         diap : this.diap
@@ -42,11 +38,27 @@ InteractiveTask.GroupFieldController.prototype.clear = function(){
 		this.groupFieldArray.shift();
 	};
 };
+InteractiveTask.GroupFieldController.prototype.balckAddToLayer = function(layer){
+	var i,l;
+	l = this.groupFieldArray.length;
+	for(i=0;i<l;i++){
+		if(this.groupFieldArray[i].isTan){
+		   	layer.add(this.groupFieldArray[i].blackTan);
+		};
+	};
+};
+InteractiveTask.GroupFieldController.prototype.colorAddToLayer = function(layer){
+	var i,l;
+	l = this.groupFieldArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.groupFieldArray[i].colorTan);
+	};
+};
+
+
 
 /********************************************************************************************************************************/
 InteractiveTask.SampleGroupField = function(options){
-    this.colorLayer = options.colorLayer;
-    this.blackLayer = options.blackLayer;
     this.controller = options.controller;
     this.xml = options.xml;
     this.diap = options.diap;
@@ -129,7 +141,6 @@ InteractiveTask.SampleGroupField = function(options){
         this.colorTan.controller = this;
         this.blackTan.x(parseFloat(this.xml.BLACK.X));
         this.blackTan.y(parseFloat(this.xml.BLACK.Y));
-        this.blackLayer.add(this.blackTan);
         this.colorTan.on("mouseup touchstop", function(){
             this.controller.setBack();
         });
@@ -146,11 +157,7 @@ InteractiveTask.SampleGroupField = function(options){
             this.controller.setClick();
         });
     };
-    this.colorLayer.add(this.colorTan);
 
-
-    this.colorLayer.draw();
-    this.blackLayer.draw();
 };
 
 InteractiveTask.SampleGroupField.prototype.setBack = function(){
@@ -162,7 +169,7 @@ InteractiveTask.SampleGroupField.prototype.setBack = function(){
         this.colorTan.y(this.blackTan.y());
         this.colorTan.draggable(false);
     };
-    this.colorLayer.draw();
+	this.colorTan.getLayer().draw();
     this.controller.checkTask();
 };
 InteractiveTask.SampleGroupField.prototype.setClick = function(){
@@ -176,7 +183,7 @@ InteractiveTask.SampleGroupField.prototype.setClick = function(){
             this.content[i].getObject().opacity(0);
         };
     };
-    this.colorLayer.draw();
+	this.colorTan.getLayer().draw();
     this.controller.checkTask();
 };
 InteractiveTask.SampleGroupField.prototype.isComplate = function(){

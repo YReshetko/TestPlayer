@@ -11,8 +11,6 @@
 
 
 InteractiveTask.UserTanController = function(options){
-    this.colorLayer = options.colorLayer;
-    this.blackLayer = options.blackLayer;
     //alert(task);
     this.task = options.task;
     this.diap = options.diap;
@@ -24,7 +22,7 @@ InteractiveTask.UserTanController = function(options){
 };
 InteractiveTask.UserTanController.prototype.add = function(xml){
     var id = this.tanArray.length;
-    this.tanArray[id] = new InteractiveTask.SampleUserTan(this.colorLayer, this.blackLayer, xml);
+    this.tanArray[id] = new InteractiveTask.SampleUserTan(xml);
     this.tanArray[id].init({
         controller: this,
         //basePath : this.basePath
@@ -47,6 +45,20 @@ InteractiveTask.UserTanController.prototype.runLabelAnimation = function(label){
 InteractiveTask.UserTanController.prototype.minusHealth = function(){
 	this.task.minusHealth();
 };
+
+InteractiveTask.UserTanController.prototype.balckAddToLayer = function(layer){
+	var length = this.tanArray.length;
+	for(i=0;i<length;i++){
+		layer.add(this.tanArray[i].blackTan);
+	};
+};
+InteractiveTask.UserTanController.prototype.colorAddToLayer = function(layer){
+	var length = this.tanArray.length;
+	for(i=0;i<length;i++){
+		layer.add(this.tanArray[i].colorTan);
+	};
+};
+
 
 /*************************************************************/
 /**************************CONTROL TANS***********************/
@@ -167,9 +179,7 @@ InteractiveTask.UserTanController.prototype.clear = function(){
 };
 /**************************************************************************************************************************/
 
-InteractiveTask.SampleUserTan = function(colorLayer, blackLayer, xml){
-    this.colorLayer = colorLayer;
-    this.blackLayer = blackLayer;
+InteractiveTask.SampleUserTan = function(xml){
 
 
     this.xml = xml;
@@ -336,11 +346,6 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
 	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
-    if(this.colorLayer!=null)this.colorLayer.add(this.colorTan);
-    if(this.blackLayer!=null)this.blackLayer.add(this.blackTan);
-
-    this.colorTan.layer = this.colorLayer;
-
     if(this.xml.BLACK.DELETE == "1"){
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
@@ -410,7 +415,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.colorAnimation = this.controller.getAnimation({
             class:this,
             object:this.colorTan,
-            layer:this.colorLayer,
+            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.COLOR.ANIMATION
         });
     };
@@ -457,12 +462,10 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.blackAnimation = this.controller.getAnimation({
             class:this,
             object:this.blackTan,
-            layer:this.blackLayer,
+            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.BLACK.ANIMATION
         });
     };
-    if(this.colorLayer!=null) this.colorLayer.draw();
-    if(this.blackLayer!=null) this.blackLayer.draw();
     if(this.xml.IMAGE!=undefined){
        this.initBackgroundImage();
     };
@@ -473,7 +476,6 @@ InteractiveTask.SampleUserTan.prototype.initBackgroundImage = function(){
        x : parseFloat(this.xml.IMAGE["-x"]) + parseFloat(this.xml.IMAGE["-width"])/2,
        y : parseFloat(this.xml.IMAGE["-y"]) + parseFloat(this.xml.IMAGE["-height"])/2
     });
-    this.colorLayer.draw();
 };
 
 /* some Error   */
@@ -540,7 +542,7 @@ InteractiveTask.SampleUserTan.prototype.setColor = function(color){
     //alert("true color = " + this.trueColor + "; currentColor = " + color);
     this.colorTan.fill(color);
     //alert("true color = " + this.trueColor + "; currentColor = " + color);
-    this.colorLayer.draw();
+	this.colorTan.getLayer().draw();
     // alert("true color = " + this.trueColor + "; currentColor = " + color);
     if(this.trueColor == color){
         // alert("true color");
@@ -701,7 +703,7 @@ InteractiveTask.SampleUserTan.prototype.backPosition = function(){
     };
     this.colorTan.x(parseFloat(this.xml.COLOR.X));
     this.colorTan.y(parseFloat(this.xml.COLOR.Y));
-    this.colorLayer.draw();
+	this.colorTan.getLayer().draw();
 };
 InteractiveTask.SampleUserTan.prototype.getPosition = function(){
     var out = {
@@ -713,7 +715,7 @@ InteractiveTask.SampleUserTan.prototype.getPosition = function(){
 InteractiveTask.SampleUserTan.prototype.setPosition = function(position){
     if(!this.isEnterArea()){
         this.colorTan.setAttrs(position);
-        this.colorLayer.draw();
+	    this.colorTan.getLayer().draw();
         this.colorTan.off("mousedown touchstart");
         this.colorTan.off("mouseout mouseup touchend");
         this.colorTan.isFree = false;

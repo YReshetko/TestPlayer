@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.MarkController = function(options){
-    this.layer = options.layer;
     this.controller = options.task;
     this.markArray = new Array();
     this.xmlMarkArray = new Array();
@@ -26,7 +25,6 @@ InteractiveTask.MarkController.prototype.startCreating = function(){
     for(i=0;i<l;i++){
         this.markArray.push(new InteractiveTask.SampleMark({
             xml : this.xmlMarkArray[i],
-            layer : this.layer,
             image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.MARK_BUTTON),
             controller : this,
         }));
@@ -66,10 +64,16 @@ InteractiveTask.MarkController.prototype.clear = function(){
 	};
 };
 
+InteractiveTask.MarkController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.markArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.markArray[i].mark);
+	};
+};
 /*****************************************************************************************************************************/
 InteractiveTask.SampleMark = function(options){
     this.xml = options.xml;
-    this.layer = options.layer;
     this.image = options.image;
     this.controller = options.controller;
 
@@ -105,7 +109,6 @@ InteractiveTask.SampleMark = function(options){
     });
     this.mark.scaleX(scaleX);
     this.mark.scaleY(scaleY);
-    this.layer.add(this.mark);
     this.mark.controller = this.controller;
     this.mark.currentClass = parseInt(this.xml.CLASS);
 

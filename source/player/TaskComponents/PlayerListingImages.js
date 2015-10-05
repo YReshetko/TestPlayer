@@ -3,19 +3,34 @@
  */
 
 InteractiveTask.ListingImagesController = function (options) {
-    this.ObjLayer = options.ObjLayer;
     this.xml = options.xml;
     this.controller = options.controller;
     this.path = InteractiveTask.PATH;
 };
-
+InteractiveTask.ListingImagesController.prototype.addToLayer = function(layer){
+	this.handler.addToLayer(layer);
+	layer.add(resultArea);
+	layer.add(this.resultText);
+	var handler = this.handler;
+	var resultText = this.resultText;
+	var control =  this.controller;
+	var picturesCount = this.picturesCount;
+	layer.on('click tap', function () {
+		//updating result
+		if (handler.checkImages()){
+			resultText.setText(handler.completedImagesCount + ' / ' + picturesCount);
+		};
+		layer.draw();
+		control.checkTask();
+	});
+};
 InteractiveTask.ListingImagesController.prototype.init = function () {
     var imageObjs = new Array(),
         pwidth = this.controller.player.width,
         pheight = this.controller.player.height,
         x = parseInt(this.xml.X), y = parseInt(this.xml.Y),
         fileNames = this.xml.SETTINGS.LISTINGIMAGES.NAMESPACE.FILENAME,
-        picturesCount = fileNames.length,
+	    picturesCount = this.picturesCount = fileNames.length,
         layer = this.ObjLayer, sample, thiscontroller = this,
         i, j,
     //config for creating pieces handler
@@ -27,11 +42,11 @@ InteractiveTask.ListingImagesController.prototype.init = function () {
             path: this.path
         };
     //creating images from array of file names isDone field described that image collectedor not, img - image
-    handler = new PiecesHandler(conf, fileNames);
-    handler.addToLayer(layer);
+    this.handler = new PiecesHandler(conf, fileNames);
+	//this.handler.addToLayer(layer);
 
     //creating rectangle with count of completed images
-    resultArea = new Konva.Rect({
+    this.resultArea = new Konva.Rect({
         width: 100,
         height: 30,
         stroke: 'black',
@@ -39,31 +54,22 @@ InteractiveTask.ListingImagesController.prototype.init = function () {
         x: pwidth / 2 - 100,
         y: pheight - 35
     });
-    layer.add(resultArea);
-    resultText = new Konva.Text({
-        x: resultArea.getX(),
-        y: resultArea.getY(),
-        text: handler.completedImagesCount + ' / ' + picturesCount,
-        width: resultArea.getWidth(),
+
+    this.resultText = new Konva.Text({
+        x: this.resultArea.getX(),
+        y: this.resultArea.getY(),
+        text: this.handler.completedImagesCount + ' / ' + picturesCount,
+        width: this.resultArea.getWidth(),
         fontSize: 30,
         align: 'center',
         fill: 'black'
     });
-    layer.add(resultText);
 
-    layer.draw();
 
-	var control =  this.controller;
-    layer.on('click tap', function () {
-        //updating result
-        if (handler.checkImages()){
-            resultText.setText(handler.completedImagesCount + ' / ' + picturesCount);
-        };
-        layer.draw();
-	    control.checkTask();
-    });
+
+
     this.getResult = function () {
-        return handler.isComplete();
+        return this.handler.isComplete();
     };
 };
 

@@ -17,7 +17,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 	    height : InteractiveTask.CONST.RESTART_BUTTON_POSITION[3],
         image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.RESTART_BUTTON),
         butPosition : InteractiveTask.CONST.RESTART_BUTTON_POSITION,
-        layer : layers.restart,
+        layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.RESTART_BUTTON,
 	    butClass : InteractiveTask.CONST.BUTTON_CLASS_RESTART
@@ -29,7 +29,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 	    height : InteractiveTask.CONST.DONT_KNOW_BUTTON_POSITION[3],
         image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.DONT_KNOW_BUTTON),
         butPosition : InteractiveTask.CONST.DONT_KNOW_BUTTON_POSITION,
-        layer : layers.dontknow,
+        layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.DONT_KNOW_BUTTON,
 	    butClass : InteractiveTask.CONST.BUTTON_CLASS_DONT_KNOW
@@ -41,7 +41,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 	    height : InteractiveTask.CONST.UNDERSTAND_BUTTON_POSITION[3],
         image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.UNDERSTAND_BUTTON),
         butPosition : InteractiveTask.CONST.UNDERSTAND_BUTTON_POSITION,
-        layer : layers.understand,
+        layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.UNDERSTAND_BUTTON,
 	    butClass : InteractiveTask.CONST.BUTTON_CLASS_UNDERSTAND
@@ -53,7 +53,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 	    height : InteractiveTask.CONST.CHECK_BUTTON_POSITION[3],
         image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.COMPLATE_BUTTON),
         butPosition : InteractiveTask.CONST.CHECK_BUTTON_POSITION,
-        layer : layers.check,
+        layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.COMPLATE_BUTTON,
 	    butClass : InteractiveTask.CONST.BUTTON_CLASS_CHECK
@@ -66,7 +66,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 		height : InteractiveTask.CONST.SOUND_BUTTON_POSITION[3],
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.SOUND_BUTTON),
 		butPosition : InteractiveTask.CONST.SOUND_BUTTON_POSITION,
-		layer : layers.sound,
+		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.SOUND_BUTTON,
 		butClass : InteractiveTask.CONST.BUTTON_CLASS_SOUND
@@ -79,7 +79,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 		height : InteractiveTask.CONST.FULLSCREEN_BUTTON_POSITION[3],
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.FULLSCREEN_BUTTON),
 		butPosition : InteractiveTask.CONST.FULLSCREEN_BUTTON_POSITION,
-		layer : layers.fullscreen,
+		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.FULLSCREEN_BUTTON,
 		butClass : InteractiveTask.CONST.BUTTON_CLASS_FULLSCREEN
@@ -92,7 +92,7 @@ InteractiveTask.ButtonSystem = function(layers, width, height, controller){
 		height : InteractiveTask.CONST.PAUSE_BUTTON_POSITION[3],
 		image : InteractiveTask.LIBRARY.getButton(InteractiveTask.CONST.PAUSE_BUTTON),
 		butPosition : InteractiveTask.CONST.PAUSE_BUTTON_POSITION,
-		layer : layers.pause,
+		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.PAUSE_BUTTON,
 		butClass : InteractiveTask.CONST.BUTTON_CLASS_PAUSE

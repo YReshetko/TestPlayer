@@ -6,14 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.PointsDrawController = function(options){
-    this.layer = options.layer;
     this.controller = options.task;
     this.pointsArray = new Array();
 };
 
 InteractiveTask.PointsDrawController.prototype.add = function(xml){
     var id = this.pointsArray.length;
-    this.pointsArray[id] = new InteractiveTask.PointsSystem(this.layer, xml);
+    this.pointsArray[id] = new InteractiveTask.PointsSystem(xml);
     this.pointsArray[id].init({
         controller: this
     });
@@ -41,12 +40,17 @@ InteractiveTask.PointsDrawController.prototype.clear = function(){
 		this.pointsArray.shift();
 	};
 };
-
+InteractiveTask.PointsDrawController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.pointsArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.pointsArray[i].system);
+	};
+};
 
 /********************************************************************************************************************************/
 
-InteractiveTask.PointsSystem = function(layer, xml){
-    this.layer = layer;
+InteractiveTask.PointsSystem = function(xml){
     this.xml = xml;
 
 	this.setReport(false);
@@ -109,9 +113,6 @@ InteractiveTask.PointsSystem.prototype.init = function(options){
     };
 
     this.prepareTrueArray();
-
-    this.layer.add(this.system);
-    this.layer.draw();
    // console.log(this.trueArray);
 };
 InteractiveTask.PointsSystem.prototype.prepareTrueArray = function(){
@@ -151,7 +152,7 @@ InteractiveTask.PointsSystem.prototype.selectPoint = function(point){
     if(target.isSelect){
         target.deselect();
         target.center.draw();
-        this.layer.draw();
+	    this.system.getLayer().draw();
         return;
     };
     var idSelect = -1;
@@ -206,7 +207,7 @@ InteractiveTask.PointsSystem.prototype.selectPoint = function(point){
 	        };
         };
 
-        this.layer.draw();
+	    this.system.getLayer().draw();
         //console.log("Draw line");
         this.controller.checkTask();
     };

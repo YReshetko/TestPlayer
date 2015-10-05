@@ -9,7 +9,6 @@
 /****************************** TABLE ************************************************/
 /*************************************************************************************/
 InteractiveTask.TableController = function(options){
-    this.layer = options.layer;
 
     this.task = options.task;
     //this.diap = options.diap;
@@ -20,7 +19,6 @@ InteractiveTask.TableController = function(options){
 
 InteractiveTask.TableController.prototype.add = function(options){
     var id = this.tableArray.length;
-    options.layer = this.layer;
     options.controller = this;
 
     this.tableArray[id] = new InteractiveTask.SampleTable(options);
@@ -62,11 +60,17 @@ InteractiveTask.TableController.prototype.clear = function(){
 		this.tableArray.shift();
 	};
 };
+InteractiveTask.TableController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.tableArray.length;
+	for(i=0;i<l;i++){
+		layer.add(this.tableArray[i].table);
+	};
+};
 
 /***************************************************************************************************************************/
 
 InteractiveTask.SampleTable = function(options){
-    this.layer = options.layer;
     this.controller = options.controller;
     this.xml = options.xml;
 
@@ -140,7 +144,6 @@ InteractiveTask.SampleTable.prototype.init = function(){
             };
         };
     };
-    this.layer.add(this.table);
     console.log("Complate table create");
 };
 

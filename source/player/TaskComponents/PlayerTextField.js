@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 InteractiveTask.TextFieldController = function(options){
-    this.layer = options.layer;
-    this.blackLayer = options.blackLayer;
     this.controller = options.controller;
     this.diap = options.diap;
     this.textFieldArray = new Array();
@@ -18,15 +16,12 @@ InteractiveTask.TextFieldController.prototype.add = function(xml){
     var id = this.textFieldArray.length;
     if(xml.TYPE["-name"]!="INPUT"){
         this.textFieldArray.push(new InteractiveTask.SampleTextField({
-            layer : this.layer,
-            blackLayer : this.blackLayer,
             diap : this.diap,
             controller : this,
             xml : xml
         }));
     }else{
         this.textFieldArray.push(new InteractiveTask.InputTextField({
-            layer : this.layer,
             controller : this,
             xml : xml
         }));
@@ -58,10 +53,25 @@ InteractiveTask.TextFieldController.prototype.clear = function(){
 		this.textFieldArray.shift();
 	};
 };
+
+InteractiveTask.TextFieldController.prototype.balckAddToLayer = function(layer){
+	var i,l;
+	l = this.textFieldArray.length;
+	for(i=0;i<l;i++){
+		if(this.textFieldArray[i].blackTan){
+			layer.add(this.textFieldArray[i].blackTan);
+		};
+	};
+};
+InteractiveTask.TextFieldController.prototype.addToLayer = function(layer){
+	var i,l;
+	l = this.textFieldArray.length;
+	for(i=0;i<l;i++){
+			layer.add(this.textFieldArray[i].field);
+	};
+};
 /*****************************************************************************************************************************/
 InteractiveTask.SampleTextField = function(options){
-    this.layer = options.layer;
-    this.blackLayer = options.blackLayer;
     this.controller = options.controller;
     this.diap = options.diap;
 
@@ -169,19 +179,16 @@ InteractiveTask.SampleTextField = function(options){
 
                     };
                     this.isFree = false;
-                    this.controller.layer.draw();
+                    this.getLayer().draw();
                     this.controller.controller.checkTask();
                 };
 
             });
-            this.blackLayer.add(this.blackTan);
         };
     };
 
 
     this.field.add(this.textField);
-    if(this.layer!=null) this.layer.add(this.field);
-    if(this.layer!=null) this.layer.draw();
 
 
 };
@@ -267,12 +274,10 @@ InteractiveTask.SampleTextField.prototype.setCache = function(width, height){
 
 /*************************************************************************************************************************************/
 InteractiveTask.InputTextField = function(options){
-    this.layer = options.layer;
     this.controller = options.controller;
     this.xml = options.xml;
 
     this.input = new CanvasInput({
-        canvas : this.layer.canvas._canvas,
         x : parseFloat(this.xml.X),
         y : parseFloat(this.xml.Y),
         width : parseFloat(this.xml.WIDTH),
@@ -293,7 +298,6 @@ InteractiveTask.InputTextField = function(options){
             controller.checkTask();
         }, 150);
     });
-    //this.layer.draw();
     this.input.renderCanvas();
     this.input.render();
 
