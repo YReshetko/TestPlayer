@@ -218,7 +218,7 @@ InteractiveTask.setDragRotate = function(target, options){
 	var layer =  target.getLayer();
 	var zIndex = target.getZIndex();
 
-
+	console.log(layer);
 
 	var targetRect = target.getClientRect();
 	var cacheOffset = Math.abs(targetRect.width/2 - targetRect.height/2);
@@ -226,7 +226,7 @@ InteractiveTask.setDragRotate = function(target, options){
 	target.moveTo(dragLayer);
 
 	layer.batchDraw();
-	dragLayer.draw();
+	dragLayer.batchDraw();
 	target.cache({
 		x : -targetRect.width/2,
 		y : -targetRect.height/2,

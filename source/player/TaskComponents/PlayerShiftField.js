@@ -15,10 +15,8 @@ InteractiveTask.ShiftFieldController = function(options){
     this.shiftFieldArray = new Array();
 
 };
-InteractiveTask.ShiftFieldController.LAYER;
 
 InteractiveTask.ShiftFieldController.prototype.add = function(xml){
-    InteractiveTask.ShiftFieldController.LAYER = this.layer;
     this.shiftFieldArray.push(new InteractiveTask.SampleShiftField({
         xml : xml,
         controller : this,
@@ -96,7 +94,7 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
     var background = new Konva.Rect({
         width : this.xml["-width"],
         height :  this.xml["-height"],
-        fill : "rgba(0, 0, 0, 0)",
+        fill : "rgba(0, 0, 0, 0.1)",
         stroke : "rgba(0, 0, 0, 0)",
         x : 0,
         y : 0
@@ -121,16 +119,29 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
 	        InteractiveTask.COMPONENTS_LAYER.batchDraw();
            // try{this.getLayer().draw();}catch(e){};
         };
-
         this.field.add(this.fieldsArray[i].group);
         this.fieldsArray[i].group.draggable(true);
         this.fieldsArray[i].group.controller = this;
 	    this.fieldsArray[i].group.myIndex = i;
-        this.fieldsArray[i].group.on("mousedown", function(){
+	    var boundRectangle = this.fieldsArray[i].group.getClientRect();
+	    var width = boundRectangle.width;
+	    var height = boundRectangle.height;
+	    this.fieldsArray[i].group.dragBoundFunc(function(pos){
+		    var X=pos.x;
+		    var Y=pos.y;
+		    var scaleX =InteractiveTask.STAGE.scaleX();
+		    var scaleY =InteractiveTask.STAGE.scaleY();
+
+		    if(X<0){X=0;};
+		    if(X>InteractiveTask.STAGE.width()-width*scaleX){X=InteractiveTask.STAGE.width()-width*scaleX;};
+		    if(Y<0){Y=0;};
+		    if(Y>InteractiveTask.STAGE.height()-height*scaleY){Y=InteractiveTask.STAGE.height()-height*scaleY;};
+		    return({x:X, y:Y});
+	    })
+        this.fieldsArray[i].group.on("mousedown touchstart", function(){
             this.moveToTop();
-            //this.controller
         });
-        this.fieldsArray[i].group.on("mouseup", function(){
+        this.fieldsArray[i].group.on("mouseup touchend", function(){
             var index = this.controller.getClosestPosition(this);
 
             if(Math.abs(this.controller.coordinates[index].x - this.x())<this.controller.diap && Math.abs(this.controller.coordinates[index].y - this.y())<this.controller.diap){
@@ -181,7 +192,7 @@ InteractiveTask.SampleShiftField.prototype.getObjectByXY = function(x, y){
     };
     return null;
 };
-InteractiveTask.SampleShiftField.prototype.getObjectByIJ - function(i, j){
+InteractiveTask.SampleShiftField.prototype.getObjectByIJ = function(i, j){
     var i,l;
     l = this.fieldsArray.length;
     for(i=0;i<l;i++){
@@ -292,7 +303,7 @@ InteractiveTask.UnitField = function(xml, controller){
     };
 
     if(flag){
-        console.log("Field is full");
+        //console.log("Field is full");
     }else{
         this.createCell();
         this.createFrame();
@@ -301,10 +312,11 @@ InteractiveTask.UnitField = function(xml, controller){
 };
 
 InteractiveTask.UnitField.prototype.complateLoadingTask = function(){
-    console.log("Complate creation FIELD");
+    //console.log("Complate creation FIELD");
     this.content.getObject().off("mousedown touchstart");
     this.content.getObject().off("mouseout mouseup touchend");
-    this.content.getObject().draggable(false);
+    //this.content.getObject().draggable(false);
+	//console.log(this.content.getObject());
     this.createCell();
     this.group.add(this.content.getObject());
     this.createFrame();
@@ -314,9 +326,10 @@ InteractiveTask.UnitField.prototype.complateLoadingTask = function(){
     } catch(e){}*/
 };
 InteractiveTask.UnitField.prototype.createCell = function(){
+	//console.log("UnitField create cell");
     var background = new Konva.Rect({
-        width : this.xml["-width"],
-        height :  this.xml["-height"],
+        width : this.width,
+        height :  this.height,
         fill : "rgba(0, 0, 0, 0)",
         stroke : "rgba(0, 0, 0, 0)",
         x : 0,
@@ -326,9 +339,10 @@ InteractiveTask.UnitField.prototype.createCell = function(){
 };
 
 InteractiveTask.UnitField.prototype.createFrame = function(){
+	//console.log("UnitField create frame");
     this.frame = new Konva.Rect({
-        width : this.xml["-width"],
-        height :  this.xml["-height"],
+        width : this.width,
+        height :  this.height,
         fill : "rgba(0, 0, 0, 0)",
         stroke : "rgba(0, 0, 0, 0)",
         x : 0,

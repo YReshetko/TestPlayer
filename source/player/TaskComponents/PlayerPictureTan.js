@@ -157,7 +157,6 @@ InteractiveTask.PictureTanController.prototype.colorAddToLayer = function(layer)
 /************************************************************************************************************************************/
 InteractiveTask.SamplePictureTan = function(xml){
     this.xml = xml;
-
 	this.setReport(false);
 };
 InteractiveTask.SamplePictureTan.prototype.setReport = function(isComplate){
