@@ -9,7 +9,7 @@ InteractiveTask.ListingImagesController = function (options) {
 };
 InteractiveTask.ListingImagesController.prototype.addToLayer = function(layer){
 	this.handler.addToLayer(layer);
-	layer.add(resultArea);
+	layer.add(this.resultArea);
 	layer.add(this.resultText);
 	var handler = this.handler;
 	var resultText = this.resultText;
