@@ -277,7 +277,7 @@ InteractiveTask.rotateFunction = function(target, callback, draglayer){
 		var rotateAngle = mouseAngle - mouseStartAngle;
 		mouseStartAngle = mouseAngle;
 		var degree = rotateAngle*(180/Math.PI);
-		console.log("Current rotation" + degree);
+		//console.log("Current rotation" + degree);
 		callback(degree);
 		draglayer.batchDraw();
 	});
@@ -302,7 +302,7 @@ InteractiveTask.dragFunction = function(target){
 };
 InteractiveTask.rotateOrDragFunction = function(target, callback, dragLayer){
 	var boundRectangle = target.dragBoundRectangle = target.dragBoundRectangle || target.getClientRect();
-	console.log(target);
+	//console.log(target);
 	var scaleX = target.scale().x;
 	var scaleY = target.scale().y;
 	var r = (boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX<boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY)?((boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX/2)*0.7):((boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY/2)*0.7);

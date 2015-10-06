@@ -118,16 +118,28 @@ InteractiveTask.SampleGroupField = function(options){
         element.BLACK.Y =  remBlackY;
             this.content[index].getObject().off("mousedown touchstart");
             this.content[index].getObject().off("mouseout mouseup touchend");
-            this.content[index].getObject().draggable(false);
+           // this.content[index].getObject().draggable(false);
             //this.group.add(this.content[index].getObject());
             this.colorTan.add(this.content[index].getObject());
             if(this.isField){
                 this.content[index].getObject().mustVisible = (element["-visible"]=="true");
                 if(element["-visible"]=="true"){
-                    if(this.isTan)this.blackTan.add(this.content[index].getBlackObject());
+                    if(this.isTan){
+	                    this.blackTan.add(this.content[index].getBlackObject());
+	                    if(node == "PICTURETAN"){
+		                    this.blackTan.cache();
+	                        this.blackTan.filters([Konva.Filters.RGB]);
+	                    };
+                    };
                 };
             }else{
-                if(this.isTan)this.blackTan.add(this.content[index].getBlackObject());
+                if(this.isTan){
+	                this.blackTan.add(this.content[index].getBlackObject());
+	                if(node == "PICTURETAN"){
+		                this.blackTan.cache();
+		                this.blackTan.filters([Konva.Filters.RGB]);
+	                };
+                };
             };
             ++index;
 
@@ -136,14 +148,33 @@ InteractiveTask.SampleGroupField = function(options){
     this.colorTan.x(parseFloat(this.xml.COLOR.X));
     this.colorTan.y(parseFloat(this.xml.COLOR.Y));
 
+	this.setObjectRotation(this.colorTan, parseFloat(this.xml.COLOR.R));
+	if(this.isTan){
+		this.setObjectRotation(this.blackTan, parseFloat(this.xml.BLACK.R));
+	};
+
     if(this.isTan){
-        this.colorTan.draggable(true);
-        this.colorTan.controller = this;
+        //this.colorTan.draggable(true);
         this.blackTan.x(parseFloat(this.xml.BLACK.X));
         this.blackTan.y(parseFloat(this.xml.BLACK.Y));
+	    var self = this;
+	    this.colorTan.on("mousedown touchstart", function(){
+		    InteractiveTask.setDragRotate(this, {
+			    isRotate : true,
+				isDrag   : true,
+			    layer    : this.getLayer(),
+				callback : function(){
+					self.setBack();
+				},
+			    rotate   : function(degree){
+				    self.rotate(degree);
+			    }
+		    });
+	    });
+	    /*
         this.colorTan.on("mouseup touchend", function(){
             this.controller.setBack();
-        });
+        }); */
     };
     if(this.isField){
         var i,l;
@@ -160,17 +191,34 @@ InteractiveTask.SampleGroupField = function(options){
 
 };
 
+InteractiveTask.SampleGroupField.prototype.setObjectRotation = function(target, rot){
+	if(rot == 360 || rot == -360) rot = 0;
+	if(rot<0){
+		rot = 360+rot;
+	};
+	if(rot>360){
+		rot = rot - 360;
+	};
+	target.rotation(rot);
+};
+
 InteractiveTask.SampleGroupField.prototype.setBack = function(){
     var deltaX = this.colorTan.x() - this.blackTan.x();
     var deltaY = this.colorTan.y() - this.blackTan.y();
     var r = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
-    if(r<=this.diap){
+    if(r<=this.diap && this.colorTan.rotation() == this.blackTan.rotation()){
         this.colorTan.x(this.blackTan.x());
         this.colorTan.y(this.blackTan.y());
-        this.colorTan.draggable(false);
+        //this.colorTan.draggable(false);
+	    this.colorTan.off("mousedown touchstart");
     };
 	this.colorTan.getLayer().draw();
     this.controller.checkTask();
+};
+InteractiveTask.SampleGroupField.prototype.rotate = function(degree){
+	degree = Math.round(degree);
+	this.setObjectRotation(this.colorTan, this.colorTan.rotation()+degree);
+	//this.colorTan.rotate();
 };
 InteractiveTask.SampleGroupField.prototype.setClick = function(){
     ++this.colorTan.currentIndex;
