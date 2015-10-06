@@ -77,7 +77,14 @@ InteractiveTask.PalitraController.prototype.allDeselect = function(picker){
 };
 InteractiveTask.PalitraController.prototype.complatePainting = function(){
 	var layer = this.panel.getLayer();
-    this.panel.remove();
+	while(this.pickerArray.length>0){
+		this.pickerArray[0].picker.remove();
+		InteractiveTask.disposeObject(this.pickerArray[0]);
+		this.pickerArray[0] = null;
+		this.pickerArray.shift();
+	};
+	this.panel.remove();
+	InteractiveTask.disposeObject(this);
 	layer.draw();
 };
 InteractiveTask.PalitraController.prototype.addToLayer = function(layer){

@@ -1213,6 +1213,7 @@ InteractiveTask.SampleTask.prototype.checkPainting = function(){
     };
     if(this.palitraController!=null){
         this.palitraController.complatePainting();
+	    this.palitraController = null;
     };
 };
 InteractiveTask.SampleTask.prototype.isEntaerArea = function(){
@@ -1564,6 +1565,10 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 		this.tableController.clear();
 		InteractiveTask.disposeObject(this.tableController);
 		this.tableController = null;
+	};
+	if(this.palitraController!=null){
+		this.palitraController.complatePainting();
+		this.palitraController = null;
 	};
 	InteractiveTask.COMPONENTS_LAYER.destroyChildren();
 

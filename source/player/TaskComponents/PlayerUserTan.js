@@ -49,7 +49,7 @@ InteractiveTask.UserTanController.prototype.minusHealth = function(){
 InteractiveTask.UserTanController.prototype.balckAddToLayer = function(layer){
 	var length = this.tanArray.length;
 	for(i=0;i<length;i++){
-		layer.add(this.tanArray[i].blackTan);
+		if(!this.tanArray[i].isDeletateBlack)layer.add(this.tanArray[i].blackTan);
 	};
 };
 InteractiveTask.UserTanController.prototype.colorAddToLayer = function(layer){
@@ -346,7 +346,9 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
 	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
+	this.isDeletateBlack = false;
     if(this.xml.BLACK.DELETE == "1"){
+	    this.isDeletateBlack = true;
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
         this.blackTan.remove();
