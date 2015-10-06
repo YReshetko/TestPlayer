@@ -1405,9 +1405,8 @@ InteractiveTask.SampleTask.prototype.initLayers = function(){
 	        length : 1
         },  method:"addToLayer"   }, //Области выделения
         20:{name:"layer21",  index:13, isUse:false, controller: {
-	        0 : "puzzleController",
-	        1 : "listingImagesController",
-	        length : 2
+	        0 : "listingImagesController",
+	        length : 1
         },  method:"addToLayer"   }, //SWF объекты
         21:{name:"layer22",  index:22, isUse:false, controller:{
 	        length : 0
@@ -1502,6 +1501,7 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 	if(this.animationController != undefined){
 		this.animationController.clear();
 	};
+
 	/*******************************************************/
 	if(this.userTanController!=null){
 		this.userTanController.clear();
@@ -1570,7 +1570,13 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 		this.palitraController.complatePainting();
 		this.palitraController = null;
 	};
+	InteractiveTask.COMPONENTS_LAYER.clearCache();
+
+	InteractiveTask.DRAGANDDROP_LAYER.clearCache();
+	InteractiveTask.COMPONENTS_LAYER.clear();
+	InteractiveTask.DRAGANDDROP_LAYER.clear();
 	InteractiveTask.COMPONENTS_LAYER.destroyChildren();
+	InteractiveTask.DRAGANDDROP_LAYER.destroyChildren();
 
 	/*var i,l;
 	l = this.layers.length;

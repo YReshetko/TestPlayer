@@ -218,7 +218,7 @@ InteractiveTask.setDragRotate = function(target, options){
 	var layer =  target.getLayer();
 	var zIndex = target.getZIndex();
 
-	console.log(layer);
+	//console.log(layer);
 
 	var targetRect = target.getClientRect();
 	var cacheOffset = Math.abs(targetRect.width/2 - targetRect.height/2);
@@ -227,14 +227,23 @@ InteractiveTask.setDragRotate = function(target, options){
 
 	layer.batchDraw();
 	dragLayer.batchDraw();
-	target.cache({
-		x : -targetRect.width/2,
-		y : -targetRect.height/2,
-		width : targetRect.width,
-		height : targetRect.height,
-		offset : cacheOffset,
-		drawBorder : false
-	});
+	var isDrawBorderForCache = true;
+	if(target.cacheRectangle){
+		target.cache({
+			x : -targetRect.width/2,
+			y : -targetRect.height/2,
+			width : targetRect.width,
+			height : targetRect.height,
+			offset : cacheOffset,
+			drawBorder : isDrawBorderForCache
+		});
+	}else{
+		target.cache({
+			offset : cacheOffset,
+			drawBorder : isDrawBorderForCache
+		});
+	};
+
 
 	InteractiveTask.STAGE.on("mouseup touchend contentTouchend", function(){
 		this.off("mousemove touchmove");
@@ -245,9 +254,9 @@ InteractiveTask.setDragRotate = function(target, options){
 		target.moveTo(layer);
 		target.setZIndex(zIndex);
 
+		options.callback();
 		dragLayer.batchDraw();
 		layer.batchDraw();
-		options.callback();
 	});
 
 

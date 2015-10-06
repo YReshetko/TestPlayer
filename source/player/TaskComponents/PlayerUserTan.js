@@ -172,6 +172,8 @@ InteractiveTask.UserTanController.prototype.checkPainting = function(){
 
 InteractiveTask.UserTanController.prototype.clear = function(){
 	while(this.tanArray.length>0){
+		this.tanArray[0].colorTan.remove();
+		this.tanArray[0].blackTan.remove();
 		InteractiveTask.disposeObject(this.tanArray[0]);
 		this.tanArray[0] = null;
 		this.tanArray.shift();
@@ -357,6 +359,10 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.colorTan.isFree = true;
         this.blackTan.isFree = true;
         this.colorTan.touchStart = false;
+
+	    /*свойство для функции перемещения/вращения объектов устанавливается в true для того чтобы вычислялась область кеширования
+	    *  только для пользовательских танов*/
+	    this.colorTan.cacheRectangle = true;
         this.colorTan.on("mousedown touchstart", function(event){
 	        //InteractiveTask.extendsDragRotate(this, event);
 	        InteractiveTask.tansDragRotateInterface(this, event);

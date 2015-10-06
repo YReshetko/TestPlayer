@@ -4,10 +4,8 @@
  * @constructor
  */
 InteractiveTask.PuzzleController = function(options){
-    this.ObjLayer = options.ObjLayer;
     this.xml = options.xml;
     this.controller = options.controller;
-    this.path = options.path;
 
 	this.init();
 };
@@ -26,7 +24,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
         stepX = parseFloat((width/numCol).toFixed(2)), stepY = parseFloat((height/numLine).toFixed(2)),
         r  = 0.7*(1/2*Math.min(stepX, stepY)), jump = (this.xml.SETTINGS.PAZZLE.JUMP/100)*(1/2*Math.min(stepX, stepY)),
         size = numLine*numCol, m, dest, d = Math.sqrt((stepX*stepX)+(stepY*stepY)),
-        layer = this.ObjLayer, sample, thiscontroller = this,
+        sample, thiscontroller = this,
         state = false, refRotation=null,
         count = 0, boolean = false, id_net=0, id_pic=0,
         degree, c=1,
@@ -36,6 +34,8 @@ InteractiveTask.PuzzleController.prototype.init = function(){
         pic = [], net = [],
         variant = [22.5, -22.5, 45, -45, 67.5, -67.5, 90, -90, 112.5, -112.5, 135,
                   -135, 157.5, -157.5, 180, -180, 0];
+	this.layer = new Array();
+	this.bgLayer = new Array();
 
 // Путь до месторасположения картинки + название самой картинки ////////////////////////////////////////////////////////
    //imageObj.src = this.path + '/' + this.xml.SETTINGS.PAZZLE.FILENAME;
@@ -86,14 +86,13 @@ InteractiveTask.PuzzleController.prototype.init = function(){
                     height: stepY
                 },
                 draggable: false,
-                rotation: variant[Math.floor( Math.random() * variant.length )]
+	            rotation : variant[Math.floor( Math.random() * variant.length )]
             });
-
 // Добавляем элементы на слой с учетом тегов xml ///////////////////////////////////////////////////////////////////////
             net[i][j].id=id_net++;
             net[i][j].done=false;
-            layer.add(net[i][j]);
-            net[i][j].moveToBottom();
+	        this.bgLayer.push(net[i][j]);
+            //net[i][j].moveToBottom();
 
             switch(this.xml.SETTINGS.PAZZLE.POSITIONER) {
                 case "RANDOM":
@@ -142,15 +141,15 @@ InteractiveTask.PuzzleController.prototype.init = function(){
             };
             switch(this.xml.SETTINGS.PAZZLE.HELPER){
                 case "SAMPLE BACKGRAUND":
-                   layer.add(helpImg);
+	                this.layer.push(helpImg);
                    helpImg.moveToBottom();
-                   layer.batchDraw();
+                   //layer.batchDraw();
             };
             pic[i][j].id=id_pic++;
             pic[i][j].done=false;
-            layer.add(pic[i][j]);
-            pic[i][j].moveToTop();
-            layer.batchDraw();
+	        this.layer.push(pic[i][j]);
+            //pic[i][j].moveToTop();
+            //layer.batchDraw();
         };
     };
 
@@ -159,6 +158,38 @@ InteractiveTask.PuzzleController.prototype.init = function(){
     for(n=0;n<numCol;n++){
         for(m=0;m<numLine;m++){
 	        pic[n][m].on('mousedown touchstart', function(e){
+		        if(this.done){
+			        --count;
+			        this.done = false;
+		        };
+		        var imgTarg = this;
+		      	InteractiveTask.setDragRotate(imgTarg, {
+		            isRotate : true,
+		            isDrag : true,
+		            layer : null,
+			        callback : function(){
+				        state=false;
+				        //imgTarg.moveToTop();
+				        var degree = Math.round(imgTarg.rotation()/22.5) * 22.5;
+				        if(degree == 360) degree = 0;
+				        imgTarg.rotation(degree);
+				        self.checkTask();
+			        },
+		            rotate : function(degree){
+			            degree = imgTarg.rotation()+degree;
+			            if(degree == 360 || degree == -360) degree = 0;
+			            if(degree<0){
+				            degree = 360+degree;
+			            };
+			            if(degree>360){
+				            degree = degree - 360;
+			            };
+
+			            imgTarg.rotation(degree);
+		            }
+		        });
+	        });
+	        /*pic[n][m].on('mousedown touchstart', function(e){
 		        this.moveToTop();
 		        target=this;
 		        var touchPos = InteractiveTask.STAGE.getPointerPosition();
@@ -198,7 +229,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 
 
 				        target.rotation(degree);
-				        layer.batchDraw();
+				        //layer.batchDraw();
 			        });
 
 			        InteractiveTask.STAGE.on("mouseup touchend" , function(e){
@@ -210,7 +241,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 				        if(r == 360) r = 0;
 
 				        target.rotation(r);
-				        layer.batchDraw();
+				        //layer.batchDraw();
 			        });
 		        };
 	        });
@@ -223,7 +254,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 	            if(r == 360) r = 0;
 
 	            target.rotation(r);
-	            layer.batchDraw();
+	            //layer.batchDraw();
             });
 
             pic[n][m].on('touchend', function(e){
@@ -235,8 +266,8 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 	            if(r == 360) r = 0;
 
 	            target.rotation(r);
-	            layer.batchDraw();
-            });
+	            //layer.batchDraw();
+            }); */
 
 // Обработка попадания пазла в клетку и проверка на правильность ///////////////////////////////////////////////////////
             pic[n][m].on('dragend', function(e){
@@ -262,9 +293,9 @@ InteractiveTask.PuzzleController.prototype.init = function(){
                               this.getY() <= tmp3 && this.getY()>=tmp4) {
                             this.setX(bLeft[i][j]+stepX/2);
                             this.setY(bTop[i][j]+stepY/2);
-                            layer.batchDraw();
+                            //layer.batchDraw();
 // Проверка ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                            if(this.id == net[i][j].id && this.done!=true){
+                            if(this.id == net[i][j].id && this.done!=true && this.rotation()==0){
                                     this.done = true;
                                     count++;
                                     if (count==numLine*numCol){
@@ -289,13 +320,26 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 };
 // Функции получения подсказки и проверки результата ///////////////////////////////////////////////////////////////////
     this.showHelp = function(){
-        layer.add(helpImg);
+        this.layer.push(helpImg);
         helpImg.moveToBottom();
-        layer.batchDraw();
+        //layer.batchDraw();
     };
 
     this.getResult = function() {
         return boolean;
     };
+
+	this.colorAddToLayer = function(layer){
+		while(this.bgLayer.length>0){
+			layer.add(this.bgLayer[0]);
+			this.bgLayer[0] = null;
+			this.bgLayer.shift();
+		};
+	   while(this.layer.length>0){
+		 	layer.add(this.layer[0]);
+		   this.layer[0] = null;
+		   this.layer.shift();
+	   };
+	};
 };
 
