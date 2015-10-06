@@ -227,7 +227,7 @@ InteractiveTask.setDragRotate = function(target, options){
 
 	layer.batchDraw();
 	dragLayer.batchDraw();
-	var isDrawBorderForCache = true;
+	var isDrawBorderForCache = false;
 	if(target.cacheRectangle){
 		target.cache({
 			x : -targetRect.width/2,
