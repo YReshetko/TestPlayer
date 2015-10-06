@@ -54,9 +54,9 @@ InteractiveTask.Timer.prototype.start = function(){
 		fontFamily: 'Calibri',
 		fill: 'green'
 	});
-	this.layer = new Konva.Layer();
+	this.layer = InteractiveTask.BUTTONS_LAYER;
 	this.layer.add(this.field);
-	InteractiveTask.STAGE.add(this.layer);
+	//InteractiveTask.STAGE.add(this.layer);
 	this.currentSeconds = 0;
 	this.currentMinutes = 0;
 	this.resume();
@@ -112,11 +112,8 @@ InteractiveTask.Timer.prototype.getCurrentTime = function(){
 };
 InteractiveTask.Timer.prototype.clear = function(){
 	if(!this.layer) return;
-	this.interval = null;
 	this.field.remove();
-	this.layer.remove();
-	this.field = null;
-	this.layer = null;
+	InteractiveTask.disposeObject(this);
 };
 
 

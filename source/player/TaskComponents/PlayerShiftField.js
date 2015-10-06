@@ -137,7 +137,8 @@ InteractiveTask.SampleShiftField.prototype.createComplate = function(){
 		    if(Y<0){Y=0;};
 		    if(Y>InteractiveTask.STAGE.height()-height*scaleY){Y=InteractiveTask.STAGE.height()-height*scaleY;};
 		    return({x:X, y:Y});
-	    })
+	    });
+	    this.fieldsArray[i].group.cache();
         this.fieldsArray[i].group.on("mousedown touchstart", function(){
             this.moveToTop();
         });

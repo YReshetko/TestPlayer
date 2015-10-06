@@ -16,7 +16,7 @@ InteractiveTask.Health = function(options){
 	this.isTest = this.controller.isTest();
 	this.isFirstLevel = (this.xml["-level"] == "1");
 
-	this.layer = new Konva.Layer();
+	this.layer = InteractiveTask.BUTTONS_LAYER;
 	this.healthes = new Array();
 };
 InteractiveTask.Health.prototype.isInitHealth = function(){
@@ -71,8 +71,8 @@ InteractiveTask.Health.prototype.start = function(){
 	for(i=0;i<(this.totalHealth - this.currentHealth);i++){
 		this.healthes[this.totalHealth - (i+1)].frameIndex(1);
 	};
-	InteractiveTask.STAGE.add(this.layer);
-	this.layer.draw();
+
+	this.layer.batchDraw();
 };
 
 InteractiveTask.Health.prototype.makeMisstake = function(){
@@ -82,7 +82,7 @@ InteractiveTask.Health.prototype.makeMisstake = function(){
 	for(i=0;i<(this.totalHealth - this.currentHealth);i++){
 		this.healthes[this.totalHealth - (i+1)].frameIndex(1);
 	};
-	this.layer.draw();
+	this.layer.batchDraw()
 	if(this.currentHealth == 0){
 		if(this.isTest){
 			this.controller.misstake();
@@ -109,12 +109,12 @@ InteractiveTask.Health.prototype.getCurrentHealth = function(){
 };
 InteractiveTask.Health.prototype.clear = function(){
 	if(!this.layer) return;
-	for(i=0;i<this.totalHealth;i++){
-		this.healthes[i].remove();
-		this.healthes[i] = null;
+	while(this.healthes.length>0){
+		this.healthes[0].remove();
+		this.healthes[0] = null;
+		this.healthes.shift();
 	};
-	this.layer.remove();
-	this.layer = null;
+	InteractiveTask.disposeObject(this);
 };
 
 InteractiveTask.Health.prototype.updateCurrentHealth = function(){
