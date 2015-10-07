@@ -128,13 +128,13 @@ InteractiveTask.ImageLibrary.prototype.findImages = function(){
 };
 
 InteractiveTask.ImageLibrary.prototype.startLoading = function(){
-    trace("start loading");
+    //trace("start loading");
     var image = new Image();
     var self = this;
     image.onload = function(){
         self.loadLabelComplate(this);
     };
-    trace(InteractiveTask.CONST.PRELOADER_IMAGE);
+    //trace(InteractiveTask.CONST.PRELOADER_IMAGE);
     try{
         //image.src = "http://kidnet.ru/sites/default/files/TaskPlayer/Images/load.png";
         image.src = InteractiveTask.CONST.STANDARD_IMAGES_PATH + InteractiveTask.CONST.PRELOADER_IMAGE;
@@ -144,7 +144,7 @@ InteractiveTask.ImageLibrary.prototype.startLoading = function(){
     };
 };
 InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
-    trace("label loading complate");
+    //trace("label loading complate");
     this.layer = new Konva.Layer();
     this.loadingLabel = new Konva.Sprite({
         x : (parseFloat(this.xml.WIDTH)-100)/2,
@@ -250,7 +250,7 @@ InteractiveTask.ImageLibrary.prototype.getImage = function(name){
 };
 
 InteractiveTask.ImageLibrary.prototype.printImages = function(){
-    console.log("print images");
+    //console.log("print images");
     for(var s in this.images){
         console.log(s, " : ", this.images[s]);
     };

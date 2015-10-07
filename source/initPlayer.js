@@ -30,7 +30,7 @@ function initTaskPlayer(resourcePath, imagesPath, containerID, progressContainer
     var XMLtree = new XML.ObjTree();
     //console.log(xhttp.responseText);
     var tree = XMLtree.parseXML(xhttp.responseText);
-    console.log(tree);
+    //console.log(tree);
     if(tree.PACKAGE!='undefined'){
         tree.PACKAGE.RESOURCE = resourcePath;
         //try{
@@ -56,7 +56,7 @@ function initTaskPlayer(resourcePath, imagesPath, containerID, progressContainer
     //player.startTask();
     //alert("End.");
 	//resizePlayer();
-    console.log("End...");
+    //console.log("End...");
 
 
 }
@@ -80,7 +80,7 @@ function canvasCreateSuccess(){
 }
 function taskIsComplate(answer){
     //alert("Task complate in main script " + answer);
-    trace(answer);
+    //trace(answer);
 }
 
 
@@ -106,7 +106,8 @@ function playerEventsHandler(event, data){
 		  canvasCreateError();
 		  break;
 	  case InteractiveTask.Events.prototype.INIT_PROGRESS_ERROR:
-		  alert("Init progress task error");
+		  //alert("Init progress task error");
+		  console.error("Init progress task error");
 		  break;
 	  case InteractiveTask.EVENTS.INIT_PLAYER_SUCCESS:
 		  canvasCreateSuccess();
@@ -122,7 +123,7 @@ function playerEventsHandler(event, data){
 		  playAudio(data, true);
 		  break;
 	  case InteractiveTask.EVENTS.MOUSE_OVER_OUT_BUTTON:
-		  console.log(data);
+		  //console.log(data);
 		  break;
 	  case InteractiveTask.EVENTS.FULL_SCREEN_CHANGE:
 		  onfullscreenchange(null);
@@ -139,7 +140,7 @@ function playAudio(src, isDispatch){
 	try{
 		audio.pause();
 	}catch(e){};
-	console.log("play audio");
+	//console.log("play audio");
 	audio = new Audio(audioPath+src+".wav");
 	var toDispatch = isDispatch;
 	audio.loop = false;

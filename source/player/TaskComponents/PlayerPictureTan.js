@@ -81,13 +81,13 @@ InteractiveTask.PictureTanController.prototype.tanMouseUp = function(tan){
     }else{
         var settings = remTanObject.getSettings();
         settings.diap = this.diap;
-        var flag;
-        for(i=0;i<length;i++){
+        var flag = false;
+        for(i=0;i<length && !flag;i++){
             flag = this.tanArray[i].checkOtherTan(settings);
             if(flag){
                 remTanObject.setPosition(this.tanArray[i].getPosition());
                 this.tanArray[i].blackTan.isFree = false;
-                break;
+                //break;
             };
         };
         if(!flag){
@@ -118,6 +118,7 @@ InteractiveTask.PictureTanController.prototype.hasMarks = function(){
 	return this.task.hasMarks();
 };
 InteractiveTask.PictureTanController.prototype.minusHealth = function(){
+	console.error("Tan minus health");
 	this.task.minusHealth();
 };
 

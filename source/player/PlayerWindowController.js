@@ -221,14 +221,14 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 			containerID : this.progressContainerID
 		});
 	 }catch(e){
-		 console.log(e);
+		 //console.log(e);
 		 this.eventDispatcher(InteractiveTask.EVENTS.INIT_PROGRESS_ERROR, null);
 	 };
 	this.eventDispatcher(InteractiveTask.EVENTS.INIT_PLAYER_SUCCESS, null);
 };
 
 InteractiveTask.Player.prototype.setEvent = function(event){
-	console.log(event.keyCode);
+	//console.log(event.keyCode);
     switch (event.type){
         case "keyboard":
             switch (event.keyCode){
@@ -261,7 +261,7 @@ InteractiveTask.Player.prototype.buttonEvents = function(value, event){
 };
 
 InteractiveTask.Player.prototype.pause = function(){
-	console.log("pause select");
+	//console.log("pause select");
 	this.currentTask.timer.stop();
 	InteractiveTask.ANSFRAME.wait();
 	var self = this;

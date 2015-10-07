@@ -57,9 +57,11 @@ InteractiveTask.AnimationController.prototype.add = function(options){
 InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 	var i, l, n;
 	l = this.bufferAnimation.length;
+	var flag = false;
 	for(i=0;i<l;i++){
 		//  Если анимацию нужно стартовать автоматически
 	  	if(this.bufferAnimation[i].isAutoPlay()){
+		    flag = true;
 		    //  Рассчитываем промежуточные точки
 		    this.bufferAnimation[i].middlePointsAnimation();
 		    //  Отправляем объект в слой анимации
@@ -73,6 +75,9 @@ InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 		    --i;
 	    };
 	};
+	if(flag){
+		InteractiveTask.COMPONENTS_LAYER.batchDraw();
+	};
 	//this.animateLayers = layers;
 	this._run();
 
@@ -82,7 +87,7 @@ InteractiveTask.AnimationController.prototype.moveToBuffer = function(i){
 	this.playAnimation.splice(i,1);
 };
 InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
-	console.log("animation play");
+//	console.log("animation play");
 	var i,l;
 	l = this.playAnimation.length;
 	var flag = false;
@@ -116,10 +121,11 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 				};
 			};
 		};
-		InteractiveTask.ANIMATION_LAYER.batchDraw();
 		if(flag){
-		  	InteractiveTask.COMPONENTS_LAYER.batchDraw();
+			InteractiveTask.COMPONENTS_LAYER.batchDraw();
 		};
+		InteractiveTask.ANIMATION_LAYER.batchDraw();
+
 	};
 	//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
 	var self = this;
@@ -135,10 +141,12 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 	var i, l, j,n;
 	l = this.bufferAnimation.length;
 	//console.log("bufferAnimation.length = |" + this.bufferAnimation.length + "|");
+	var flag = false;
 	for(i=0;i<l;i++){
 		if(this.bufferAnimation[i].label != label) {continue;};
 		//console.log("find label");
 		if(this.bufferAnimation[i].canGetObject()){
+			flag = true;
 			//console.log("prepare points");
 			//  Рассчитываем промежуточные точки
 			this.bufferAnimation[i].middlePointsAnimation();
@@ -156,12 +164,14 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 			--i;
 		};
 	};
+	if(flag){
+		InteractiveTask.COMPONENTS_LAYER.batchDraw();
+	};
 	this._run();
 };
 InteractiveTask.AnimationController.prototype._run = function(){
 	if(this.playAnimation.length>0 && !this.isRuning){
 		this.isRuning = true;
-		InteractiveTask.COMPONENTS_LAYER.batchDraw();
 		InteractiveTask.ANIMATION_LAYER.batchDraw();
 		this.kinetikAnimation();
 	};

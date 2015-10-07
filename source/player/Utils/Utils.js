@@ -245,7 +245,7 @@ InteractiveTask.setDragRotate = function(target, options){
 	};
 
 
-	InteractiveTask.STAGE.on("mouseup touchend contentTouchend", function(){
+	InteractiveTask.STAGE.on("mouseup touchend", function(){
 		this.off("mousemove touchmove");
 		this.off("mouseup touchend");
 		target.dragBoundFunc(function(pos){return pos;});
@@ -340,7 +340,7 @@ InteractiveTask.rotateOrDragFunction = function(target, callback, dragLayer){
  * @param event - объект события запустивший вращение
  */
 
-InteractiveTask.extendsDragRotate = function(self, event){
+/*InteractiveTask.extendsDragRotate = function(self, event){
 	//console.log("Extends metod mouse down");
 	//var self = this;
 	if(self.startLabelMouseDown!=""){
@@ -414,7 +414,7 @@ InteractiveTask.extendsDragRotate = function(self, event){
 		});
 	};
 
-};
+};  */
 
 /**
  *
