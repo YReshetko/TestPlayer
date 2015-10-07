@@ -416,14 +416,13 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.colorTan.animation_fill = function(color){
             //console.log("current color = " + color);
             this.fill(color);
-            this.layer.draw();
+            //this.layer.draw();
         };
 
 
         this.colorAnimation = this.controller.getAnimation({
             class:this,
             object:this.colorTan,
-            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.COLOR.ANIMATION
         });
     };
@@ -470,7 +469,6 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
         this.blackAnimation = this.controller.getAnimation({
             class:this,
             object:this.blackTan,
-            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.BLACK.ANIMATION
         });
     };

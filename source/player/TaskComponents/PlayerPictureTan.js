@@ -378,7 +378,6 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.colorAnimation = this.controller.getAnimation({
             class:this,
             object:this.colorTan,
-            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.COLOR.ANIMATION
         });
     };
@@ -433,7 +432,6 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.blackAnimation = this.controller.getAnimation({
             class:this,
             object:this.blackTan,
-            layer:InteractiveTask.COMPONENTS_LAYER,
             xml:this.xml.BLACK.ANIMATION
         });
     };

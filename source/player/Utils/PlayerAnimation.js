@@ -5,14 +5,34 @@
  * Time: 7:41
  * To change this template use File | Settings | File Templates.
  */
+(function() {
+	var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+			|| window[vendors[x]+'CancelRequestAnimationFrame'];
+	}
+	if (!window.requestAnimationFrame)
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+				timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+	if (!window.cancelAnimationFrame)
+		window.cancelAnimationFrame = function(id) {
+			clearTimeout(id);
+		};
+}());
 InteractiveTask.AnimationController = function(){
 	//alert("create controller animation");
 	//  Буфер анимаций (вначала они накапливаются здесь, затем поступают в массив playAnimation, если их нужно воспроизводить)
 	this.bufferAnimation = new Array();
 	//  Массив воспроизводимых анимаций в данный момент
 	this.playAnimation = new Array();
-
-	this.layersAnimation = new Array();
 
 	this.isRuning = false;
 };
@@ -27,8 +47,6 @@ InteractiveTask.AnimationController = function(){
  * }
  */
 InteractiveTask.AnimationController.prototype.add = function(options){
-	//alert("add animation");
-	options.controller = this;
 	var id = this.bufferAnimation.length;
 	this.bufferAnimation.push(new InteractiveTask.AnimationObject(options));
 	//console.log(this.bufferAnimation[id]);
@@ -39,25 +57,13 @@ InteractiveTask.AnimationController.prototype.add = function(options){
 InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 	var i, l, n;
 	l = this.bufferAnimation.length;
-	//this.layersAnimationvar layers = new Array();
-	var flag;
 	for(i=0;i<l;i++){
 		//  Если анимацию нужно стартовать автоматически
 	  	if(this.bufferAnimation[i].isAutoPlay()){
 		    //  Рассчитываем промежуточные точки
 		    this.bufferAnimation[i].middlePointsAnimation();
-		    flag = true;
-		    for(n=0;n<this.layersAnimation.length;n++){
-			    if(this.layersAnimation[n] == this.bufferAnimation[i].layer) {
-				    flag = false;
-				    break;
-			    };
-		    };
-
-		    //  Запоминаем слои анимаций
-		    if(flag) {
-			    this.layersAnimation.push(this.bufferAnimation[i].layer);
-		    };
+		    //  Отправляем объект в слой анимации
+		    this.bufferAnimation[i].moveToAnimationLayer();
 		    //  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
 		    this.playAnimation.push(this.bufferAnimation[i]);
 		    //console.log(this.playAnimation[this.playAnimation.length-1]);
@@ -79,12 +85,15 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 	console.log("animation play");
 	var i,l;
 	l = this.playAnimation.length;
+	var flag = false;
 	if(l>0){
 		//  По всем анимациям проигрывания перемещаем объекты в новые точки
 		for(i=0;i<l;i++){
 			//console.log(animations[i]);
 			this.playAnimation[i].gotoNextPoint();
 			if(this.playAnimation[i].isComplate()){
+				flag = true;
+				this.playAnimation[i].moveToNativeLayer();
 				if(this.playAnimation[i].multiple){
 					this.playAnimation[i].isPointsPrepared = false;
 					this.moveToBuffer(i);
@@ -98,6 +107,8 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 				--l;
 			}else{
 				if(this.playAnimation[i].isStopOnFrame){
+					flag = true;
+					this.playAnimation[i].moveToNativeLayer();
 					this.playAnimation[i].isStopOnFrame = false;
 					this.moveToBuffer(i);
 					--i;
@@ -105,15 +116,16 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 				};
 			};
 		};
-		l = this.layersAnimation.length;
-		for(i=0;i<l;i++){
-			this.layersAnimation[i].batchDraw();
+		InteractiveTask.ANIMATION_LAYER.batchDraw();
+		if(flag){
+		  	InteractiveTask.COMPONENTS_LAYER.batchDraw();
 		};
 	};
 	//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
 	var self = this;
 	if(this.playAnimation.length != 0){
 		setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+		//setTimeout(function(){requestAnimationFrame(self.kinetikAnimation);}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
 	}else{
 		this.isRuning = false;
 	};
@@ -133,16 +145,8 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 			//console.log("add layer");
 			//  Запоминаем слои анимаций
 			//this.KonvaAnimation.addLayer(this.bufferAnimation[i].layer);
-			n = this.layersAnimation.length;
-			var flag = true;
-			for(j=0;j<n;j++){
-				if(this.layersAnimation[j] == this.bufferAnimation[i].layer){
-					flag = false;
-				};
-			};
-			if(flag){
-				this.layersAnimation.push(this.bufferAnimation[i].layer);
-			};
+			//  Отправляем объект в слой анимации
+			this.bufferAnimation[i].moveToAnimationLayer();
 			//  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
 			//console.log("to animation array");
 			this.playAnimation.push(this.bufferAnimation[i]);
@@ -157,6 +161,8 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 InteractiveTask.AnimationController.prototype._run = function(){
 	if(this.playAnimation.length>0 && !this.isRuning){
 		this.isRuning = true;
+		InteractiveTask.COMPONENTS_LAYER.batchDraw();
+		InteractiveTask.ANIMATION_LAYER.batchDraw();
 		this.kinetikAnimation();
 	};
 };
@@ -171,10 +177,6 @@ InteractiveTask.AnimationController.prototype.clear = function(){
 		this.bufferAnimation[0] = null;
 		this.bufferAnimation.shift();
 	};
-	while(this.layersAnimation.length>0){
-		this.layersAnimation[0] = null;
-		this.layersAnimation.shift();
-	};
 	InteractiveTask.disposeObject(this);
 };
 
@@ -186,11 +188,12 @@ InteractiveTask.AnimationObject = function(options){
 	this.xml = options.xml;
 	this.class = options.class;
 	this.object = options.object;
-	this.layer = options.layer;
-	this.controller = options.controller;
+	this.layer;
 
 	this.isPointsPrepared = false;
 	this.isStopOnFrame = false;
+
+	this.zIndex = 0;
 
 	this.parseXML();
 };
@@ -237,7 +240,7 @@ InteractiveTask.AnimationObject.prototype.parseXML = function(){
 		this.object.animation_alpha(parseFloat(this.keyPoints[0]["-alpha"]));
 		this.object.animation_scaleX(parseFloat(this.keyPoints[0]["-scale"]));
 		this.object.animation_scaleY(parseFloat(this.keyPoints[0]["-scale"]));
-		this.layer.batchDraw();
+		//this.layer.batchDraw();
 	};
 };
 
@@ -451,4 +454,15 @@ InteractiveTask.AnimationObject.prototype._addKeyPoint = function(index, r, g, b
 		green:g,
 		blue:b
 	});
+};
+
+InteractiveTask.AnimationObject.prototype.moveToAnimationLayer = function(){
+	this.zIndex = this.object.getZIndex();
+	this.layer = this.object.getLayer();
+	this.object.moveTo(InteractiveTask.ANIMATION_LAYER);
+};
+
+InteractiveTask.AnimationObject.prototype.moveToNativeLayer = function(){
+	this.object.moveTo(this.layer);
+	this.object.setZIndex(this.zIndex);
 };
