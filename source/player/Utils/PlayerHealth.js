@@ -82,7 +82,7 @@ InteractiveTask.Health.prototype.makeMisstake = function(){
 	for(i=0;i<(this.totalHealth - this.currentHealth);i++){
 		this.healthes[this.totalHealth - (i+1)].frameIndex(1);
 	};
-	this.layer.batchDraw()
+	this.layer.batchDraw();
 	if(this.currentHealth == 0){
 		if(this.isTest){
 			this.controller.misstake();

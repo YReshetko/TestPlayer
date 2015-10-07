@@ -7,7 +7,7 @@
  */
 
 if(typeof(InteractiveTask) == 'undefined') InteractiveTask = function(){};
-InteractiveTask.VERSION = "1.8.2";
+InteractiveTask.VERSION = "2.0.0";
 
 InteractiveTask.STAGE;
 InteractiveTask.BACKGROUND_LAYER;
