@@ -50,12 +50,14 @@ InteractiveTask.UserTanController.prototype.balckAddToLayer = function(layer){
 	var length = this.tanArray.length;
 	for(i=0;i<length;i++){
 		if(!this.tanArray[i].isDeletateBlack)layer.add(this.tanArray[i].blackTan);
+		this.tanArray[i].blackTan.remZIndex = this.tanArray[i].blackTan.getZIndex();
 	};
 };
 InteractiveTask.UserTanController.prototype.colorAddToLayer = function(layer){
 	var length = this.tanArray.length;
 	for(i=0;i<length;i++){
 		layer.add(this.tanArray[i].colorTan);
+		this.tanArray[i].colorTan.remZIndex = this.tanArray[i].colorTan.getZIndex();
 	};
 };
 
@@ -704,7 +706,7 @@ InteractiveTask.SampleUserTan.prototype.checkOtherTan = function(settings){
 InteractiveTask.SampleUserTan.prototype.backPosition = function(){
     if(this.xml.ISSTARTPOS!="true") return;
     if(this.isEnterArea()){
-        console.log("is enter area = true");
+       // console.log("is enter area = true");
         if(this.isEnter()) return;
     };
     this.colorTan.x(parseFloat(this.xml.COLOR.X));

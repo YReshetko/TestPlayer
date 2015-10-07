@@ -135,6 +135,7 @@ InteractiveTask.PictureTanController.prototype.balckAddToLayer = function(layer)
 	for(i=0;i<length;i++){
 		if(!this.tanArray[i].isDeletateBlack){
 			layer.add(this.tanArray[i].blackTan);
+			this.tanArray[i].blackTan.remZIndex = this.tanArray[i].blackTan.getZIndex();
 			//layer.batchDraw();
 			this.tanArray[i].blackTan.blackImageTan.cache();
 			this.tanArray[i].blackTan.blackImageTan.filters([Konva.Filters.RGB]);
@@ -152,6 +153,7 @@ InteractiveTask.PictureTanController.prototype.colorAddToLayer = function(layer)
 	var i;
 	for(i=0;i<length;i++){
 		layer.add(this.tanArray[i].colorTan);
+		this.tanArray[i].colorTan.remZIndex = this.tanArray[i].colorTan.getZIndex();
 	};
 };
 

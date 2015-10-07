@@ -216,9 +216,7 @@ InteractiveTask.setDragRotate = function(target, options){
 	};
 	var dragLayer = InteractiveTask.DRAGANDDROP_LAYER || options.layer || new Konva.Layer();
 	var layer =  target.getLayer();
-	var zIndex = target.getZIndex();
-
-	//console.log(layer);
+	var zIndex = (target.remZIndex)?target.remZIndex:target.getZIndex();
 
 	var targetRect = target.getClientRect();
 	var cacheOffset = Math.abs(targetRect.width/2 - targetRect.height/2);

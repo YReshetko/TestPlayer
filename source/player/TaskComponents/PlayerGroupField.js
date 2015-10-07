@@ -44,6 +44,7 @@ InteractiveTask.GroupFieldController.prototype.balckAddToLayer = function(layer)
 	for(i=0;i<l;i++){
 		if(this.groupFieldArray[i].isTan){
 		   	layer.add(this.groupFieldArray[i].blackTan);
+			this.groupFieldArray[i].blackTan.remZIndex = this.groupFieldArray[i].blackTan.getZIndex();
 		};
 	};
 };
@@ -52,6 +53,7 @@ InteractiveTask.GroupFieldController.prototype.colorAddToLayer = function(layer)
 	l = this.groupFieldArray.length;
 	for(i=0;i<l;i++){
 		layer.add(this.groupFieldArray[i].colorTan);
+		this.groupFieldArray[i].colorTan.remZIndex = this.groupFieldArray[i].colorTan.getZIndex();
 	};
 };
 

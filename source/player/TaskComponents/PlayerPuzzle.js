@@ -332,6 +332,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 	this.colorAddToLayer = function(layer){
 		while(this.bgLayer.length>0){
 			layer.add(this.bgLayer[0]);
+			this.bgLayer[0].remZIndex = this.bgLayer[0].getZIndex();
 			this.bgLayer[0] = null;
 			this.bgLayer.shift();
 		};

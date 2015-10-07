@@ -99,15 +99,22 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 			if(this.playAnimation[i].isComplate()){
 				flag = true;
 				this.playAnimation[i].moveToNativeLayer();
-				if(this.playAnimation[i].multiple){
-					this.playAnimation[i].isPointsPrepared = false;
-					this.moveToBuffer(i);
-					//console.log("push back to buffer");
-				}else{
+				if(this.playAnimation[i].tryRemoveObject()){
 					InteractiveTask.disposeObject(this.playAnimation[i]);
 					this.playAnimation[i] = null;
 					this.playAnimation.splice(i,1);
+				}else{
+					if(this.playAnimation[i].multiple){
+						this.playAnimation[i].isPointsPrepared = false;
+						this.moveToBuffer(i);
+						//console.log("push back to buffer");
+					}else{
+						InteractiveTask.disposeObject(this.playAnimation[i]);
+						this.playAnimation[i] = null;
+						this.playAnimation.splice(i,1);
+					};
 				};
+
 				--i;
 				--l;
 			}else{
@@ -467,7 +474,7 @@ InteractiveTask.AnimationObject.prototype._addKeyPoint = function(index, r, g, b
 };
 
 InteractiveTask.AnimationObject.prototype.moveToAnimationLayer = function(){
-	this.zIndex = this.object.getZIndex();
+	this.zIndex = (this.object.remZIndex)?this.object.remZIndex:this.object.getZIndex();
 	this.layer = this.object.getLayer();
 	this.object.moveTo(InteractiveTask.ANIMATION_LAYER);
 };
@@ -476,3 +483,11 @@ InteractiveTask.AnimationObject.prototype.moveToNativeLayer = function(){
 	this.object.moveTo(this.layer);
 	this.object.setZIndex(this.zIndex);
 };
+InteractiveTask.AnimationObject.prototype.tryRemoveObject = function(){
+	if(this.isRemoveObject){
+		this.object.remove();
+		return true;
+	};
+	return false;
+};
+
