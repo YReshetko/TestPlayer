@@ -258,14 +258,14 @@ InteractiveTask.OneButton = function(options){
 	    if(hint){
 		    var mousePos = this.getStage().getPointerPosition();
 		    hint.position({
-			    x : mousePos.x,
-			    y : mousePos.y,
+			    x : mousePos.x * InteractiveTask.STAGE.scaleX(),
+			    y : mousePos.y * InteractiveTask.STAGE.scaleY(),
 		    });
 		    this.on("mousemove", function(event){
 			    var mousePos = this.getStage().getPointerPosition();
 			    hint.position({
-				    x : mousePos.x,
-				    y : mousePos.y,
+				    x : mousePos.x * 1/InteractiveTask.STAGE.scaleX(),
+				    y : mousePos.y * 1/InteractiveTask.STAGE.scaleY(),
 			    });
 		    });
 		    hint.moveToTop();
