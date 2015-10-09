@@ -19,7 +19,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
         layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.RESTART_BUTTON,
-	    butClass : InteractiveTask.CONST.BUTTON_CLASS_RESTART
+	    hintText : InteractiveTask.CONST.RESTART_HINT_TEXT,
+	    hintPD : InteractiveTask.CONST.RESTART_PD
     });
     this.dontknow = new InteractiveTask.OneButton({
         x : 0,
@@ -31,7 +32,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
         layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.DONT_KNOW_BUTTON,
-	    butClass : InteractiveTask.CONST.BUTTON_CLASS_DONT_KNOW
+	    hintText : InteractiveTask.CONST.DONT_KNOW_HINT_TEXT,
+	    hintPD : InteractiveTask.CONST.DONT_KNOW_PD
     });
     this.understand = new InteractiveTask.OneButton({
         x : 0,
@@ -43,7 +45,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
         layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.UNDERSTAND_BUTTON,
-	    butClass : InteractiveTask.CONST.BUTTON_CLASS_UNDERSTAND
+	    hintText : InteractiveTask.CONST.UNDERSTAND_HINT_TEXT,
+	    hintPD : InteractiveTask.CONST.UNDERSTAND_PD
     });
     this.complate = new InteractiveTask.OneButton({
         x : 0,
@@ -55,7 +58,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
         layer : InteractiveTask.BUTTONS_LAYER,
         controller : this,
         runFuncName : InteractiveTask.CONST.COMPLATE_BUTTON,
-	    butClass : InteractiveTask.CONST.BUTTON_CLASS_CHECK
+	    hintText : InteractiveTask.CONST.COMPLATE_HINT_TEXT,
+	    hintPD : InteractiveTask.CONST.COMPLATE_PD
     });
 
 	this.sound = new InteractiveTask.OneButton({
@@ -68,7 +72,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
 		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.SOUND_BUTTON,
-		butClass : InteractiveTask.CONST.BUTTON_CLASS_SOUND
+		hintText : InteractiveTask.CONST.SOUND_HINT_TEXT,
+		hintPD : InteractiveTask.CONST.SOUND_PD
 	});
 
 	this.fullscreen = new InteractiveTask.OneButton({
@@ -81,7 +86,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
 		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.FULLSCREEN_BUTTON,
-		butClass : InteractiveTask.CONST.BUTTON_CLASS_FULLSCREEN
+		hintText : InteractiveTask.CONST.FULLSCREEN_HINT_TEXT,
+		hintPD : InteractiveTask.CONST.FULLSCREEN_PD
 	});
 
 	this.pause = new InteractiveTask.OneButton({
@@ -94,7 +100,8 @@ InteractiveTask.ButtonSystem = function(width, height, controller){
 		layer : InteractiveTask.BUTTONS_LAYER,
 		controller : this,
 		runFuncName : InteractiveTask.CONST.PAUSE_BUTTON,
-		butClass : InteractiveTask.CONST.BUTTON_CLASS_PAUSE
+		hintText : InteractiveTask.CONST.PAUSE_HINT_TEXT,
+		hintPD : InteractiveTask.CONST.PAUSE_PD
 	});
 
     this.buttons = new Array();
@@ -227,24 +234,63 @@ InteractiveTask.OneButton = function(options){
     this.button.layer = options.layer;
     this.button.runFunc = options.runFuncName;
     this.button.controller = options.controller;
+
+	if(InteractiveTask.CONST.IS_ADD_HINT){
+
+		var hint = new Konva.Label(InteractiveTask.CONST.LABEL_SETTINGS);
+
+		var tagObject = new Object();
+		for(var node in InteractiveTask.CONST.TAG_SETTINGS){
+			tagObject[node] = InteractiveTask.CONST.TAG_SETTINGS[node];
+		};
+
+		tagObject["pointerDirection"] = options.hintPD;
+		hint.add(new Konva.Tag(tagObject));
+
+		hint.add(new Konva.Text(InteractiveTask.CONST.TEXT_SETTINGS));
+		hint.getText().setText(options.hintText);
+
+		options.layer.add(hint);
+	};
+
     this.button.on("mouseover", function(evt){
         this.frameIndex(1);
-        this.layer.draw();
+	    if(hint){
+		    var mousePos = this.getStage().getPointerPosition();
+		    hint.position({
+			    x : mousePos.x,
+			    y : mousePos.y,
+		    });
+		    this.on("mousemove", function(event){
+			    var mousePos = this.getStage().getPointerPosition();
+			    hint.position({
+				    x : mousePos.x,
+				    y : mousePos.y,
+			    });
+		    });
+		    hint.moveToTop();
+		    hint.show();
+	    };
+        this.layer.batchDraw();
 	    this.controller.eventFunction(this.runFunc, evt);
     });
     this.button.on("mouseout", function(evt){
         this.frameIndex(0);
-        this.layer.draw();
+	    if(hint){
+		    this.off("mousemove");
+		    hint.hide();
+	    };
+        this.layer.batchDraw();
 	    this.controller.eventFunction(this.runFunc, evt);
     });
     this.button.on("mousedown touchstart", function(){
         this.frameIndex(2);
-        this.layer.draw();
+	    this.layer.batchDraw();
         this.controller.runFunction(this.runFunc);
     });
     this.button.on("mouseup touchend", function(){
         this.frameIndex(1);
-        this.layer.draw();
+	    this.layer.batchDraw();
     });
 
 };

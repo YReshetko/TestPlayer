@@ -171,7 +171,7 @@ InteractiveTask.Const.prototype.PROGRESS_POINT_DEFAULT_POSITION = 0;
 InteractiveTask.Const.prototype.PROGRESS_POINT_CURRENT_POSITION = 1;
 InteractiveTask.Const.prototype.PROGRESS_POINT_SUCCESS_POSITION = 2;
 InteractiveTask.Const.prototype.PROGRESS_POINT_FAIL_POSITION = 3;
-
+/*
 // классы кнопок
 InteractiveTask.Const.prototype.BUTTON_CLASS = "IT_Button";
 InteractiveTask.Const.prototype.BUTTON_CLASS_UNDERSTAND = "IT_Understand";
@@ -180,7 +180,7 @@ InteractiveTask.Const.prototype.BUTTON_CLASS_RESTART = "IT_Restart";
 InteractiveTask.Const.prototype.BUTTON_CLASS_CHECK = "IT_Check";
 InteractiveTask.Const.prototype.BUTTON_CLASS_SOUND = "IT_Sound";
 InteractiveTask.Const.prototype.BUTTON_CLASS_FULLSCREEN = "IT_Fullscreen";
-InteractiveTask.Const.prototype.BUTTON_CLASS_PAUSE = "IT_Pause";
+InteractiveTask.Const.prototype.BUTTON_CLASS_PAUSE = "IT_Pause";      */
 
 
 // Время отображения окон переходов между заданиями (успех/неудача) в милисекундах
@@ -195,3 +195,51 @@ InteractiveTask.Const.prototype.ANIMATION_FRAME_RATE = 24;
 //  Коэффициенты для вычисления дельта отрезков таймера
 InteractiveTask.Const.prototype.FULL_TIME_DIVIDER = 100;
 InteractiveTask.Const.prototype.TIME_DIVIDER = 10;
+
+/*Параметры хинтов*/
+//  Выводить ли хинты
+InteractiveTask.Const.prototype.IS_ADD_HINT = true;
+//  базовые настройки хинта opacity - прозрачность хинта, visible - видим ли изначально хинт, listening - доступен ли для прослушивания событий
+InteractiveTask.Const.prototype.LABEL_SETTINGS = {
+	opacity: 0.75,
+	visible: false,
+	listening: false
+};
+
+//  Визуализация фона хинта
+InteractiveTask.Const.prototype.TAG_SETTINGS = {
+	fill: 'black',
+	pointerDirection: 'down',
+	pointerWidth: 10,
+	pointerHeight: 10,
+	lineJoin: 'round',
+	shadowColor: 'black',
+	shadowBlur: 10,
+	shadowOffset: 10,
+	shadowOpacity: 0.2
+};
+//  Настройки текста хинта
+InteractiveTask.Const.prototype.TEXT_SETTINGS = {
+	text : '',
+	fontFamily: 'Calibri',
+	fontSize: 18,
+	padding: 5,
+	fill: 'white'
+};
+//  Тексты хинтов для кнопок
+InteractiveTask.Const.prototype.RESTART_HINT_TEXT = "Restart";
+InteractiveTask.Const.prototype.DONT_KNOW_HINT_TEXT = "Don't know";
+InteractiveTask.Const.prototype.UNDERSTAND_HINT_TEXT = "Understand";
+InteractiveTask.Const.prototype.COMPLATE_HINT_TEXT = "Complate";
+InteractiveTask.Const.prototype.SOUND_HINT_TEXT = "Replay task sound";
+InteractiveTask.Const.prototype.FULLSCREEN_HINT_TEXT = "Fullscreen";
+InteractiveTask.Const.prototype.PAUSE_HINT_TEXT = "Pause";
+
+//  Направление стрелки в хинте
+InteractiveTask.Const.prototype.RESTART_PD = "down";
+InteractiveTask.Const.prototype.DONT_KNOW_PD = "down";
+InteractiveTask.Const.prototype.UNDERSTAND_PD = "down";
+InteractiveTask.Const.prototype.COMPLATE_PD = "down";
+InteractiveTask.Const.prototype.SOUND_PD = "up";
+InteractiveTask.Const.prototype.FULLSCREEN_PD = "up";
+InteractiveTask.Const.prototype.PAUSE_PD = "up";

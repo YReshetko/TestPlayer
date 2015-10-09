@@ -29,7 +29,10 @@
 	"FULLSCREEN_BUTTON_POSITION" : [   0, 0, 60, 41,
 					60, 0, 60, 41,
 					120, 0, 60, 41],
-
+	"PAUSE_BUTTON_POSITION" : "x, y, width, height фреймов кнопки паузы",
+	"PAUSE_BUTTON_POSITION" : [ 0  , 0, 60, 41,
+				    60 , 0, 60, 41,
+				    120, 0, 60, 41],
 
 	"HEALTH_POSITION" : "x, y, width, height фреймов для жизней. Каждая строка описывает состояние жизни: не использована, использована соответственно",
 	"HEALTH_POSITION" : [ 0,  0, 45, 34,
@@ -44,6 +47,28 @@
 	"CHECKBOX_BUTTON_POSITION" : "x, y, width, height фреймов для radioButton и checkButton. 1 строка - элемент не выделен, 2 - выделен",
 	"CHECKBOX_BUTTON_POSITION" : [ 0, 0, 15, 15,
 				       15, 0, 15, 15],
+
+	"WAIT_FRAME_POSITION" : "x, y, width, height фреймов для фрейма ожидания",
+	"WAIT_FRAME_POSITION" : [ 0   ,0,150,150,
+				150 ,0,150,150,
+				300 ,0,150,150,
+				450 ,0,150,150,
+				600 ,0,150,150,
+				750 ,0,150,150,
+				900 ,0,150,150,
+				1050,0,150,150,
+				1200,0,150,150,
+				1350,0,150,150,
+				1500,0,150,150,
+				1650,0,150,150,
+				1800,0,150,150,
+				1950,0,150,150,
+				2100,0,150,150,
+				2250,0,150,150,
+				2400,0,150,150,
+				2550,0,150,150,
+				2700,0,150,150,
+				2850,0,150,150],
 
 	"DELTA_BOTTOM" : "отступ в пикселях снизу экрана плеера для функциональных кнопок (рестарт, не знаю, я понял, повтор звука)",
 	"DELTA_BOTTOM" : 5,
@@ -73,6 +98,16 @@
 	"FULLSCREEN_DELTA_X" : 5,
 	"FULLSCREEN_DELTA_Y" : "Отступ кнопки полноэкранного режима от определенного края по оси Y",
 	"FULLSCREEN_DELTA_Y" : 5,
+
+	"PAUSE_VERTICAL_ALIGN" : "Допустимые константы для выравнивания кнопки паузы по вертикали: top, center, bottom",
+	"PAUSE_VERTICAL_ALIGN" : "top",
+	"PAUSE_HORIZONTAL_ALIGN" : "Допустимые константы для выравнивания кнопки паузы по горизонтали: left, center, right",
+	"PAUSE_HORIZONTAL_ALIGN" : "right",
+	
+	"PAUSE_DELTA_X" : "Отступ от определенного края по оси Х",
+	"PAUSE_DELTA_X" : 5,
+	"PAUSE_DELTA_Y" : "Отступ от определенного края по оси Y",
+	"PAUSE_DELTA_Y" : 5,
 
 	"HEALTH_START_X" : "отступ в пикселях слева от экрана плеера для жизней",
 	"HEALTH_START_X" : 10,
@@ -120,5 +155,56 @@
 	"DECREASING_COEFFICIENT" : 0.9,
 	
 	"ANIMATION_FRAME_RATE" : "Количество кадров в секунду для анимации (только анимация перемещения и иже с нею, созданная в конструкторе)",
-	"ANIMATION_FRAME_RATE" : 24
+	"ANIMATION_FRAME_RATE" : 24,
+
+	"IS_ADD_HINT" : "ПАРАМЕТРЫ ХИНТОВ",
+	"IS_ADD_HINT" : "Выводить ли хинты",
+	"IS_ADD_HINT" : true,
+	
+	"LABEL_SETTINGS" : "базовые настройки хинта opacity - прозрачность хинта, visible - видим ли изначально хинт, listening - доступен ли для прослушивания событий",
+	"LABEL_SETTINGS" : {
+		"opacity"	: 0.75,
+		"visible"	: false,
+		"listening"	: false
+	},
+	
+	"TAG_SETTINGS" : "Визуализация фона хинта",
+	"TAG_SETTINGS" : {
+		"fill"			: "black",
+		"pointerDirection"	: "down",
+		"pointerWidth"		: 10,
+		"pointerHeight"		: 10,
+		"lineJoin"		: "round",
+		"shadowColor"		: "black",
+		"shadowBlur"		: 10,
+		"shadowOffset"		: 10,
+		"shadowOpacity"		: 0.2
+	},
+	
+	"TEXT_SETTINGS" : "Настройки текста хинта",
+	"TEXT_SETTINGS" : {
+		"text" 		: "",
+		"fontFamily"	: "Calibri",
+		"fontSize"	: 18,
+		"padding"	: 5,
+		"fill"		: "white"
+	},
+
+	"RESTART_HINT_TEXT" 	: "Тексты хинтов для кнопок",
+	"RESTART_HINT_TEXT" 	: "Restart",
+	"DONT_KNOW_HINT_TEXT" 	: "Don't know",
+	"UNDERSTAND_HINT_TEXT" 	: "Understand",
+	"COMPLATE_HINT_TEXT" 	: "Complate",
+	"SOUND_HINT_TEXT" 	: "Replay task sound",
+	"FULLSCREEN_HINT_TEXT" 	: "Fullscreen",
+	"PAUSE_HINT_TEXT" 	: "Pause",
+	
+	"RESTART_PD" 	: "Направление стрелки в хинте доступные константы: down, up, left, right",
+	"RESTART_PD" 	: "down",
+	"DONT_KNOW_PD" 	: "down",
+	"UNDERSTAND_PD" : "down",
+	"COMPLATE_PD" 	: "down",
+	"SOUND_PD" 	: "up",
+	"FULLSCREEN_PD" : "up",
+	"PAUSE_PD" 	: "up"
 }
