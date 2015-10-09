@@ -256,6 +256,11 @@ InteractiveTask.OneButton = function(options){
     this.button.on("mouseover", function(evt){
         this.frameIndex(1);
 	    if(hint){
+		    var mousePos = this.getStage().getPointerPosition();
+		    hint.position({
+			    x : mousePos.x,
+			    y : mousePos.y,
+		    });
 		    this.on("mousemove", function(event){
 			    var mousePos = this.getStage().getPointerPosition();
 			    hint.position({
