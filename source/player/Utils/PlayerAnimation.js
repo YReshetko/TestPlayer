@@ -483,7 +483,9 @@ InteractiveTask.AnimationObject.prototype.moveToAnimationLayer = function(){
 
 InteractiveTask.AnimationObject.prototype.moveToNativeLayer = function(){
 	this.object.moveTo(this.layer);
-	this.object.setZIndex(this.zIndex);
+	if(InteractiveTask.CONST.IS_SET_BACK){
+		this.object.setZIndex(this.zIndex);
+	};
 };
 InteractiveTask.AnimationObject.prototype.tryRemoveObject = function(){
 	if(this.isRemoveObject){

@@ -250,7 +250,9 @@ InteractiveTask.setDragRotate = function(target, options){
 		target.stopDrag();
 		target.clearCache();
 		target.moveTo(layer);
-		target.setZIndex(zIndex);
+		if(InteractiveTask.CONST.IS_SET_BACK){
+			target.setZIndex(zIndex);
+		};
 
 		options.callback();
 		dragLayer.batchDraw();
