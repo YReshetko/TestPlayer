@@ -118,7 +118,6 @@ InteractiveTask.PictureTanController.prototype.hasMarks = function(){
 	return this.task.hasMarks();
 };
 InteractiveTask.PictureTanController.prototype.minusHealth = function(){
-	console.error("Tan minus health");
 	this.task.minusHealth();
 };
 
@@ -291,7 +290,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
 
 
-
+	this.blackTan.listening(false);
 	this.isDeletateBlack = false;
     if(this.xml.BLACK.DELETE == "1"){
 	    this.isDeletateBlack = true;
@@ -299,6 +298,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
         this.blackTan.isFree = false;
 	    this.setReport(true);
         this.blackTan.remove();
+	    this.colorTan.listening(false);
 	    if(this.controller.hasMarks()){
 		    this.colorTan.on("mousedown touchstart", function(event){
 			    this.controller.minusHealth();
@@ -307,6 +307,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 	    if(this.xml.SETMISSTAKE!=undefined){
 		    if(this.xml.SETMISSTAKE == "true"){
 			    this.colorTan.on("mousedown touchstart", function(event){
+				    this.colorTan.listening(true);
 				    this.controller.minusHealth();
 			    });
 		    };

@@ -349,13 +349,14 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
     this.colorTan.startLabelMouseDown = this.startLabelMouseDown;
     this.colorTan.isRotation = (this.xml.ISROTATION == "true");
 	this.colorTan.isDrag = (this.xml.ISDRAG == "true");
-
+	this.blackTan.listening(false);
 	this.isDeletateBlack = false;
     if(this.xml.BLACK.DELETE == "1"){
 	    this.isDeletateBlack = true;
         this.colorTan.isFree = false;
         this.blackTan.isFree = false;
         this.blackTan.remove();
+	    this.colorTan.listening(false);
 	    this.setReport(true);
     }else{
         this.colorTan.isFree = true;
@@ -500,6 +501,7 @@ InteractiveTask.SampleUserTan.prototype.colorableEnabled = function(){
         if(this.xml.COLOR.PAINT == "1"){
             this.isPaint = false;
             this.colorTan.fill("#B6B6B6");
+	        this.colorTan.listening(true);
             this.colorTan.on("mousedown touchstart", function(){
                 //alert("paint mouse down");
                 //this.moveToTop();
@@ -528,6 +530,7 @@ InteractiveTask.SampleUserTan.prototype.colorableDisabled = function(){
     };
     try{    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if(this.xml.BLACK.DELETE == "1"){
+	        this.colorTan.listening(false);
             this.colorTan.isFree = false;
             this.blackTan.isFree = false;
         }else{

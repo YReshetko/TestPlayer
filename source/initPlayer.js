@@ -39,9 +39,6 @@ function initTaskPlayer(resourcePath, imagesPath, containerID, progressContainer
                 containerID : containerID,
 	            progressContainerID : progressContainerID,
                 imagesPath : imagesPath,
-                errorCallback : canvasCreateError,
-                successCallback : canvasCreateSuccess,
-                taskComplateCallback : taskIsComplate,
 	            callBack : playerEventsHandler
             });
         /*}catch (error){

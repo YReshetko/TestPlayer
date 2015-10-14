@@ -145,7 +145,7 @@ InteractiveTask.ImageLibrary.prototype.startLoading = function(){
 };
 InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
     //trace("label loading complate");
-    this.layer = new Konva.Layer();
+    this.layer = InteractiveTask.COMPONENTS_LAYER;
     this.loadingLabel = new Konva.Sprite({
         x : (parseFloat(this.xml.WIDTH)-100)/2,
         y : (parseFloat(this.xml.HEIGHT)-100)/2,
@@ -170,7 +170,6 @@ InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
     //console.log(this.loadingLabel);
 
     this.layer.add(this.loadingLabel);
-    InteractiveTask.STAGE.add(this.layer);
     this.layer.draw();
     this.loadingLabel.start();
 
@@ -208,7 +207,9 @@ InteractiveTask.ImageLibrary.prototype.loadIteration = function(){
         this.loadingLabel.stop();
         this.loadingLabel.remove();
         this.loadingLabel = null;
-        this.layer.remove();
+        this.layer.clear();
+        this.layer.destroyChildren();
+
         this.layer = null;
         this.controller.libraryLoadComplate();
         return;
@@ -260,26 +261,6 @@ InteractiveTask.ImageLibrary.prototype.getButton = function(type){
 	if(type-1<this.buttons.length) {
 		return this.buttons[type-1];
 	};
-   /* switch (type){
-        case InteractiveTask.CONST.RESTART_BUTTON:
-            return this.buttons[0];
-        case InteractiveTask.CONST.DONT_KNOW_BUTTON:
-            return this.buttons[1];
-        case InteractiveTask.CONST.UNDERSTAND_BUTTON:
-            return this.buttons[2];
-        case InteractiveTask.CONST.COMPLATE_BUTTON:
-            return this.buttons[3];
-        case InteractiveTask.CONST.MARK_BUTTON:
-            return this.buttons[4];
-	    case InteractiveTask.CONST.POSITIONING_QUESTION:
-		    return this.buttons[5];
-	    case InteractiveTask.CONST.POSITIONING_FAIL:
-		    return this.buttons[6];
-	    case InteractiveTask.CONST.BAD_FRAME:
-		    return this.buttons[7];
-	    case InteractiveTask.CONST.GOOD_FRAME:
-		    return this.buttons[8];
-    }   */
     return new Image();
 };
 InteractiveTask.ImageLibrary.prototype.clear = function(){

@@ -7,7 +7,7 @@
  */
 
 if(typeof(InteractiveTask) == 'undefined') InteractiveTask = function(){};
-InteractiveTask.VERSION = "2.0.0";
+InteractiveTask.VERSION = "2.0.2";
 
 InteractiveTask.STAGE;
 InteractiveTask.BACKGROUND_LAYER;
@@ -146,7 +146,11 @@ InteractiveTask.Player.prototype.clear = function(){
 		InteractiveTask.PROGRESS.clear();
 		InteractiveTask.PROGRESS = null;
 	};
-	InteractiveTask.BACKGROUND = null;
+	InteractiveTask.BACKGROUND.clear();
+	InteractiveTask.BACKGROUND.destroyChildren();
+	InteractiveTask.BUTTONS_LAYER.clear();
+	InteractiveTask.BUTTONS_LAYER.destroyChildren();
+
 	InteractiveTask.PATH = null;
 	InteractiveTask.CONST = null;
 	InteractiveTask.EVENTS = null;
@@ -156,6 +160,12 @@ InteractiveTask.Player.prototype.clear = function(){
 	InteractiveTask.LIBRARY.clear();
 	InteractiveTask.STAGE.destroyChildren();
 	InteractiveTask.STAGE.destroy();
+
+	InteractiveTask.BACKGROUND_LAYER = null;
+	InteractiveTask.COMPONENTS_LAYER = null;
+	InteractiveTask.ANIMATION_LAYER = null;
+	InteractiveTask.DRAGANDDROP_LAYER = null;
+	InteractiveTask.BUTTONS_LAYER = null;
 	InteractiveTask.STAGE = null;
 };
 
@@ -1575,8 +1585,11 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 	InteractiveTask.DRAGANDDROP_LAYER.clearCache();
 	InteractiveTask.COMPONENTS_LAYER.clear();
 	InteractiveTask.DRAGANDDROP_LAYER.clear();
+	InteractiveTask.ANIMATION_LAYER.clear();
 	InteractiveTask.COMPONENTS_LAYER.destroyChildren();
 	InteractiveTask.DRAGANDDROP_LAYER.destroyChildren();
+	InteractiveTask.ANIMATION_LAYER.destroyChildren();
+
 
 	/*var i,l;
 	l = this.layers.length;
