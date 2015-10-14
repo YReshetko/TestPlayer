@@ -306,8 +306,8 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 	    };
 	    if(this.xml.SETMISSTAKE!=undefined){
 		    if(this.xml.SETMISSTAKE == "true"){
+			    this.colorTan.listening(true);
 			    this.colorTan.on("mousedown touchstart", function(event){
-				    this.colorTan.listening(true);
 				    this.controller.minusHealth();
 			    });
 		    };
