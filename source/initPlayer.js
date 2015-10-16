@@ -77,7 +77,7 @@ function canvasCreateSuccess(){
 }
 function taskIsComplate(answer){
     //alert("Task complate in main script " + answer);
-    //trace(answer);
+    trace(answer);
 }
 
 

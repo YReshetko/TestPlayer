@@ -7,7 +7,7 @@
  */
 
 if(typeof(InteractiveTask) == 'undefined') InteractiveTask = function(){};
-InteractiveTask.VERSION = "2.0.2";
+InteractiveTask.VERSION = "2.0.4";
 
 InteractiveTask.STAGE;
 InteractiveTask.BACKGROUND_LAYER;
@@ -139,34 +139,47 @@ InteractiveTask.Player = function(options){
 
 /*Метод очистки плеера после его отработки*/
 InteractiveTask.Player.prototype.clear = function(){
-	this.currentTask.clear();
-	InteractiveTask.disposeObject(InteractiveTask.ANSFRAME);
-	InteractiveTask.ANSFRAME = null;
-	if(InteractiveTask.PROGRESS!=undefined){
-		InteractiveTask.PROGRESS.clear();
-		InteractiveTask.PROGRESS = null;
-	};
-	InteractiveTask.BACKGROUND.clear();
-	InteractiveTask.BACKGROUND.destroyChildren();
-	InteractiveTask.BUTTONS_LAYER.clear();
-	InteractiveTask.BUTTONS_LAYER.destroyChildren();
+	try{
+		if(this.startTaskTimeout){
+			try{
+				clearTimeout(this.startTaskTimeout);
+			}catch(e){
+				console.log(e);
+			};
+		};
+		if(this.currentTask){
+			this.currentTask.clear();
+			InteractiveTask.disposeObject(this.currentTask);
+		};
+		InteractiveTask.disposeObject(InteractiveTask.ANSFRAME);
+		InteractiveTask.ANSFRAME = null;
+		if(InteractiveTask.PROGRESS!=undefined){
+			InteractiveTask.PROGRESS.clear();
+			InteractiveTask.PROGRESS = null;
+		};
+		InteractiveTask.BUTTONS_LAYER.clear();
+		InteractiveTask.BUTTONS_LAYER.destroyChildren();
 
-	InteractiveTask.PATH = null;
-	InteractiveTask.CONST = null;
-	InteractiveTask.EVENTS = null;
-	InteractiveTask.disposeObject(this);
-	InteractiveTask.STAGE.clear();
-	InteractiveTask.STAGE.clearCache();
-	InteractiveTask.LIBRARY.clear();
-	InteractiveTask.STAGE.destroyChildren();
-	InteractiveTask.STAGE.destroy();
+		InteractiveTask.PATH = null;
+		InteractiveTask.CONST = null;
+		InteractiveTask.EVENTS = null;
 
-	InteractiveTask.BACKGROUND_LAYER = null;
-	InteractiveTask.COMPONENTS_LAYER = null;
-	InteractiveTask.ANIMATION_LAYER = null;
-	InteractiveTask.DRAGANDDROP_LAYER = null;
-	InteractiveTask.BUTTONS_LAYER = null;
-	InteractiveTask.STAGE = null;
+		InteractiveTask.STAGE.clear();
+		InteractiveTask.STAGE.clearCache();
+		InteractiveTask.LIBRARY.clear();
+		InteractiveTask.STAGE.destroyChildren();
+		InteractiveTask.STAGE.destroy();
+
+		InteractiveTask.BACKGROUND_LAYER = null;
+		InteractiveTask.COMPONENTS_LAYER = null;
+		InteractiveTask.ANIMATION_LAYER = null;
+		InteractiveTask.DRAGANDDROP_LAYER = null;
+		InteractiveTask.BUTTONS_LAYER = null;
+		InteractiveTask.STAGE = null;
+		InteractiveTask.disposeObject(this);
+	}catch(e){
+		console.error(e);
+	}
 };
 
 InteractiveTask.Player.prototype.changeFullScreen = function(){
@@ -520,7 +533,10 @@ InteractiveTask.Player.prototype.dispatchIsTaskComplate = function(flag, id){
 	 };
 	if(this.isTaskChangeAnimation()){
 		var self = this;
-		setTimeout(function(){self.startCurrentTask()}, InteractiveTask.CONST.SHOWING_FINAL_FRAME_TIME);
+		this.startTaskTimeout = setTimeout(function(){
+			self.startTaskTimeout = null;
+			self.startCurrentTask();
+		}, InteractiveTask.CONST.SHOWING_FINAL_FRAME_TIME);
 	}else{
 		 this.startCurrentTask();
 	};
@@ -720,7 +736,10 @@ InteractiveTask.Player.prototype.startCurrentTask = function(){
 		//  перед началом задания, в случае необходимости снижаем балл за полученную помощь
 		this.downScore();
 
-		if(this.currentTask!=null)this.currentTask.clear();
+		if(this.currentTask!=null){
+			this.currentTask.clear();
+			InteractiveTask.disposeObject(this.currentTask);
+		};
 		this.currentTask = new InteractiveTask.SampleTask(this.xmlTaskArray[this.currentTaskID], this);
 		this.visibleButtonsControl();
 		this.progressSelect(this.xmlTaskArray[this.currentTaskID]["-id"]);
@@ -1508,8 +1527,13 @@ InteractiveTask.SampleTask.prototype.addLayersToStage = function(){
 	};*/
 };
 InteractiveTask.SampleTask.prototype.clear = function(){
-	if(this.animationController != undefined){
-		this.animationController.clear();
+	try{
+		if(this.animationController != undefined){
+			this.animationController.clear();
+			InteractiveTask.disposeObject(this.animationController);
+		};
+	}catch(e){
+		console.error(e);
 	};
 
 	/*******************************************************/

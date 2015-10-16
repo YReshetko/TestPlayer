@@ -37,6 +37,8 @@ InteractiveTask.AnimationController = function(){
 	this.playAnimation = new Array();
 
 	this.isRuning = false;
+
+	this.timeout = null;
 };
 
 /**
@@ -139,7 +141,7 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 	//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
 	var self = this;
 	if(this.playAnimation.length != 0){
-		setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+		this.timeout = setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
 		//setTimeout(function(){requestAnimationFrame(self.kinetikAnimation);}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
 	}else{
 		this.isRuning = false;
@@ -186,6 +188,7 @@ InteractiveTask.AnimationController.prototype._run = function(){
 	};
 };
 InteractiveTask.AnimationController.prototype.clear = function(){
+	clearTimeout(this.timeout);
 	while(this.playAnimation.length>0){
 	  	InteractiveTask.disposeObject(this.playAnimation[0]);
 		this.playAnimation[0] = null;
@@ -196,7 +199,7 @@ InteractiveTask.AnimationController.prototype.clear = function(){
 		this.bufferAnimation[0] = null;
 		this.bufferAnimation.shift();
 	};
-	InteractiveTask.disposeObject(this);
+
 };
 
 /************************************************************************************************************************/
