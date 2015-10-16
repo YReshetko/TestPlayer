@@ -730,7 +730,7 @@ InteractiveTask.SampleUserTan.prototype.setPosition = function(position){
         this.colorTan.off("mousedown touchstart");
         this.colorTan.off("mouseout mouseup touchend");
         this.colorTan.isFree = false;
-
+	    this.colorTan.listening(false);
 
         this.colorTan.isSelect = false;
         if(this.startLabelComplate!=""){
