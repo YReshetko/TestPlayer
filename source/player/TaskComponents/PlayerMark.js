@@ -39,6 +39,7 @@ InteractiveTask.MarkController.prototype.selectClass = function(value){
             this.markArray[i].start();
         };
     };
+	this.checkComplate();
 };
 
 InteractiveTask.MarkController.prototype.runLabelAnimation = function(label){
@@ -187,7 +188,7 @@ InteractiveTask.SampleMark.prototype.start = function(){
 		        this.startLabelComplate = "";
 	        };
 
-            this.controller.checkComplate();
+            //this.controller.checkComplate();
         };
     });
 };
