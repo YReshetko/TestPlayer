@@ -190,7 +190,7 @@ InteractiveTask.Player.prototype.clear = function(){
 		InteractiveTask.BUTTONS_LAYER = null;
 		InteractiveTask.STAGE = null;
 		console.log("[Player] - dispose player");
-		InteractiveTask.disposeObject(this);
+		//InteractiveTask.disposeObject(this);
 	}catch(e){
 		console.log("[Player] - clear error:");
 		console.error(e);
