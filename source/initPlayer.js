@@ -132,20 +132,144 @@ function playerEventsHandler(event, data){
 }
 
 
-var audio;
+/*var audio;
+var link;
+var toDispatch;    */
+/*var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioCtx;
+
 function playAudio(src, isDispatch){
+	audioStop();
+	link = src;
+	toDispatch = isDispatch;
+	if(AudioContext){
+		if(!audioCtx) audioCtx = new AudioContext();
+		var request = new XMLHttpRequest();
+		request.open('GET', audioPath+src+".wav", true);
+		request.responseType = 'arraybuffer';
+		request.onload = function() {
+			clearTimeout(timeout);
+			audioCtx.decodeAudioData(request.response, function(buffer) {
+				audio = audioCtx.createBufferSource();
+				audio.buffer = buffer;
+				audio.connect(audioCtx.destination);
+				audio.addEventListener('ended', onEnded, false);
+				audio.start(0);
+			}, onError);
+		};
+		var timeout = setTimeout(onTimeOut, 5000);
+		request.send();
+	}else{
+		audio = new Audio(audioPath+src+".wav");
+		audio.loop = false;
+		audio.addEventListener('ended', onEnded, false);
+		audio.addEventListener('error', onError, false);
+		audio.addEventListener('canplaythrough', function(){
+			clearTimeout(timeout);
+			this.play();
+		}, false);
+
+		var timeout = setTimeout(onTimeOut, 5000);
+		audio.load();
+	}
+
+}
+function onTimeOut(){
+	audioStop();
+	clearAudio();
+	if(confirm("Can't play audio. \n Try again?")){
+		playAudio(link, toDispatch);
+	}else{
+		onEnded();
+	}
+}
+function onEnded(){
+	clearAudio();
+	if(toDispatch) player.startCurrentTask();
+}
+function onError(){
+	alert("Load audio error");
+	onTimeOut();
+}
+function audioStop(){
+	if(!audio) return;
+	try{
+	    if(AudioContext){
+			audio.stop(0);
+	    }else{
+		    audio.pause();
+	    }
+	}catch (e){
+		console.error("can't stop audio");
+		console.error(e);
+	}
+}
+function clearAudio(){
+	if(AudioContext){
+		audio.removeEventListener('ended');
+	}else{
+		audio.removeEventListener('ended');
+		audio.removeEventListener('error');
+		audio.removeEventListener('canplaythrough');
+	}
+	audio = null;
+}*/
+
+var audio;
+var link;
+var toDispatch;
+var timeout;
+function playAudio(src, isDispatch){
+	clearTimeout(timeout);
+	audioStop();
+	link = src;
+	//console.log("play audio");
+	audio = new Audio(audioPath+src+".wav");
+	toDispatch = isDispatch;
+	audio.loop = false;
+
+	audio.addEventListener('ended', function() {
+		clearAudio();
+		if(toDispatch) player.startCurrentTask();
+	}, false);
+	audio.addEventListener('error', function(){
+		clearTimeout(timeout);
+		console.log("audio playe error");
+		clearAudio();
+		if(toDispatch) player.startCurrentTask();
+	}, false);
+	audio.addEventListener('canplaythrough', function(){
+		clearTimeout(timeout);
+		audio.removeEventListener('suspend');
+	    this.play();
+	}, false);
+	timeout = setTimeout(onTimeOut, 5000);
+	audio.load();
+
+	//audio.play();
+}
+function clearAudio(){
+	audio.removeEventListener('ended');
+	audio.removeEventListener('error');
+	audio.removeEventListener('canplaythrough');
+}
+function audioStop(){
+	if(!audio) return;
 	try{
 		audio.pause();
 	}catch(e){};
-	//console.log("play audio");
-	audio = new Audio(audioPath+src+".wav");
-	var toDispatch = isDispatch;
-	audio.loop = false;
-	audio.addEventListener('ended', function() {
-		if(toDispatch) player.startCurrentTask();
-	}, false);
-	audio.play();
 }
+function onTimeOut(){
+	audioStop();
+	clearAudio();
+	if(confirm("Can't play audio. \n Try again?")){
+		playAudio(link, toDispatch);
+	}else{
+		onEnded();
+	}
+}
+
+
 /*Для DL*/
 function currentResult(){
 
