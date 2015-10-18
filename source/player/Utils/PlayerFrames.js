@@ -5,13 +5,15 @@
  * Time: 19:26
  * To change this template use File | Settings | File Templates.
  */
-InteractiveTask.TestChangeFrame = function(width, height){
+InteractiveTask.TestChangeFrame = function(width, height, controller){
 	this.width = width;
 	this.height = height;
 
 	this.successFrame = new Konva.Group();
 	this.failFrame = new Konva.Group();
 	this.waitFrame = new Konva.Group();
+
+	this.controller = controller;
 
 	var successBackground = new Konva.Rect({
 		width : this.width,
@@ -82,10 +84,20 @@ InteractiveTask.TestChangeFrame.prototype.setFscreenButton = function(value){
 InteractiveTask.TestChangeFrame.prototype.success = function(){
 	this.isSuccess = true;
 	this._addFrame(this.successFrame);
+	var self = this.controller;
+	this.successFrame.on("mousedown touchstart", function(){
+		this.off("mousedown touchstart");
+		self.startCurrentTask();
+	});
 };
 InteractiveTask.TestChangeFrame.prototype.fail = function(){
 	this.isFail = true;
 	this._addFrame(this.failFrame);
+	var self = this.controller;
+	this.failFrame.on("mousedown touchstart", function(){
+		this.off("mousedown touchstart");
+		self.startCurrentTask();
+	});
 };
 InteractiveTask.TestChangeFrame.prototype.wait = function(){
 	this.isWait = true;
@@ -100,10 +112,12 @@ InteractiveTask.TestChangeFrame.prototype._addFrame = function(object){
 
 InteractiveTask.TestChangeFrame.prototype.close = function(){
 	if(this.isSuccess){
+		this.successFrame.off("mousedown touchstart");
 		this.successFrame.remove();
 		this.isSuccess = false;
 	};
 	if(this.isFail){
+		this.failFrame.off("mousedown touchstart");
 		this.failFrame.remove();
 		this.isFail = false;
 	};

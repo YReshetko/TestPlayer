@@ -215,13 +215,12 @@ function clearAudio(){
 	audio = null;
 }*/
 
-var audio;
+var audio = new Audio();
 var link;
 var toDispatch;
-var timeout;
 function playAudio(src, isDispatch){
-	clearTimeout(timeout);
 	audioStop();
+	clearAudio();
 	link = src;
 	//console.log("play audio");
 	audio = new Audio(audioPath+src+".wav");
@@ -229,32 +228,34 @@ function playAudio(src, isDispatch){
 	audio.loop = false;
 
 	audio.addEventListener('ended', function() {
+		console.log("ended play");
 		clearAudio();
 		if(toDispatch) player.startCurrentTask();
 	}, false);
 	audio.addEventListener('error', function(){
-		clearTimeout(timeout);
-		console.log("audio playe error");
+		console.log("error play");
 		clearAudio();
 		if(toDispatch) player.startCurrentTask();
 	}, false);
 	audio.addEventListener('canplaythrough', function(){
-		clearTimeout(timeout);
-		audio.removeEventListener('suspend');
 	    this.play();
 	}, false);
-	timeout = setTimeout(onTimeOut, 5000);
 	audio.load();
-
+	try{
+		audio.currentTime = 0;
+	}catch(e){
+		console.error(e);
+		onTimeOut();
+	}
 	//audio.play();
 }
 function clearAudio(){
 	audio.removeEventListener('ended');
 	audio.removeEventListener('error');
 	audio.removeEventListener('canplaythrough');
+	audio = null;
 }
 function audioStop(){
-	if(!audio) return;
 	try{
 		audio.pause();
 	}catch(e){};
@@ -265,7 +266,7 @@ function onTimeOut(){
 	if(confirm("Can't play audio. \n Try again?")){
 		playAudio(link, toDispatch);
 	}else{
-		onEnded();
+		if(toDispatch) player.startCurrentTask();
 	}
 }
 

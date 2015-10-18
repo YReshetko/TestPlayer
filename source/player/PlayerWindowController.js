@@ -253,7 +253,7 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 		pause : new Konva.Layer()
 	};  */
 	console.log("[Player] - complate loading images");
-	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height);
+	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, this);
 	 try{
 		InteractiveTask.PROGRESS = new InteractiveTask.TestProgress({
 			xml : this.xml,
