@@ -21,6 +21,7 @@ InteractiveTask.CONST;
 InteractiveTask.EVENTS;
 InteractiveTask.ANSFRAME;
 InteractiveTask.PROGRESS;
+InteractiveTask.AUDIO;
 
 
 /**
@@ -128,6 +129,8 @@ InteractiveTask.Player = function(options){
         this.successCallback = options.successCallback;
     }  */
     InteractiveTask.PATH = options.xml.RESOURCE;
+
+	InteractiveTask.AUDIO = new InteractiveTask.audioControl(this);
 	console.log("[Player] - start init library");
     InteractiveTask.LIBRARY = new InteractiveTask.ImageLibrary(options.xml, this, options.imagesPath);
     InteractiveTask.LIBRARY.findImages();
@@ -189,6 +192,9 @@ InteractiveTask.Player.prototype.clear = function(){
 		InteractiveTask.DRAGANDDROP_LAYER = null;
 		InteractiveTask.BUTTONS_LAYER = null;
 		InteractiveTask.STAGE = null;
+
+		InteractiveTask.AUDIO.clear();
+		InteractiveTask.AUDIO = null;
 		console.log("[Player] - dispose player");
 		//InteractiveTask.disposeObject(this);
 	}catch(e){
@@ -545,12 +551,14 @@ InteractiveTask.Player.prototype.restart = function(){
 InteractiveTask.Player.prototype.dispatchIsTaskComplate = function(flag, id){
 	 if(flag){
 		 if(this.hasSuccessAudio(id)){
-			 this.eventDispatcher(InteractiveTask.EVENTS.TEST_SUCCESS_COMPLATE, this.getSuccessAudioID(id));
+			 //this.eventDispatcher(InteractiveTask.EVENTS.TEST_SUCCESS_COMPLATE, this.getSuccessAudioID(id));
+			 InteractiveTask.AUDIO.init(this.getSuccessAudioID(id), true);
 			 return;
 		 };
 	 } else{
 		 if(this.hasFailAudio(id)){
-			 this.eventDispatcher(InteractiveTask.EVENTS.TEST_FAIL_COMPLATE, this.getFailAudioID(id));
+			 //this.eventDispatcher(InteractiveTask.EVENTS.TEST_FAIL_COMPLATE, this.getFailAudioID(id));
+			 InteractiveTask.AUDIO.init(this.getFailAudioID(id), true);
 			 return;
 		 };
 	 };
@@ -693,7 +701,8 @@ InteractiveTask.Player.prototype.fullscreenPress = function(){
  * –‡·ÓÚ‡ ÒÓ Á‚ÛÍÓÏ                                                    *
  ***********************************************************************/
 InteractiveTask.Player.prototype.repeatSound = function(){
-	this.eventDispatcher(InteractiveTask.EVENTS.TEST_START, this.getStartAudioID(this.currentTaskID));
+	//this.eventDispatcher(InteractiveTask.EVENTS.TEST_START, this.getStartAudioID(this.currentTaskID));
+	InteractiveTask.AUDIO.init(this.getStartAudioID(this.currentTaskID), false);
 };
 //
 /* ¡ÀŒ  œ–Œ¬≈– » Õ¿À»◊»ﬂ œ–» –≈œÀ≈ÕÕŒ√Œ ¿”ƒ»Œ » ¬Œ«¬–¿Ÿ≈Õ»ﬂ ÕŒÃ≈–Œ¬ ‘¿…ÀŒ¬*/

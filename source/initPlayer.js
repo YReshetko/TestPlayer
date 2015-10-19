@@ -252,7 +252,6 @@ function onError(){
 function onPlayThrough(){
 	console.log("audio play");
 	audio.play();
-	if(toDispatch) player.startCurrentTask();
 }
 function clearAudio(){
 	if(!audio) return;

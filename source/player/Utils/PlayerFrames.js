@@ -86,6 +86,7 @@ InteractiveTask.TestChangeFrame.prototype.success = function(){
 	this._addFrame(this.successFrame);
 	var self = this.controller;
 	this.successFrame.on("mousedown touchstart", function(){
+		InteractiveTask.AUDIO.clear();
 		this.off("mousedown touchstart");
 		self.startCurrentTask();
 	});
@@ -95,6 +96,7 @@ InteractiveTask.TestChangeFrame.prototype.fail = function(){
 	this._addFrame(this.failFrame);
 	var self = this.controller;
 	this.failFrame.on("mousedown touchstart", function(){
+		InteractiveTask.AUDIO.clear();
 		this.off("mousedown touchstart");
 		self.startCurrentTask();
 	});

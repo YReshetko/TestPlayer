@@ -332,90 +332,6 @@ InteractiveTask.rotateOrDragFunction = function(target, callback, dragLayer){
 };
 
 
-
-
-/***********************************************
- * Добавление методов вращения и перемещения тана
- * @param self - непосредственно перемещаемый объект
- * @param event - объект события запустивший вращение
- */
-
-/*InteractiveTask.extendsDragRotate = function(self, event){
-	//console.log("Extends metod mouse down");
-	//var self = this;
-	if(self.startLabelMouseDown!=""){
-		self.controller.runLabelAnimation(self.startLabelMouseDown);
-		self.startLabelMouseDown = "";
-	};
-	if(event.evt.type == "touchstart"){
-		if(self.touchStart) return;
-		self.touchStart = true;
-	};
-	//self.moveToTop();
-	self.moveTo(InteractiveTask.DRAG_LAYER);
-	self.layer.batchDraw();
-	InteractiveTask.DRAG_LAYER.batchDraw();
-	InteractiveTask.STAGE.on("mouseup touchend", function(){
-		this.off("mousemove touchmove");
-		this.off("mouseup touchend");
-		self.moveTo(self.layer);
-
-
-		self.touchStart = false;
-		var r = Math.round(self.rotation()/22.5) * 22.5;
-		if(r == 360) r = 0;
-		self.rotation(r);
-		self.controller.tanMouseUp(self);
-
-		InteractiveTask.DRAG_LAYER.batchDraw();
-		self.layer.batchDraw();
-		//self.layer.batchDraw();
-		//this.batchDraw();
-
-	});
-	if(!self.isRotation) return;
-
-	self.controller.select(self);
-	var r = (self.width()*InteractiveTask.STAGE.scaleX()*self.scaleX()<self.height()*InteractiveTask.STAGE.scaleY()*self.scaleY())?((self.width()*InteractiveTask.STAGE.scaleX()*self.scaleX()/2)*0.7):((self.height()*InteractiveTask.STAGE.scaleY()*self.scaleY()/2)*0.7);
-	console.log("r = " + r);
-	console.log(self.getAbsolutePosition());
-	var touchPos = InteractiveTask.STAGE.getPointerPosition();
-	var mcXc = touchPos.x;
-	var mcYc = touchPos.y;
-	var mouseStartXFromCenter =   mcXc - self.getAbsolutePosition()["x"];
-	var mouseStartYFromCenter =  mcYc - self.getAbsolutePosition()["y"];
-	var mouseStartAngle = Math.atan2(mouseStartYFromCenter, mouseStartXFromCenter);
-	if(mcXc>=parseInt(self.getAbsolutePosition()["x"]-r) && mcXc<=parseInt(self.getAbsolutePosition()["x"]+r) &&
-		mcYc>=parseInt(self.getAbsolutePosition()["y"]-r) && mcYc<=parseInt(self.getAbsolutePosition()["y"]+r)){
-		self.startDrag();
-		//self.draggable(true);
-		InteractiveTask.STAGE.on("mousemove touchmove", function(event){
-			//self.layer.batchDraw();
-			InteractiveTask.DRAG_LAYER.batchDraw();
-			console.log("tan on drag");
-		});
-	} else {
-		self.draggable(false);
-		var state = true;
-		InteractiveTask.STAGE.on("mousemove touchmove", function(e){
-			var touchPos = InteractiveTask.STAGE.getPointerPosition();
-			var mcX = touchPos.x;
-			var mcY = touchPos.y;
-			var mouseXFromCenter =  mcX - self.getAbsolutePosition()["x"];
-			var mouseYFromCenter = mcY - self.getAbsolutePosition()["y"];
-			var mouseAngle = Math.atan2(mouseYFromCenter, mouseXFromCenter);
-			var rotateAngle = mouseAngle - mouseStartAngle;
-			mouseStartAngle = mouseAngle;
-			var degree = rotateAngle*(180/Math.PI);
-			self.controller.rotate(degree);
-			self.layer.batchDraw();
-
-
-		});
-	};
-
-};  */
-
 /**
  *
  * @param time - строковое представление времени всего пять символов
@@ -431,4 +347,82 @@ InteractiveTask.disposeObject = function(object){
 	for(var node in object){
 	   object[node] = null;
 	};
+};
+/**
+ * Функция воспроизведения внешнего звука (завершение/начало задания)
+ * @param player - объект плеера в котором вызывается продолжение задания
+ */
+InteractiveTask.audioControl = function(player){
+	var audio = null;
+	var link = "";
+	var toDispatch = false;
+	/**
+	 * Инициализация нового аудиофайла
+	 * @param src - ссылка на файл   InteractiveTask.AUDIO.init(InteractiveTask.PATH+"audio/"+this.getStartAudioID(this.currentTaskID)+".wav", false);
+	 * @param isDispatch - производить ли продолжение заданий после проигрывания звука
+	 */
+	this.init = function(src, isDispatch){
+		this.clear();
+		link = InteractiveTask.PATH+"audio/"+src+".wav";
+		audio = new Audio(link);
+		toDispatch = isDispatch;
+		playAudio();
+	};
+	this.clear = function(){
+		audioStop();
+		clearAudio();
+	};
+	function playAudio(){
+		audio.loop = false;
+		audio.addEventListener('ended', onEnded, false);
+		audio.addEventListener('error', onError, false);
+		audio.addEventListener('canplaythrough', onPlayThrough, false);
+		audio.load();
+		try{
+			audio.currentTime = 0;
+		}catch(e){
+			console.error(e);
+			onTimeOut();
+		};
+	};
+	function onEnded(){
+		console.log("ended play");
+		clearAudio();
+		dispatchComplate();
+	};
+	function onError(){
+		console.log("error play");
+		clearAudio();
+		dispatchComplate();
+	};
+	function onPlayThrough(){
+		console.log("audio play");
+		audio.play();
+	};
+	function clearAudio(){
+		if(!audio) return;
+		console.log("remove listeners");
+		audio.removeEventListener('ended', onEnded, false);
+		audio.removeEventListener('error', onError, false);
+		audio.removeEventListener('canplaythrough', onPlayThrough, false);
+		audio = null;
+	}
+	function audioStop(){
+		try{
+			audio.pause();
+		}catch(e){};
+	};
+	function onTimeOut(){
+		audioStop();
+		clearAudio();
+		if(confirm("Can't play audio. \n Try again?")){
+			playAudio();
+		}else{
+			dispatchComplate();
+		};
+	};
+	function dispatchComplate(){
+		if(toDispatch) player.startCurrentTask();
+	};
+
 };
