@@ -215,7 +215,7 @@ function clearAudio(){
 	audio = null;
 }*/
 
-var audio = new Audio();
+var audio;
 var link;
 var toDispatch;
 function playAudio(src, isDispatch){
@@ -227,19 +227,9 @@ function playAudio(src, isDispatch){
 	toDispatch = isDispatch;
 	audio.loop = false;
 
-	audio.addEventListener('ended', function() {
-		console.log("ended play");
-		clearAudio();
-		if(toDispatch) player.startCurrentTask();
-	}, false);
-	audio.addEventListener('error', function(){
-		console.log("error play");
-		clearAudio();
-		if(toDispatch) player.startCurrentTask();
-	}, false);
-	audio.addEventListener('canplaythrough', function(){
-	    this.play();
-	}, false);
+	audio.addEventListener('ended', onEnded, false);
+	audio.addEventListener('error', onError, false);
+	audio.addEventListener('canplaythrough', onPlayThrough, false);
 	audio.load();
 	try{
 		audio.currentTime = 0;
@@ -249,10 +239,27 @@ function playAudio(src, isDispatch){
 	}
 	//audio.play();
 }
+function onEnded(){
+	console.log("ended play");
+	clearAudio();
+	if(toDispatch) player.startCurrentTask();
+}
+function onError(){
+	console.log("error play");
+	clearAudio();
+	if(toDispatch) player.startCurrentTask();
+}
+function onPlayThrough(){
+	console.log("audio play");
+	audio.play();
+	if(toDispatch) player.startCurrentTask();
+}
 function clearAudio(){
-	audio.removeEventListener('ended');
-	audio.removeEventListener('error');
-	audio.removeEventListener('canplaythrough');
+	if(!audio) return;
+	console.log("remove listeners");
+	audio.removeEventListener('ended', onEnded, false);
+	audio.removeEventListener('error', onError, false);
+	audio.removeEventListener('canplaythrough', onPlayThrough, false);
 	audio = null;
 }
 function audioStop(){
