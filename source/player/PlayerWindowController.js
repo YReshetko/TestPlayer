@@ -134,15 +134,19 @@ InteractiveTask.Player = function(options){
 	console.log("[Player] - start init library");
     InteractiveTask.LIBRARY = new InteractiveTask.ImageLibrary(options.xml, this, options.imagesPath);
     InteractiveTask.LIBRARY.findImages();
-    InteractiveTask.LIBRARY.startLoading();
-	console.log("[Player] - start loading images");
-
 	var self = this;
 
 	window.onresize = function(){
 		self.resizePlayer();
 	};
-
+	InteractiveTask.StartFrame(this);
+};
+InteractiveTask.Player.prototype.startFillLibrary = function(){
+	if(InteractiveTask.LIBRARY.hasAudio()){
+		InteractiveTask.LIBRARY.loadAudio();
+	};
+    InteractiveTask.LIBRARY.startLoading();
+	console.log("[Player] - start loading images");
 };
 
 /*Метод очистки плеера после его отработки*/
@@ -195,6 +199,10 @@ InteractiveTask.Player.prototype.clear = function(){
 
 		InteractiveTask.AUDIO.clear();
 		InteractiveTask.AUDIO = null;
+
+		window.onresize = function(){
+			return;
+		};
 		console.log("[Player] - dispose player");
 		//InteractiveTask.disposeObject(this);
 	}catch(e){

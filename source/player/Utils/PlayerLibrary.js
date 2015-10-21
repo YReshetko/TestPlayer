@@ -12,6 +12,7 @@ InteractiveTask.ImageLibrary = function(xml, controller, imagesPath){
     this.controller = controller;
     this.imagesName = new Array();
     this.images = new Array();
+	this.audioLib = new Object();
 };
 InteractiveTask.ImageLibrary.prototype.findImages = function(){
     var task = InteractiveTask.getArrayObjectsByTag(this.xml, "TASK");
@@ -125,6 +126,47 @@ InteractiveTask.ImageLibrary.prototype.findImages = function(){
 
 
     };
+	this.findAudio(task);
+};
+InteractiveTask.ImageLibrary.prototype.findAudio = function(task){
+	var i,l;
+	l = task.length;
+	for(i=0;i<l;i++){
+	   	if(task[i]["AUDIO"]){
+		    this._setNewAudio(this._getAudioName(task[i], "STARTAUDIO"));
+		    this._setNewAudio(this._getAudioName(task[i], "FAILAUDIO"));
+		    this._setNewAudio(this._getAudioName(task[i], "SUCCESSAUDIO"));
+	    };
+	};
+	//this.loadAudio();
+	/*for(var node in this.audioLib){
+		console.log("[Player library] - has audio["+node+"]");
+	};*/
+};
+InteractiveTask.ImageLibrary.prototype._setNewAudio = function(name){
+  	if(name == "") return;
+	this.setAudio(name, new Audio(InteractiveTask.PATH+"audio/"+name+".wav"));
+};
+InteractiveTask.ImageLibrary.prototype._getAudioName = function(task, part){
+	var name = "";
+	if(task["AUDIO"][part]){
+		if(task["AUDIO"][part]["-isRun"]=="true"){
+			if(task["AUDIO"][part]["#cdata-section"]!=undefined){
+				if(task["AUDIO"][part]["#cdata-section"]!=""){
+					if(task["AUDIO"][part]["#cdata-section"].indexOf(" ")==-1){
+						name = task["AUDIO"][part]["#cdata-section"];
+					}else{
+						name = task["AUDIO"][part]["-id"];
+					};
+				}else{
+					name = task["AUDIO"][part]["-id"];
+				};
+			}else{
+				name = task["AUDIO"][part]["-id"];
+			};
+		};
+	};
+	return name;
 };
 
 InteractiveTask.ImageLibrary.prototype.startLoading = function(){
@@ -204,14 +246,9 @@ InteractiveTask.ImageLibrary.prototype.buttonLoadComplate = function(image){
 InteractiveTask.ImageLibrary.prototype.loadIteration = function(){
     ++this.currentIndex;
     if(this.currentIndex == this.imagesName.length){
-        this.loadingLabel.stop();
-        this.loadingLabel.remove();
-        this.loadingLabel = null;
-        this.layer.clear();
-        this.layer.destroyChildren();
 
-        this.layer = null;
-        this.controller.libraryLoadComplate();
+        //this.controller.libraryLoadComplate();
+	    this.dispatchComplate();
         return;
     };
     var image = new Image();
@@ -250,6 +287,33 @@ InteractiveTask.ImageLibrary.prototype.getImage = function(name){
 	return null;
 };
 
+InteractiveTask.ImageLibrary.prototype.dispatchComplate = function(){
+	if(!this.hasAudio()){
+		this.loadingLabel.stop();
+		this.loadingLabel.remove();
+		this.loadingLabel = null;
+		this.layer.clear();
+		this.layer.destroyChildren();
+
+		this.layer = null;
+		this.controller.libraryLoadComplate();
+		return;
+	};
+	if(this.isAudioLoaded()){
+		this.loadingLabel.stop();
+		this.loadingLabel.remove();
+		this.loadingLabel = null;
+		this.layer.clear();
+		this.layer.destroyChildren();
+
+		this.layer = null;
+		this.controller.libraryLoadComplate();
+	}else{
+		var self = this;
+		setTimeout(function(){self.dispatchComplate()}, 1000);
+	};
+};
+
 InteractiveTask.ImageLibrary.prototype.printImages = function(){
     //console.log("print images");
     for(var s in this.images){
@@ -263,12 +327,69 @@ InteractiveTask.ImageLibrary.prototype.getButton = function(type){
 	};
     return new Image();
 };
+InteractiveTask.ImageLibrary.prototype.setAudio = function(name, audio){
+  	if(!this.audioLib[name]){
+	    this.audioLib[name] = new Object();
+	    this.audioLib[name]["audio"] = audio;
+	    this.audioLib[name]["isLoaded"] = false;
+	    this.audioLib[name]["name"] = name;
+    };
+};
+InteractiveTask.ImageLibrary.prototype.getAudio = function(name){
+	if(!this.audioLib[name]){
+		return null;
+	};
+	if(!this.audioLib[name]["isLoaded"]){
+		return null;
+	};
+	return this.audioLib[name]["audio"];
+};
+InteractiveTask.ImageLibrary.prototype.loadAudio = function(){
+	/*function onLoad(){
+		console.log("[Player library] - Audio load, name = " + event.target.parent["name"]);
+		event.target.removeEventListener('loadeddata', onLoad, false);
+		event.target.parent["isLoaded"] = true;
+		event.target.parent = null;
+	};*/
+	for(var node in this.audioLib){
+		this.audioLib[node]["audio"].addEventListener('loadeddata', function(event){
+			console.log("[Player library] - Audio load, name = " + event.target.parent["name"]);
+			//event.target.removeEventListener('loadeddata', onLoad, false);
+			event.target.parent["isLoaded"] = true;
+			event.target.parent = null;
+		}, false);
+		this.audioLib[node]["audio"].parent = this.audioLib[node];
+		this.audioLib[node]["audio"].load();
+	};
+};
+InteractiveTask.ImageLibrary.prototype.hasAudio = function(){
+	for(var node in this.audioLib){
+		return true;
+	};
+	return false;
+};
+InteractiveTask.ImageLibrary.prototype.isAudioLoaded = function(){
+	for(var node in this.audioLib){
+		if(!this.audioLib[node]["isLoaded"]){
+			return false;
+		};
+	};
+	return true;
+};
+
+
+
 InteractiveTask.ImageLibrary.prototype.clear = function(){
 	while(this.images.length>0){
 		this.images[0].name = null;
 		this.images[0].image = null;
 		this.images.shift();
 	};
+	for(var node in this.audioLib){
+		InteractiveTask.disposeObject(this.audioLib[node]);
+	};
+	InteractiveTask.disposeObject(this.audioLib);
+	this.audioLib = null;
 };
 
 

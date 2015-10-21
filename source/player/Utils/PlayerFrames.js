@@ -136,3 +136,24 @@ InteractiveTask.TestChangeFrame.prototype.clear = function(){
 	InteractiveTask.disposeObject(this);
 };
 
+
+InteractiveTask.StartFrame = function(player){
+	var button = new Konva.Rect({
+		width : 100,
+		height : 100,
+		fill : InteractiveTask.formatColorFlashToCanvasRGBA("0x999999", 1),
+		stroke : InteractiveTask.formatColorFlashToCanvasRGBA("0x666666", 0),
+		strokeWidth : 1
+	});
+
+	InteractiveTask.BUTTONS_LAYER.add(button);
+
+	button.on("mousedown touchstart", function(){
+		this.off("mousedown touchstart");
+	    this.remove();
+		InteractiveTask.BUTTONS_LAYER.batchDraw();
+		player.startFillLibrary();
+	});
+
+	InteractiveTask.BUTTONS_LAYER.batchDraw();
+};

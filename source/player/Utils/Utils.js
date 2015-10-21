@@ -355,7 +355,9 @@ InteractiveTask.disposeObject = function(object){
 InteractiveTask.audioControl = function(player){
 	var audio = null;
 	var link = "";
+	var name = "";
 	var toDispatch = false;
+	var playAudio;
 	/**
 	 * Инициализация нового аудиофайла
 	 * @param src - ссылка на файл   InteractiveTask.AUDIO.init(InteractiveTask.PATH+"audio/"+this.getStartAudioID(this.currentTaskID)+".wav", false);
@@ -364,47 +366,70 @@ InteractiveTask.audioControl = function(player){
 	this.init = function(src, isDispatch){
 		this.clear();
 		link = InteractiveTask.PATH+"audio/"+src+".wav";
-		audio = new Audio(link);
+		name = src;
 		toDispatch = isDispatch;
+
+		audio = InteractiveTask.LIBRARY.getAudio(name);
+		if(audio){
+			playAudio = _playAudio;
+
+		}else{
+			audio = new Audio(link);
+			playAudio = _loadPlayAudio
+		}
 		playAudio();
 	};
 	this.clear = function(){
 		audioStop();
 		clearAudio();
 	};
-	function playAudio(){
-		audio.loop = false;
+	function _loadPlayAudio(){
+		try{
+			audio.loop = false;
+		}catch(e){};
 		audio.addEventListener('ended', onEnded, false);
 		audio.addEventListener('error', onError, false);
 		audio.addEventListener('canplaythrough', onPlayThrough, false);
+		audio.addEventListener('loadeddata', onLoad, false);
 		audio.load();
-		try{
+		/*try{
 			audio.currentTime = 0;
 		}catch(e){
 			console.error(e);
 			onTimeOut();
-		};
+		};*/
+	};
+	function _playAudio(){
+		console.log("[player - audio] - play without load");
+		audio.currentTime = 0;
+		audio.addEventListener('ended', onEnded, false);
+		audio.play();
 	};
 	function onEnded(){
-		console.log("ended play");
+		console.log("[player - audio] - ended play");
 		clearAudio();
 		dispatchComplate();
 	};
 	function onError(){
-		console.log("error play");
+		console.log("[player - audio] - error play");
 		clearAudio();
 		dispatchComplate();
 	};
 	function onPlayThrough(){
-		console.log("audio play");
+		console.log("[player - audio] - audio play");
+		InteractiveTask.LIBRARY.setAudio(name, audio);
 		audio.play();
+	};
+	function onLoad(){
+	  	console.log("[player - audio] - audio LOAD");
 	};
 	function clearAudio(){
 		if(!audio) return;
-		console.log("remove listeners");
+		console.log("[player - audio] - remove listeners");
 		audio.removeEventListener('ended', onEnded, false);
 		audio.removeEventListener('error', onError, false);
 		audio.removeEventListener('canplaythrough', onPlayThrough, false);
+		audio.removeEventListener('loadeddata', onLoad, false);
 		audio = null;
 	}
 	function audioStop(){
@@ -414,7 +439,7 @@ InteractiveTask.audioControl = function(player){
 	};
 	function onTimeOut(){
 		audioStop();
-		clearAudio();
+		//clearAudio();
 		if(confirm("Can't play audio. \n Try again?")){
 			playAudio();
 		}else{
