@@ -139,7 +139,12 @@ InteractiveTask.Player = function(options){
 	window.onresize = function(){
 		self.resizePlayer();
 	};
-	InteractiveTask.StartFrame(this);
+	if(InteractiveTask.isMobileBrowser()){
+		InteractiveTask.StartFrame(this);
+	}else{
+		this.startFillLibrary();
+	};
+
 };
 InteractiveTask.Player.prototype.startFillLibrary = function(){
 	if(InteractiveTask.LIBRARY.hasAudio()){

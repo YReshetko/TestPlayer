@@ -138,14 +138,53 @@ InteractiveTask.TestChangeFrame.prototype.clear = function(){
 
 
 InteractiveTask.StartFrame = function(player){
-	var button = new Konva.Rect({
-		width : 100,
-		height : 100,
-		fill : InteractiveTask.formatColorFlashToCanvasRGBA("0x999999", 1),
+	var background = new Konva.Rect({
+		width : InteractiveTask.STAGE.width(),
+		height : InteractiveTask.STAGE.height(),
+		fill : InteractiveTask.formatColorFlashToCanvasRGBA(InteractiveTask.CONST.PLAY_BACKGROUND_COLOR, InteractiveTask.CONST.PLAY_BACKGROUND_ALPHA),
 		stroke : InteractiveTask.formatColorFlashToCanvasRGBA("0x666666", 0),
 		strokeWidth : 1
 	});
+	InteractiveTask.BUTTONS_LAYER.add(background);
+	var button;
+	var image = new Image();
+	image.onload = function(){
+		this.runFunction = function(id){
 
+			InteractiveTask.BUTTONS_LAYER.clear();
+			InteractiveTask.BUTTONS_LAYER.destroyChildren();
+			InteractiveTask.disposeObject(button);
+			button = null;
+			image = null;
+			InteractiveTask.BUTTONS_LAYER.batchDraw();
+
+			player.startFillLibrary();
+		};
+		this.eventFunction = function(a ,b){
+
+		}
+		button = new InteractiveTask.OneButton({
+			x : (InteractiveTask.STAGE.width() - InteractiveTask.CONST.PLAY_BUTTON_POSITION[2])/2,
+			y : (InteractiveTask.STAGE.height() - InteractiveTask.CONST.PLAY_BUTTON_POSITION[3])/2,
+			width : InteractiveTask.CONST.PLAY_BUTTON_POSITION[2],
+			height : InteractiveTask.CONST.PLAY_BUTTON_POSITION[3],
+			image : image,
+			butPosition : InteractiveTask.CONST.PLAY_BUTTON_POSITION,
+			layer : InteractiveTask.BUTTONS_LAYER,
+			controller : this,
+			runFuncName : 1,
+			hintText : "Start task",
+			hintPD : "down"
+		});
+	};
+	//trace(InteractiveTask.CONST.PRELOADER_IMAGE);
+	try{
+		//image.src = "http://kidnet.ru/sites/default/files/TaskPlayer/Images/load.png";
+		image.src = InteractiveTask.CONST.STANDARD_IMAGES_PATH + InteractiveTask.CONST.PLAY_BUTTON_LINK;
+	}catch(error){
+		console.log("Load start button error = ", error);
+	};
+	/*
 	InteractiveTask.BUTTONS_LAYER.add(button);
 
 	button.on("mousedown touchstart", function(){
@@ -155,5 +194,5 @@ InteractiveTask.StartFrame = function(player){
 		player.startFillLibrary();
 	});
 
-	InteractiveTask.BUTTONS_LAYER.batchDraw();
+	InteractiveTask.BUTTONS_LAYER.batchDraw();    */
 };

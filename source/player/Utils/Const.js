@@ -245,3 +245,11 @@ InteractiveTask.Const.prototype.COMPLATE_PD = "down";
 InteractiveTask.Const.prototype.SOUND_PD = "up";
 InteractiveTask.Const.prototype.FULLSCREEN_PD = "up";
 InteractiveTask.Const.prototype.PAUSE_PD = "up";
+
+//  Кнопка старта задания для загрузки контента в библиотеку на мобильных девайсах
+InteractiveTask.Const.prototype.PLAY_BUTTON_LINK = "Buttons/play.png";
+InteractiveTask.Const.prototype.PLAY_BUTTON_POSITION = [  0, 0, 50, 35,
+														 50, 0, 50, 35,
+														100, 0, 50, 35];
+InteractiveTask.Const.prototype.PLAY_BACKGROUND_COLOR = "0x000000";
+InteractiveTask.Const.prototype.PLAY_BACKGROUND_ALPHA = 0.3;

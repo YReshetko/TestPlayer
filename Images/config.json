@@ -206,5 +206,19 @@
 	"COMPLATE_PD" 	: "down",
 	"SOUND_PD" 	: "up",
 	"FULLSCREEN_PD" : "up",
-	"PAUSE_PD" 	: "up"
+	"PAUSE_PD" 	: "up",
+
+	"PLAY_BUTTON_LINK" : "Путь к кнопке относительно каталога Images",
+	"PLAY_BUTTON_LINK" : "Buttons/play.png",
+
+	"PLAY_BUTTON_POSITION" : "Раскадровка кнопки",
+	"PLAY_BUTTON_POSITION" : [  0, 0, 50, 35,
+								50, 0, 50, 35,
+								100, 0, 50, 35],
+
+	"PLAY_BACKGROUND_COLOR" : "Цвет фона под кнопкой",
+	"PLAY_BACKGROUND_COLOR" : "0x000000",
+
+	"PLAY_BACKGROUND_ALPHA" : "Прозрачность фона под кнопкой",
+	"PLAY_BACKGROUND_ALPHA" : 0.3
 }
