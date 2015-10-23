@@ -223,10 +223,10 @@ InteractiveTask.Player.prototype.resizePlayer = function(){
 	var contWidth = $("#"+this.containerID).width();
 	var contHeight = $("#"+this.containerID).height();
 	var scaleX, scaleY, minScale;
-
+	console.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){
 		//console.log("not full screen");
-		if(contWidth<this.width){
+		if(contWidth<this.width || contHeight<this.height){
 			scaleX = contWidth/this.width;
 			scaleY = contHeight/this.height;
 			minScale = (scaleX<scaleY)?scaleX:scaleY;
