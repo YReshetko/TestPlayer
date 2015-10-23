@@ -35,7 +35,7 @@ InteractiveTask.AUDIO;
  * @constructor - return player prototype or run callback function
  */
 InteractiveTask.Player = function(options){
-    InteractiveTask.log("[Player] - start init");
+
     InteractiveTask.CONST = new InteractiveTask.Const();
 	//  Попытка загрузить и перенастроить константы плеера
 	try{
@@ -52,6 +52,11 @@ InteractiveTask.Player = function(options){
 	}catch(e){
 		InteractiveTask.log(e);
 	};
+	if(options.isPrintLog){
+		InteractiveTask.CONST.IS_PRINT_LOG = options.isPrintLog;
+	};
+	InteractiveTask.log("[Player] - start init - ", this);
+
 	InteractiveTask.log("[Player] - init UI congig");
 	InteractiveTask.EVENTS = new InteractiveTask.Events();
     if(options.xml == undefined){
@@ -212,7 +217,7 @@ InteractiveTask.Player.prototype.clear = function(){
 		//InteractiveTask.disposeObject(this);
 	}catch(e){
 		InteractiveTask.log("[Player] - clear error:");
-		console.error(e);
+		InteractiveTask.error(e);
 	}
 };
 
@@ -1593,7 +1598,7 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 			InteractiveTask.disposeObject(this.animationController);
 		};
 	}catch(e){
-		console.error(e);
+		InteractiveTask.error(e);
 	};
 
 	/*******************************************************/

@@ -191,8 +191,23 @@ InteractiveTask.isMobileBrowser = function(){
 	};
 	return isMobile.any();
 };
+
+
+InteractiveTask.error = function(){
+	InteractiveTask._printLog("error", arguments);
+};
 InteractiveTask.log = function (){
-	console.log("[Player] - ",
+	InteractiveTask._printLog("log", arguments);
+};
+InteractiveTask.info = function (){
+	InteractiveTask._printLog("info", arguments);
+};
+InteractiveTask.warn = function (){
+	InteractiveTask._printLog("warn", arguments);
+};
+InteractiveTask._printLog = function (func, arguments){
+	if(!InteractiveTask.CONST.IS_PRINT_LOG)	return;
+	console[func]("[Player " + func + "] - ",
 		(arguments[0])?arguments[0]:"",
 		(arguments[1])?arguments[1]:"",
 		(arguments[2])?arguments[2]:"",
@@ -434,7 +449,7 @@ InteractiveTask.audioControl = function(player){
 		/*try{
 			audio.currentTime = 0;
 		}catch(e){
-			console.error(e);
+			InteractiveTask.error(e);
 			onTimeOut();
 		};*/
 	};

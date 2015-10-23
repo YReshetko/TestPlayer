@@ -14,6 +14,7 @@ InteractiveTask.Const.prototype.setProperty = function(json){
 		this[e] = json[e];
 	};
 };
+InteractiveTask.Const.prototype.IS_PRINT_LOG = false;
 //  Определяет устанавливать ли таны назад на свою глубину в слое (для перемещения и анимации)
 InteractiveTask.Const.prototype.IS_SET_BACK = false;
 InteractiveTask.Const.prototype.PRELOADER_IMAGE = "load.png";
