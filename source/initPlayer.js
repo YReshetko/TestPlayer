@@ -39,7 +39,8 @@ function initTaskPlayer(resourcePath, imagesPath, containerID, progressContainer
                 containerID : containerID,
 	            progressContainerID : progressContainerID,
                 imagesPath : imagesPath,
-	            callBack : playerEventsHandler
+	            callBack : playerEventsHandler,
+	            isPrintLog : true
             });
         /*}catch (error){
             alert("Catch error = "+error);

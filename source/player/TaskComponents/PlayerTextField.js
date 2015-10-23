@@ -108,8 +108,8 @@ InteractiveTask.SampleTextField = function(options){
         if(this.xml.BACKGROUND=="true"){
             backGroundColor = InteractiveTask.formatColorFlashToCanvasRGBA(this.xml.BACKGROUNDCOLOR, 1);
         };
-        console.log("border color", borderColor);
-        console.log("background color", backGroundColor);
+        InteractiveTask.log("border color", borderColor);
+        InteractiveTask.log("background color", backGroundColor);
         this.background = new Konva.Rect({
             width : parseFloat(this.xml.WIDTH),
             height : parseFloat(this.xml.HEIGHT),
@@ -168,7 +168,7 @@ InteractiveTask.SampleTextField = function(options){
                     return;
                 };
                 if(Math.sqrt((this.x() - this.blackTan.x())*(this.x() - this.blackTan.x())+(this.y() - this.blackTan.y())*(this.y() - this.blackTan.y()))<this.diap){
-                    //console.log("Drop this tan");
+                    //InteractiveTask.log("Drop this tan");
 
                     this.x(this.blackTan.x());
                     this.y(this.blackTan.y());
@@ -261,7 +261,7 @@ InteractiveTask.SampleTextField.prototype.setCache = function(width, height){
         width : width,
         height : height
     });
-    console.log("Text cach = ",this.background.cache());
+    InteractiveTask.log("Text cach = ",this.background.cache());
     if(this.background!=undefined){
         this.background.cache({
             x : 0,

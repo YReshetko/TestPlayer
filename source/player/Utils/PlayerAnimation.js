@@ -53,7 +53,13 @@ InteractiveTask.AnimationController = function(){
 InteractiveTask.AnimationController.prototype.add = function(options){
 	var id = this.bufferAnimation.length;
 	this.bufferAnimation.push(new InteractiveTask.AnimationObject(options));
-	//console.log(this.bufferAnimation[id]);
+	//InteractiveTask.log(this.bufferAnimation[id]);
+	return this.bufferAnimation[id];
+};
+InteractiveTask.AnimationController.prototype.addSprite = function(options){
+	var id = this.bufferAnimation.length;
+	this.bufferAnimation.push(new InteractiveTask.AnimationSprite(options));
+	//InteractiveTask.log(this.bufferAnimation[id]);
 	return this.bufferAnimation[id];
 };
 
@@ -72,7 +78,7 @@ InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 		    this.bufferAnimation[i].moveToAnimationLayer();
 		    //  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
 		    this.playAnimation.push(this.bufferAnimation[i]);
-		    //console.log(this.playAnimation[this.playAnimation.length-1]);
+		    //InteractiveTask.log(this.playAnimation[this.playAnimation.length-1]);
 		    this.bufferAnimation.splice(i,1);
 		    //  поскольку мы вырезали анимацию из буфера, то понижаем и ндекс и длину массива буфера
 		    --l;
@@ -91,14 +97,14 @@ InteractiveTask.AnimationController.prototype.moveToBuffer = function(i){
 	this.playAnimation.splice(i,1);
 };
 InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
-//	console.log("animation play");
+//	InteractiveTask.log("animation play");
 	var i,l;
 	l = this.playAnimation.length;
 	var flag = false;
 	if(l>0){
 		//  По всем анимациям проигрывания перемещаем объекты в новые точки
 		for(i=0;i<l;i++){
-			//console.log(animations[i]);
+			//InteractiveTask.log(animations[i]);
 			this.playAnimation[i].gotoNextPoint();
 			if(this.playAnimation[i].isComplate()){
 				flag = true;
@@ -111,7 +117,7 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 					if(this.playAnimation[i].multiple){
 						this.playAnimation[i].isPointsPrepared = false;
 						this.moveToBuffer(i);
-						//console.log("push back to buffer");
+						//InteractiveTask.log("push back to buffer");
 					}else{
 						InteractiveTask.disposeObject(this.playAnimation[i]);
 						this.playAnimation[i] = null;
@@ -140,34 +146,36 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 	};
 	//  Если массив буфера пуст и массив текущей анимации также пуст, то останавливаем поток анимации
 	var self = this;
+	var func = function(){self.kinetikAnimation()};
 	if(this.playAnimation.length != 0){
 		this.timeout = setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
-		//setTimeout(function(){requestAnimationFrame(self.kinetikAnimation);}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+		//this.timeout = setTimeout(function(){requestAnimationFrame(func, self);}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+		//requestAnimationFrame(func, self);
 	}else{
 		this.isRuning = false;
 	};
 };
 InteractiveTask.AnimationController.prototype.playByLabel = function(label){
-	//console.log("run by label = |" + label + "|");
+	//InteractiveTask.log("run by label = |" + label + "|");
 	var i, l, j,n;
 	l = this.bufferAnimation.length;
-	//console.log("bufferAnimation.length = |" + this.bufferAnimation.length + "|");
+	//InteractiveTask.log("bufferAnimation.length = |" + this.bufferAnimation.length + "|");
 	var flag = false;
 	for(i=0;i<l;i++){
 		if(this.bufferAnimation[i].label != label) {continue;};
-		//console.log("find label");
+		InteractiveTask.log("[Player Animation] - find label");
 		if(this.bufferAnimation[i].canGetObject()){
 			flag = true;
-			//console.log("prepare points");
+			InteractiveTask.log("[Player Animation] - prepare points");
 			//  Рассчитываем промежуточные точки
 			this.bufferAnimation[i].middlePointsAnimation();
-			//console.log("add layer");
+			//InteractiveTask.log("add layer");
 			//  Запоминаем слои анимаций
 			//this.KonvaAnimation.addLayer(this.bufferAnimation[i].layer);
 			//  Отправляем объект в слой анимации
 			this.bufferAnimation[i].moveToAnimationLayer();
 			//  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
-			//console.log("to animation array");
+			//InteractiveTask.log("to animation array");
 			this.playAnimation.push(this.bufferAnimation[i]);
 			this.bufferAnimation.splice(i,1);
 			//  поскольку мы вырезали анимацию из буфера, то понижаем и ндекс и длину массива буфера
@@ -341,7 +349,7 @@ InteractiveTask.AnimationObject.prototype.middlePointsAnimation = function(){
 				deltaGreen = Math.ceil((InteractiveTask.getGreen(newColor) -  InteractiveTask.getGreen(oldColor))/sempleTime);
 				deltaBlue = Math.ceil((InteractiveTask.getBlue(newColor) -  InteractiveTask.getBlue(oldColor))/sempleTime);
 			};
-			//console.log("delta: red ",deltaRed,"; green",deltaGreen," ; blue",deltaBlue);
+			//InteractiveTask.log("delta: red ",deltaRed,"; green",deltaGreen," ; blue",deltaBlue);
 			//	Запись в массив всех анимационных точек
 			for(j=0;j<sempleTime;j++){
 				//  Определяем индекс новой точки
@@ -498,3 +506,104 @@ InteractiveTask.AnimationObject.prototype.tryRemoveObject = function(){
 	return false;
 };
 
+/************************************************************************************************************************/
+/************ Объект содержащий промежуточные состояния сложной анимации из картинок ************************************/
+/************************************************************************************************************************/
+/**
+ * @param options сложный объект:
+ *      - xml - конфиг анимации
+ *      - class - родительский класс анимируемого объекта  ???? - наверное не нужен
+ *      - object - анимируемый оюъект (Konva.Sprite)
+ * @constructor
+ */
+InteractiveTask.AnimationSprite = function(options){
+	//alert("create Animation object");
+	this.xml = options.xml;
+	this.class = options.class;
+	this.object = options.object;
+	this.layer;
+
+
+	this.isPointsPrepared = false;
+	this.isStopOnFrame = false;
+
+	this.zIndex = 0;
+
+	this.parseXML();
+};
+
+InteractiveTask.AnimationSprite.prototype.parseXML = function(){
+	InteractiveTask.log("[Player Animation] - xml -", this.xml);
+	//  Запоминаем время через которое необходимо стартовать анимацию
+	this.startFrom = parseFloat(this.xml["-startTime"]);
+	//  Зацикливать или нет анимацию
+	this.cicling = (this.xml["-cicling"] == "true");
+	//  Удалять ли объект по завершении анимации
+	this.isRemoveObject = (this.xml["-removeObject"] == "true");
+	//  Устанавливаем число запросов до запуска анимации
+	if(this.xml["-address"]!="") this.address = parseInt(this.xml["-address"]);
+	//  Определяем необходим ли множественный запуск анимации
+	this.multiple = (this.xml["-multiple"]=="true");
+	//  метка для запуска анимации
+	this.label = this.xml["-label"];
+	//  Имя текущей анимации  animation : 'standing'
+	this.animationName = this.xml["-name"];
+	InteractiveTask.log("[Player Animation] - this.address -", this.address);
+
+};
+InteractiveTask.AnimationSprite.prototype.middlePointsAnimation = function(){
+	var animObjectArrays = this.object.animations();
+	this.animationsArray = new Object();
+	for(var node in animObjectArrays){
+		this.animationsArray[node] = new Object();
+		this.animationsArray[node]["name"] = node;
+		this.animationsArray[node]["points"] = animObjectArrays[node];
+		this.animationsArray[node]["numPoints"] = animObjectArrays[node].length/4;
+		this.animationsArray[node]["currentPoint"] = 0;
+	};
+};
+InteractiveTask.AnimationSprite.prototype.gotoNextPoint = function(){
+	++this.animationsArray[this.animationName]["currentPoint"];
+	var currentPoint = this.animationsArray[this.animationName]["currentPoint"];
+	if(currentPoint==this.animationsArray[this.animationName]["numPoints"]){
+		if(this.cicling){
+			currentPoint = this.animationsArray[this.animationName]["currentPoint"] = 0;
+		}else{
+			if(this.class.complateAnimation){
+				this.class.complateAnimation();
+			};
+			return;
+		};
+	};
+	this.object.frameIndex(currentPoint);
+};
+InteractiveTask.AnimationSprite.prototype.isComplate = function(){
+	return this.animationsArray[this.animationName]["currentPoint"] == this.animationsArray[this.animationName]["numPoints"];
+};
+InteractiveTask.AnimationSprite.prototype.canGetObject = function(){
+	if(this.address==0) return true;
+	--this.address;
+	return false;
+};
+InteractiveTask.AnimationSprite.prototype.isAutoPlay = function(){
+	return this.label==undefined;
+};
+InteractiveTask.AnimationSprite.prototype.moveToAnimationLayer = function(){
+	this.zIndex = (this.object.remZIndex)?this.object.remZIndex:this.object.getZIndex();
+	this.layer = this.object.getLayer();
+	this.object.moveTo(InteractiveTask.ANIMATION_LAYER);
+};
+
+InteractiveTask.AnimationSprite.prototype.moveToNativeLayer = function(){
+	this.object.moveTo(this.layer);
+	if(InteractiveTask.CONST.IS_SET_BACK){
+		this.object.setZIndex(this.zIndex);
+	};
+};
+InteractiveTask.AnimationSprite.prototype.tryRemoveObject = function(){
+	if(this.isRemoveObject){
+		this.object.remove();
+		return true;
+	};
+	return false;
+};

@@ -87,7 +87,7 @@ InteractiveTask.SampleShiftField.prototype.setReport = function(isComplate){
 InteractiveTask.SampleShiftField.prototype.createComplate = function(){
     /*++ this.numComplate;
     if(this.fieldsArray.length != this.numComplate) return;  */
-     //console.log("CELL is created") ;
+     //InteractiveTask.log("CELL is created") ;
     var i;
     this.field = new Konva.Group();
 
@@ -250,7 +250,7 @@ InteractiveTask.SampleShiftField.prototype.initCache = function(){
     var i,l;
     l = this.fieldsArray.length;
     for(i=0;i<l;i++){
-        try{this.fieldsArray[i].initCache();}catch (e){console.log(e);};
+        try{this.fieldsArray[i].initCache();}catch (e){InteractiveTask.log(e);};
     };
 };
 InteractiveTask.SampleShiftField.prototype.minusHealth = function(){
@@ -269,7 +269,7 @@ InteractiveTask.UnitField = function(xml, controller){
     this.group = new Konva.Group();
     var flag = false;
     this.isFree = true;
-    //console.log(basePath);
+    //InteractiveTask.log(basePath);
     if(this.xml.USERTAN!=undefined){
         this.content = new InteractiveTask.SampleUserTan(this.xml.USERTAN);
         this.content.init({
@@ -304,7 +304,7 @@ InteractiveTask.UnitField = function(xml, controller){
     };
 
     if(flag){
-        //console.log("Field is full");
+        //InteractiveTask.log("Field is full");
     }else{
         this.createCell();
         this.createFrame();
@@ -313,11 +313,11 @@ InteractiveTask.UnitField = function(xml, controller){
 };
 
 InteractiveTask.UnitField.prototype.complateLoadingTask = function(){
-    //console.log("Complate creation FIELD");
+    //InteractiveTask.log("Complate creation FIELD");
     this.content.getObject().off("mousedown touchstart");
     this.content.getObject().off("mouseout mouseup touchend");
     //this.content.getObject().draggable(false);
-	//console.log(this.content.getObject());
+	//InteractiveTask.log(this.content.getObject());
     this.createCell();
     this.group.add(this.content.getObject());
     this.createFrame();
@@ -327,7 +327,7 @@ InteractiveTask.UnitField.prototype.complateLoadingTask = function(){
     } catch(e){}*/
 };
 InteractiveTask.UnitField.prototype.createCell = function(){
-	//console.log("UnitField create cell");
+	//InteractiveTask.log("UnitField create cell");
     var background = new Konva.Rect({
         width : this.width,
         height :  this.height,
@@ -340,7 +340,7 @@ InteractiveTask.UnitField.prototype.createCell = function(){
 };
 
 InteractiveTask.UnitField.prototype.createFrame = function(){
-	//console.log("UnitField create frame");
+	//InteractiveTask.log("UnitField create frame");
     this.frame = new Konva.Rect({
         width : this.width,
         height :  this.height,

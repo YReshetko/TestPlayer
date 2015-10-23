@@ -35,7 +35,7 @@ InteractiveTask.AUDIO;
  * @constructor - return player prototype or run callback function
  */
 InteractiveTask.Player = function(options){
-    console.log("[Player] - start init");
+
     InteractiveTask.CONST = new InteractiveTask.Const();
 	//  ѕопытка загрузить и перенастроить константы плеера
 	try{
@@ -50,9 +50,14 @@ InteractiveTask.Player = function(options){
 		this.xhttp.responseText = null;
 		this.xhttp = null;
 	}catch(e){
-		console.log(e);
+		InteractiveTask.log(e);
 	};
-	console.log("[Player] - init UI congig");
+	if(options.isPrintLog){
+		InteractiveTask.CONST.IS_PRINT_LOG = options.isPrintLog;
+	};
+	InteractiveTask.log("[Player] - start init - ", this);
+
+	InteractiveTask.log("[Player] - init UI congig");
 	InteractiveTask.EVENTS = new InteractiveTask.Events();
     if(options.xml == undefined){
         alert("Task can't be created without xml file");
@@ -73,13 +78,13 @@ InteractiveTask.Player = function(options){
         this.width = parseInt(this.xml.WIDTH);
         this.height = parseInt(this.xml.HEIGHT);
     };
-	console.log("[Player] - start init stage");
+	InteractiveTask.log("[Player] - start init stage");
     InteractiveTask.STAGE = new Konva.Stage({
         container : options.containerID,
         width: this.width,
         height: this.height
     });
-	console.log("[Player] - complate init stage");
+	InteractiveTask.log("[Player] - complate init stage");
 	InteractiveTask.BACKGROUND_LAYER = new Konva.Layer();
 	var bgRectangle = new Konva.Rect({
 		width : this.width,
@@ -98,7 +103,7 @@ InteractiveTask.Player = function(options){
 	InteractiveTask.STAGE.add(InteractiveTask.ANIMATION_LAYER);
 	InteractiveTask.STAGE.add(InteractiveTask.DRAGANDDROP_LAYER);
 	InteractiveTask.STAGE.add(InteractiveTask.BUTTONS_LAYER);
-	console.log("[Player] - complate init layers");
+	InteractiveTask.log("[Player] - complate init layers");
 
 	InteractiveTask.BACKGROUND_LAYER.canvas._canvas.id = "background_layer";
 	InteractiveTask.COMPONENTS_LAYER.canvas._canvas.id = "components_layer";
@@ -107,7 +112,7 @@ InteractiveTask.Player = function(options){
 	InteractiveTask.BUTTONS_LAYER.canvas._canvas.id = "buttons_layer";
 
 	InteractiveTask.BACKGROUND_LAYER.draw();
-	console.log("[Player] - draw background");
+	InteractiveTask.log("[Player] - draw background");
 
    /* }catch(error){
         if(options.errorCallback != 'undefined'){
@@ -131,7 +136,7 @@ InteractiveTask.Player = function(options){
     InteractiveTask.PATH = options.xml.RESOURCE;
 
 	InteractiveTask.AUDIO = new InteractiveTask.audioControl(this);
-	console.log("[Player] - start init library");
+	InteractiveTask.log("[Player] - start init library");
     InteractiveTask.LIBRARY = new InteractiveTask.ImageLibrary(options.xml, this, options.imagesPath);
     InteractiveTask.LIBRARY.findImages();
 	var self = this;
@@ -151,35 +156,35 @@ InteractiveTask.Player.prototype.startFillLibrary = function(){
 		InteractiveTask.LIBRARY.loadAudio();
 	};
     InteractiveTask.LIBRARY.startLoading();
-	console.log("[Player] - start loading images");
+	InteractiveTask.log("[Player] - start loading images");
 };
 
 /*ћетод очистки плеера после его отработки*/
 InteractiveTask.Player.prototype.clear = function(){
-	console.log("[Player] - start clearing");
+	InteractiveTask.log("[Player] - start clearing");
 	try{
-		console.log("[Player] - try clear current timeout for next task");
+		InteractiveTask.log("[Player] - try clear current timeout for next task");
 		if(this.startTaskTimeout){
 			try{
 				clearTimeout(this.startTaskTimeout);
 			}catch(e){
-				console.log(e);
+				InteractiveTask.log(e);
 			};
 		};
-		console.log("[Player] - clear current task");
+		InteractiveTask.log("[Player] - clear current task");
 		if(this.currentTask){
 			this.currentTask.clear();
 			InteractiveTask.disposeObject(this.currentTask);
 		};
-		console.log("[Player] - dispose ansframe");
+		InteractiveTask.log("[Player] - dispose ansframe");
 		InteractiveTask.disposeObject(InteractiveTask.ANSFRAME);
 		InteractiveTask.ANSFRAME = null;
-		console.log("[Player] - clear progress bar");
+		InteractiveTask.log("[Player] - clear progress bar");
 		if(InteractiveTask.PROGRESS!=undefined){
 			InteractiveTask.PROGRESS.clear();
 			InteractiveTask.PROGRESS = null;
 		};
-		console.log("[Player] - clear buttons layer");
+		InteractiveTask.log("[Player] - clear buttons layer");
 		InteractiveTask.BUTTONS_LAYER.clear();
 		InteractiveTask.BUTTONS_LAYER.destroyChildren();
 
@@ -187,14 +192,14 @@ InteractiveTask.Player.prototype.clear = function(){
 		InteractiveTask.CONST = null;
 		InteractiveTask.EVENTS = null;
 
-		console.log("[Player] - clear stage");
+		InteractiveTask.log("[Player] - clear stage");
 		InteractiveTask.STAGE.clear();
 		InteractiveTask.STAGE.clearCache();
 		InteractiveTask.LIBRARY.clear();
 		InteractiveTask.STAGE.destroyChildren();
 		InteractiveTask.STAGE.destroy();
 
-		console.log("[Player] - clear layers");
+		InteractiveTask.log("[Player] - clear layers");
 		InteractiveTask.BACKGROUND_LAYER = null;
 		InteractiveTask.COMPONENTS_LAYER = null;
 		InteractiveTask.ANIMATION_LAYER = null;
@@ -208,11 +213,11 @@ InteractiveTask.Player.prototype.clear = function(){
 		window.onresize = function(){
 			return;
 		};
-		console.log("[Player] - dispose player");
+		InteractiveTask.log("[Player] - dispose player");
 		//InteractiveTask.disposeObject(this);
 	}catch(e){
-		console.log("[Player] - clear error:");
-		console.error(e);
+		InteractiveTask.log("[Player] - clear error:");
+		InteractiveTask.error(e);
 	}
 };
 
@@ -223,9 +228,9 @@ InteractiveTask.Player.prototype.resizePlayer = function(){
 	var contWidth = $("#"+this.containerID).width();
 	var contHeight = $("#"+this.containerID).height();
 	var scaleX, scaleY, minScale;
-	console.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
+	InteractiveTask.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){
-		//console.log("not full screen");
+		//InteractiveTask.log("not full screen");
 		if(contWidth<this.width || contHeight<this.height){
 			scaleX = contWidth/this.width;
 			scaleY = contHeight/this.height;
@@ -238,7 +243,7 @@ InteractiveTask.Player.prototype.resizePlayer = function(){
 		scaleY = window.screen.availHeight/this.height;
 		minScale = (scaleX<scaleY)?scaleX:scaleY;
 	};
-	//console.log("min scale = " + minScale);
+	//InteractiveTask.log("min scale = " + minScale);
 	InteractiveTask.STAGE.scaleX(minScale);
 	InteractiveTask.STAGE.scaleY(minScale);
 	InteractiveTask.STAGE.width(this.width*minScale);
@@ -271,7 +276,7 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 		fullscreen : new Konva.Layer(),
 		pause : new Konva.Layer()
 	};  */
-	console.log("[Player] - complate loading images");
+	InteractiveTask.log("[Player] - complate loading images");
 	InteractiveTask.ANSFRAME = new InteractiveTask.TestChangeFrame(this.width, this.height, this);
 	 try{
 		InteractiveTask.PROGRESS = new InteractiveTask.TestProgress({
@@ -279,15 +284,15 @@ InteractiveTask.Player.prototype.libraryLoadComplate = function(){
 			containerID : this.progressContainerID
 		});
 	 }catch(e){
-		 //console.log(e);
+		 //InteractiveTask.log(e);
 		 this.eventDispatcher(InteractiveTask.EVENTS.INIT_PROGRESS_ERROR, null);
 	 };
-	console.log("[Player] - dispatch init playe");
+	InteractiveTask.log("[Player] - dispatch init playe");
 	this.eventDispatcher(InteractiveTask.EVENTS.INIT_PLAYER_SUCCESS, null);
 };
 
 InteractiveTask.Player.prototype.setEvent = function(event){
-	//console.log(event.keyCode);
+	//InteractiveTask.log(event.keyCode);
     switch (event.type){
         case "keyboard":
             switch (event.keyCode){
@@ -320,7 +325,7 @@ InteractiveTask.Player.prototype.buttonEvents = function(value, event){
 };
 
 InteractiveTask.Player.prototype.pause = function(){
-	//console.log("pause select");
+	//InteractiveTask.log("pause select");
 	this.currentTask.timer.stop();
 	InteractiveTask.ANSFRAME.wait();
 	var self = this;
@@ -334,7 +339,7 @@ InteractiveTask.Player.prototype.resume = function(){
 	InteractiveTask.ANSFRAME.waitFrame.off("mousedown touchstart");
 };
 InteractiveTask.Player.prototype.complatePackage = function(){
-	console.log("[Player] - dispatch TASK_COMPLATE");
+	InteractiveTask.log("[Player] - dispatch TASK_COMPLATE");
 	this.eventDispatcher(InteractiveTask.EVENTS.TASK_COMPLATE, this.getOutResult());
 };
 InteractiveTask.Player.prototype.getOutResult = function(){
@@ -429,16 +434,16 @@ InteractiveTask.Player.prototype.startTask = function(){
 		sound : new Konva.Layer(),
 		fullscreen : new Konva.Layer()
 	}; */
-	console.log("[Player] - start task");
-	console.log("[Player] - create button system");
+	InteractiveTask.log("[Player] - start task");
+	InteractiveTask.log("[Player] - create button system");
     this.buttonSystem = new InteractiveTask.ButtonSystem(this.width, this.height, this);
-	console.log("[Player] - create ans frames");
+	InteractiveTask.log("[Player] - create ans frames");
 	InteractiveTask.ANSFRAME.setFscreenButton(this.buttonSystem.fullscreen.button);
-	console.log("[Player] - prepare task");
+	InteractiveTask.log("[Player] - prepare task");
     this.prepareArrayTaskOptions();
     this.currentTaskID = 0;
 	this.oldTaskID = 0;
-	console.log("[Player] - start current task/ id = "+ this.currentTaskID);
+	InteractiveTask.log("[Player] - start current task/ id = "+ this.currentTaskID);
     this.startCurrentTask();
 };
 InteractiveTask.Player.prototype.prepareArrayTaskOptions = function(){
@@ -777,7 +782,7 @@ InteractiveTask.Player.prototype.getAudioID = function(value){
  * Select and run task                                                 *
  ***********************************************************************/
 InteractiveTask.Player.prototype.startCurrentTask = function(){
-	console.log("[Player] - start current task");
+	InteractiveTask.log("[Player] - start current task");
 	if(this.currentTaskID!=-1){
 		//  перед началом задани€, в случае необходимости снижаем балл за полученную помощь
 		this.downScore();
@@ -786,23 +791,23 @@ InteractiveTask.Player.prototype.startCurrentTask = function(){
 			this.currentTask.clear();
 			InteractiveTask.disposeObject(this.currentTask);
 		};
-		console.log("[Player] - create current task");
+		InteractiveTask.log("[Player] - create current task");
 		this.currentTask = new InteractiveTask.SampleTask(this.xmlTaskArray[this.currentTaskID], this);
-		console.log("[Player] - change button visible");
+		InteractiveTask.log("[Player] - change button visible");
 		this.visibleButtonsControl();
-		console.log("[Player] - progress select");
+		InteractiveTask.log("[Player] - progress select");
 		this.progressSelect(this.xmlTaskArray[this.currentTaskID]["-id"]);
-		console.log("[Player] - create controllers and elements");
+		InteractiveTask.log("[Player] - create controllers and elements");
 		this.currentTask.checkProto();
 
 
 		if(this.isTaskChangeAnimation()){InteractiveTask.ANSFRAME.close();};
-		console.log("[Player] - try start sound");
+		InteractiveTask.log("[Player] - try start sound");
 		if(this.hasStartAudio(this.currentTaskID)){
 			this.repeatSound();
 		};
 	}else{
-		console.log("[Player] - complate package");
+		InteractiveTask.log("[Player] - complate package");
 		this.complatePackage();
 	};
     /**
@@ -1308,10 +1313,17 @@ InteractiveTask.SampleTask.prototype.isEntaerArea = function(){
     if(this.textFieldController!=undefined)this.textFieldController.area(area);
 };
 InteractiveTask.SampleTask.prototype.getAnimation = function(object){
-    if(this.animationController == undefined){
-        this.animationController = new InteractiveTask.AnimationController();
-    };
+	this._tryCreateAnimationController();
     return this.animationController.add(object);
+};
+InteractiveTask.SampleTask.prototype.getSpriteAnimation = function(object){
+	this._tryCreateAnimationController();
+	return this.animationController.addSprite(object);
+};
+InteractiveTask.SampleTask.prototype._tryCreateAnimationController =function(){
+	if(this.animationController == undefined){
+		this.animationController = new InteractiveTask.AnimationController();
+	};
 };
 InteractiveTask.SampleTask.prototype.runLabelAnimation = function(label){
     if(this.animationController != undefined){
@@ -1586,7 +1598,7 @@ InteractiveTask.SampleTask.prototype.clear = function(){
 			InteractiveTask.disposeObject(this.animationController);
 		};
 	}catch(e){
-		console.error(e);
+		InteractiveTask.error(e);
 	};
 
 	/*******************************************************/

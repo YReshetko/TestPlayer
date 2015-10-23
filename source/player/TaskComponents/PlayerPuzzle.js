@@ -224,7 +224,7 @@ InteractiveTask.PuzzleController.prototype.init = function(){
 					        degree = degree - 360;
 				        };
 				        //alert("color rotation = " + rot + "; black rotation = " + this.blackTan.rotation());
-				        //console.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation())
+				        //InteractiveTask.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation())
 				       // this.colorTan.rotation(rot);
 
 

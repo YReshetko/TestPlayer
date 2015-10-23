@@ -190,10 +190,10 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     });
 
 
-    //console.log("paint tan colorImageTan.width = ", colorImageTan.width(), "; paint tan colorImageTan.height = ", colorImageTan.height())
+    //InteractiveTask.log("paint tan colorImageTan.width = ", colorImageTan.width(), "; paint tan colorImageTan.height = ", colorImageTan.height())
     this.scaleX = width/colorImageTan.width();
     this.scaleY = height/colorImageTan.height();
-   // console.log("paint tan scaleX = ", this.scaleX, "; paint tan scaleY = ", this.scaleY);
+   // InteractiveTask.log("paint tan scaleX = ", this.scaleX, "; paint tan scaleY = ", this.scaleY);
     colorImageTan.width(width);
     colorImageTan.height(height);
     this.colorTan.colorImageTan = colorImageTan;
@@ -216,7 +216,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
     this.colorTan.x(x);
     this.colorTan.y(y);
 
-   // console.log("Color tan was added");
+   // InteractiveTask.log("Color tan was added");
     this.blackTan = new Konva.Group();
 
     var blackImageTan = new Konva.Image({
@@ -312,7 +312,7 @@ InteractiveTask.SamplePictureTan.prototype.init = function(options){
 			    });
 		    };
 	    };
-        //console.log("delete tan");
+        //InteractiveTask.log("delete tan");
     }else{
         this.colorTan.isFree = true;
         this.blackTan.isFree = true;
@@ -452,7 +452,7 @@ InteractiveTask.SamplePictureTan.prototype.rotate = function(degree){
         rot = rot - 360;
     };
     //alert("color rotation = " + rot + "; black rotation = " + this.blackTan.rotation());
-    //console.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation());
+    //InteractiveTask.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation());
     this.colorTan.rotation(rot);
 };
 InteractiveTask.SamplePictureTan.prototype.simplePosition = function(diap){
@@ -511,7 +511,7 @@ InteractiveTask.SamplePictureTan.prototype.checkOtherTan = function(settings){
 InteractiveTask.SamplePictureTan.prototype.backPosition = function(){
     if(this.xml.ISSTARTPOS!="true") return;
     if(this.isEnterArea()){
-        console.log("is enter area = true");
+        InteractiveTask.log("is enter area = true");
         if(this.isEnter()) return;
     };
     this.colorTan.x(parseFloat(this.xml.COLOR.X));

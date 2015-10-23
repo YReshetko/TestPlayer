@@ -71,7 +71,7 @@ InteractiveTask.SampleGroupField = function(options){
     this.isTan = (this.xml.TAN == "true");
     this.isField = (this.xml.FIELD == "true");
 
-   // console.log(this.xml.CONTENT);
+   // InteractiveTask.log(this.xml.CONTENT);
     var elements = new Array();
     var element;
     this.content = new Array();
@@ -86,7 +86,7 @@ InteractiveTask.SampleGroupField = function(options){
         if(elements[i]["PICTURETAN"]!=undefined) node = "PICTURETAN";
 
             element = InteractiveTask.getArrayObjectsByTag(elements[i], node)[0];
-            //console.log(element);
+            //InteractiveTask.log(element);
             changeX = parseFloat(element.COLOR.X)-parseFloat(this.xml.WIDTH)/2;
             changeY = parseFloat(element.COLOR.Y)-parseFloat(this.xml.HEIGHT)/2;
 
@@ -105,7 +105,7 @@ InteractiveTask.SampleGroupField = function(options){
                     this.content.push(new InteractiveTask.SampleUserTan(element));
                     break;
                 case "PICTURETAN":
-                    console.log("add picture tan");
+                    InteractiveTask.log("add picture tan");
                     this.content.push(new InteractiveTask.SamplePictureTan(element));
                     break;
 
@@ -146,7 +146,7 @@ InteractiveTask.SampleGroupField = function(options){
             ++index;
 
     };
-    console.log("num elements", this.content.length);
+    InteractiveTask.log("num elements", this.content.length);
     this.colorTan.x(parseFloat(this.xml.COLOR.X));
     this.colorTan.y(parseFloat(this.xml.COLOR.Y));
 

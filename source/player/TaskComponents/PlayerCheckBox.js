@@ -81,13 +81,13 @@ InteractiveTask.SampleCheckBox.prototype.init = function(json){
          fontFamily: 'Calibri',
          fill: InteractiveTask.formatColorFlashToCanvas(this.xml.TEXTCOLOR)
     });
-    //console.log("Create text checkbox");
+    //InteractiveTask.log("Create text checkbox");
     this.checkBox.x(parseFloat(this.xml.X));
     this.checkBox.y(parseFloat(this.xml.Y));
     this.checkBox.add(checkBoxBackground);
     this.checkBox.add(checkBoxText);
 
-    //console.log("all variant = ", this.xml.ALLVARIANTS.VARIANT[0]["#cdata-section"]);
+    //InteractiveTask.log("all variant = ", this.xml.ALLVARIANTS.VARIANT[0]["#cdata-section"]);
     var variant = new Array();
     var i,l;
     if(this.xml.ALLVARIANTS.VARIANT[0]==undefined){
