@@ -166,6 +166,8 @@ InteractiveTask.SampleMark = function(options){
 	this.mark.startLabelMouseDown = this.startLabelMouseDown;
 
 	this.complateAnimation = function(){
+		this.mark.isSelect = true;
+
 		if(this.startLabelComplate!=""){
 			this.controller.runLabelAnimation(this.startLabelComplate);
 			this.startLabelComplate = "";
