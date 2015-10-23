@@ -1308,10 +1308,17 @@ InteractiveTask.SampleTask.prototype.isEntaerArea = function(){
     if(this.textFieldController!=undefined)this.textFieldController.area(area);
 };
 InteractiveTask.SampleTask.prototype.getAnimation = function(object){
-    if(this.animationController == undefined){
-        this.animationController = new InteractiveTask.AnimationController();
-    };
+	this._tryCreateAnimationController();
     return this.animationController.add(object);
+};
+InteractiveTask.SampleTask.prototype.getSpriteAnimation = function(object){
+	this._tryCreateAnimationController();
+	return this.animationController.addSprite(object);
+};
+InteractiveTask.SampleTask.prototype._tryCreateAnimationController =function(){
+	if(this.animationController == undefined){
+		this.animationController = new InteractiveTask.AnimationController();
+	};
 };
 InteractiveTask.SampleTask.prototype.runLabelAnimation = function(label){
     if(this.animationController != undefined){

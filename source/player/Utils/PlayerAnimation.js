@@ -161,10 +161,10 @@ InteractiveTask.AnimationController.prototype.playByLabel = function(label){
 	var flag = false;
 	for(i=0;i<l;i++){
 		if(this.bufferAnimation[i].label != label) {continue;};
-		//console.log("find label");
+		console.log("[Player Animation] - find label");
 		if(this.bufferAnimation[i].canGetObject()){
 			flag = true;
-			//console.log("prepare points");
+			console.log("[Player Animation] - prepare points");
 			//  Рассчитываем промежуточные точки
 			this.bufferAnimation[i].middlePointsAnimation();
 			//console.log("add layer");
@@ -531,6 +531,7 @@ InteractiveTask.AnimationSprite = function(options){
 };
 
 InteractiveTask.AnimationSprite.prototype.parseXML = function(){
+	console.log("[Player Animation] - xml -", this.xml);
 	//  Запоминаем время через которое необходимо стартовать анимацию
 	this.startFrom = parseFloat(this.xml["-startTime"]);
 	//  Зацикливать или нет анимацию
@@ -545,6 +546,8 @@ InteractiveTask.AnimationSprite.prototype.parseXML = function(){
 	this.label = this.xml["-label"];
 	//  Имя текущей анимации  animation : 'standing'
 	this.animationName = this.xml["-name"];
+	console.log("[Player Animation] - this.address -", this.address);
+
 };
 InteractiveTask.AnimationSprite.prototype.middlePointsAnimation = function(){
 	var animObjectArrays = this.object.animations();
@@ -564,6 +567,9 @@ InteractiveTask.AnimationSprite.prototype.gotoNextPoint = function(){
 		if(this.cicling){
 			currentPoint = this.animationsArray[this.animationName]["currentPoint"] = 0;
 		}else{
+			if(this.class.complateAnimation){
+				this.class.complateAnimation();
+			};
 			return;
 		};
 	};

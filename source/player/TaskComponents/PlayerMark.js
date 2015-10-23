@@ -45,6 +45,9 @@ InteractiveTask.MarkController.prototype.selectClass = function(value){
 InteractiveTask.MarkController.prototype.runLabelAnimation = function(label){
 	this.controller.runLabelAnimation(label);
 };
+InteractiveTask.MarkController.prototype.getSpriteAnimation = function(options){
+	return this.controller.getSpriteAnimation(options);
+};
 
 InteractiveTask.MarkController.prototype.checkComplate = function(){
     this.controller.checkTask();
@@ -152,9 +155,35 @@ InteractiveTask.SampleMark = function(options){
 	} else{
 		this.startLabelMouseDown = "";
 	};
+	if(this.startLabelMouseDown == ""){
+		this.startLabelMouseDown = new Array();
+	}
+	this.startLabelMouseDown.push("markClass_" + this.xml.CLASS);
+
+	console.log("[Player] - mark labels MD - ", this.startLabelMouseDown);
 
 	this.mark.startLabelComplate = this.startLabelComplate;
 	this.mark.startLabelMouseDown = this.startLabelMouseDown;
+
+	this.complateAnimation = function(){
+		if(this.startLabelComplate!=""){
+			this.controller.runLabelAnimation(this.startLabelComplate);
+			this.startLabelComplate = "";
+		};
+	};
+	this.controller.getSpriteAnimation({
+		class:this,
+		object:this.mark,
+		xml:{
+			"-startTime":"0",
+			"-cicling":false,
+			"-removeObject":false,
+			"-address":"0",
+			"-multiple":false,
+			"-label":"markClass_" + this.xml.CLASS,
+			"-name":"standing",
+		}
+	});
 
     //this.mark.start();
     this.mark.isSelect = false;
@@ -174,24 +203,8 @@ InteractiveTask.SampleMark.prototype.getClass = function(){
 };
 
 InteractiveTask.SampleMark.prototype.start = function(){
-    this.mark.start();
 	this.mark.isSelect = true;
     this.mark.off("mousedown touchstart");
-    this.mark.on("frameIndexChange", function(){
-        if(this.frameIndex()==9){
-            this.stop();
-            this.draw();
-            this.off("frameIndexChange");
-
-
-	        if(this.startLabelComplate!=""){
-		        this.controller.runLabelAnimation(this.startLabelComplate);
-		        this.startLabelComplate = "";
-	        };
-
-            //this.controller.checkComplate();
-        };
-    });
 };
 InteractiveTask.SampleMark.prototype.isComplate = function(){
     return this.mark.isSelect;
