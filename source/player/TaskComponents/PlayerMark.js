@@ -160,7 +160,7 @@ InteractiveTask.SampleMark = function(options){
 	}
 	this.startLabelMouseDown.push("markClass_" + this.xml.CLASS);
 
-	console.log("[Player] - mark labels MD - ", this.startLabelMouseDown);
+	InteractiveTask.log("[Player] - mark labels MD - ", this.startLabelMouseDown);
 
 	this.mark.startLabelComplate = this.startLabelComplate;
 	this.mark.startLabelMouseDown = this.startLabelMouseDown;

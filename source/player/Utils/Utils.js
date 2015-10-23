@@ -58,7 +58,7 @@ InteractiveTask.getSpectr = function(name, color){
     var endIndex = color.indexOf(")",0);
     var str = color.substring(startIndex, endIndex);
     var colores = str.split(",");
-    //console.log("colores: ", colores[0] , "    " , colores[1] , "      " , colores[2]);
+    //InteractiveTask.log("colores: ", colores[0] , "    " , colores[1] , "      " , colores[2]);
     switch (name){
         case "red":
             return parseInt(colores[0]);
@@ -75,7 +75,7 @@ InteractiveTask.getArrayObjectsByTag = function(xml, tag){
     var outArray = new Array();
     if(xml[tag]!=undefined){
         if(xml[tag][0]!=undefined){
-            //console.log(xml[tag])
+            //InteractiveTask.log(xml[tag])
             outArray = xml[tag];
         }else{
             outArray[0] = xml[tag];
@@ -191,7 +191,20 @@ InteractiveTask.isMobileBrowser = function(){
 	};
 	return isMobile.any();
 };
-
+InteractiveTask.log = function (){
+	console.log("[Player] - ",
+		(arguments[0])?arguments[0]:"",
+		(arguments[1])?arguments[1]:"",
+		(arguments[2])?arguments[2]:"",
+		(arguments[3])?arguments[3]:"",
+		(arguments[4])?arguments[4]:"",
+		(arguments[5])?arguments[5]:"",
+		(arguments[6])?arguments[6]:"",
+		(arguments[7])?arguments[7]:"",
+		(arguments[8])?arguments[8]:"",
+		(arguments[9])?arguments[9]:""
+	);
+};
 
 /**
  * функция для установки вращения и перемещения танов (пользовательских и цветных)
@@ -312,7 +325,7 @@ InteractiveTask.rotateFunction = function(target, callback, draglayer){
 		var rotateAngle = mouseAngle - mouseStartAngle;
 		mouseStartAngle = mouseAngle;
 		var degree = rotateAngle*(180/Math.PI);
-		//console.log("Current rotation" + degree);
+		//InteractiveTask.log("Current rotation" + degree);
 		callback(degree);
 		draglayer.batchDraw();
 	});
@@ -337,7 +350,7 @@ InteractiveTask.dragFunction = function(target){
 };
 InteractiveTask.rotateOrDragFunction = function(target, callback, dragLayer){
 	var boundRectangle = target.dragBoundRectangle = target.dragBoundRectangle || target.getClientRect();
-	//console.log(target);
+	//InteractiveTask.log(target);
 	var scaleX = target.scale().x;
 	var scaleY = target.scale().y;
 	var r = (boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX<boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY)?((boundRectangle.width*InteractiveTask.STAGE.scaleX()*scaleX/2)*0.7):((boundRectangle.height*InteractiveTask.STAGE.scaleY()*scaleY/2)*0.7);
@@ -426,32 +439,32 @@ InteractiveTask.audioControl = function(player){
 		};*/
 	};
 	function _playAudio(){
-		console.log("[player - audio] - play without load");
+		InteractiveTask.log("[player - audio] - play without load");
 		audio.currentTime = 0;
 		audio.addEventListener('ended', onEnded, false);
 		audio.play();
 	};
 	function onEnded(){
-		console.log("[player - audio] - ended play");
+		InteractiveTask.log("[player - audio] - ended play");
 		clearAudio();
 		dispatchComplate();
 	};
 	function onError(){
-		console.log("[player - audio] - error play");
+		InteractiveTask.log("[player - audio] - error play");
 		clearAudio();
 		dispatchComplate();
 	};
 	function onPlayThrough(){
-		console.log("[player - audio] - audio play");
+		InteractiveTask.log("[player - audio] - audio play");
 		InteractiveTask.LIBRARY.setAudio(name, audio);
 		audio.play();
 	};
 	function onLoad(){
-	  	console.log("[player - audio] - audio LOAD");
+	  	InteractiveTask.log("[player - audio] - audio LOAD");
 	};
 	function clearAudio(){
 		if(!audio) return;
-		console.log("[player - audio] - remove listeners");
+		InteractiveTask.log("[player - audio] - remove listeners");
 		audio.removeEventListener('ended', onEnded, false);
 		audio.removeEventListener('error', onError, false);
 		audio.removeEventListener('canplaythrough', onPlayThrough, false);

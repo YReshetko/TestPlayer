@@ -21,12 +21,12 @@ InteractiveTask.ImageLibrary.prototype.findImages = function(){
     var taskIndex, taskLength;
     taskLength = task.length;
     for(taskIndex=0;taskIndex<taskLength;taskIndex++){
-        //console.log(task[taskIndex]);
+        //InteractiveTask.log(task[taskIndex]);
         userTans = InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "USERTAN");
         imageTans = InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "PICTURETAN");
         shiftFields = InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "SHIFTFIELD");
         swfObjects = InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "SWFOBJECT");
-        //console.log(imageTans);
+        //InteractiveTask.log(imageTans);
         groupFields =  InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "GROUPFIELD");
 	    positioningFields =  InteractiveTask.getArrayObjectsByTag(task[taskIndex].OBJECTS, "POSITIONING");
         groupUserTan = new Array();
@@ -122,7 +122,7 @@ InteractiveTask.ImageLibrary.prototype.findImages = function(){
 			    };
 		    };
 	    };
-	 //   console.log(this.imagesName);
+	 //   InteractiveTask.log(this.imagesName);
 
 
     };
@@ -140,7 +140,7 @@ InteractiveTask.ImageLibrary.prototype.findAudio = function(task){
 	};
 	//this.loadAudio();
 	/*for(var node in this.audioLib){
-		console.log("[Player library] - has audio["+node+"]");
+		InteractiveTask.log("[Player library] - has audio["+node+"]");
 	};*/
 };
 InteractiveTask.ImageLibrary.prototype._setNewAudio = function(name){
@@ -181,7 +181,7 @@ InteractiveTask.ImageLibrary.prototype.startLoading = function(){
         //image.src = "http://kidnet.ru/sites/default/files/TaskPlayer/Images/load.png";
         image.src = InteractiveTask.CONST.STANDARD_IMAGES_PATH + InteractiveTask.CONST.PRELOADER_IMAGE;
     }catch(error){
-        console.log("Load mark error = ", error);
+        InteractiveTask.log("Load mark error = ", error);
         image.src = InteractiveTask.CONST.STANDARD_IMAGES_PATH + InteractiveTask.CONST.MARK_IMAGE;
     };
 };
@@ -208,8 +208,8 @@ InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
         frameRate :10,
         frameIndex : 0
     });
-    //console.log(image);
-    //console.log(this.loadingLabel);
+    //InteractiveTask.log(image);
+    //InteractiveTask.log(this.loadingLabel);
 
     this.layer.add(this.loadingLabel);
     this.layer.draw();
@@ -238,7 +238,7 @@ InteractiveTask.ImageLibrary.prototype.loadButtons = function(){
    // image.src = this.path + this.imagesName[this.currentIndex];
 };
 InteractiveTask.ImageLibrary.prototype.buttonLoadComplate = function(image){
-    //console.log("load");
+    //InteractiveTask.log("load");
     this.buttons.push(image);
     this.loadButtons();
 };
@@ -259,7 +259,7 @@ InteractiveTask.ImageLibrary.prototype.loadIteration = function(){
     image.src = this.path + this.imagesName[this.currentIndex];
 };
 InteractiveTask.ImageLibrary.prototype.sampleLoadComplate = function(image){
-    //console.log("load");
+    //InteractiveTask.log("load");
     this.images.push({
         name : this.imagesName[this.currentIndex],
         image : image
@@ -315,9 +315,9 @@ InteractiveTask.ImageLibrary.prototype.dispatchComplate = function(){
 };
 
 InteractiveTask.ImageLibrary.prototype.printImages = function(){
-    //console.log("print images");
+    //InteractiveTask.log("print images");
     for(var s in this.images){
-        console.log(s, " : ", this.images[s]);
+        InteractiveTask.log(s, " : ", this.images[s]);
     };
 };
 
@@ -345,16 +345,9 @@ InteractiveTask.ImageLibrary.prototype.getAudio = function(name){
 	return this.audioLib[name]["audio"];
 };
 InteractiveTask.ImageLibrary.prototype.loadAudio = function(){
-	/*function onLoad(){
-		console.log("[Player library] - Audio load, name = " + event.target.parent["name"]);
-		event.target.removeEventListener('loadeddata', onLoad, false);
-		event.target.parent["isLoaded"] = true;
-		event.target.parent = null;
-	};*/
 	for(var node in this.audioLib){
 		this.audioLib[node]["audio"].addEventListener('loadeddata', function(event){
-			console.log("[Player library] - Audio load, name = " + event.target.parent["name"]);
-			//event.target.removeEventListener('loadeddata', onLoad, false);
+			InteractiveTask.log("[Player library] - Audio load, name = " + event.target.parent["name"]);
 			event.target.parent["isLoaded"] = true;
 			event.target.parent = null;
 		}, false);

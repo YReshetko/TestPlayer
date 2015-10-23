@@ -132,7 +132,7 @@ InteractiveTask.SampleTable.prototype.init = function(){
     var i,j;
     this.arrRasst = new Array();
     if(this.entarArea){
-        console.log(this , ': TABLE IS ENTER AREA');
+        InteractiveTask.log(this , ': TABLE IS ENTER AREA');
         entarArea = true;
         for(i=0;i<this.numColumn;i++){
             for(j=0;j<this.numLine;j++){
@@ -144,7 +144,7 @@ InteractiveTask.SampleTable.prototype.init = function(){
             };
         };
     };
-    console.log("Complate table create");
+    InteractiveTask.log("Complate table create");
 };
 
 InteractiveTask.SampleTable.prototype.area = function(){

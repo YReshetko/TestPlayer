@@ -113,7 +113,7 @@ InteractiveTask.PointsSystem.prototype.init = function(options){
     };
 
     this.prepareTrueArray();
-   // console.log(this.trueArray);
+   // InteractiveTask.log(this.trueArray);
 };
 InteractiveTask.PointsSystem.prototype.prepareTrueArray = function(){
     this.trueArray = new Array();
@@ -124,7 +124,7 @@ InteractiveTask.PointsSystem.prototype.prepareTrueArray = function(){
     l = this.pointsArray.length;
     for(k=0;k<l;k++){
         currentArray =  this.pointsArray[k].getNeccessaryLines();
-	    //console.log(currentArray);
+	    //InteractiveTask.log(currentArray);
         for(i=0;i<currentArray.length;i++){
             flag = true;
             for(j=0;j<this.trueArray.length;j++){
@@ -208,7 +208,7 @@ InteractiveTask.PointsSystem.prototype.selectPoint = function(point){
         };
 
 	    this.system.getLayer().draw();
-        //console.log("Draw line");
+        //InteractiveTask.log("Draw line");
         this.controller.checkTask();
     };
 };
@@ -242,7 +242,7 @@ InteractiveTask.PointsSystem.prototype.isComplate = function(){
 InteractiveTask.SamplePoint = function(options){
     this.options = options;
     this.idPointsConnect = InteractiveTask.getArrayObjectsByTag(this.options.xml, "LINE_TO");
-	//console.log("this.idPointsConnect = " + this.idPointsConnect);
+	//InteractiveTask.log("this.idPointsConnect = " + this.idPointsConnect);
     if(this.options.active && this.idPointsConnect == 0) return;
 
     this.selectColor ="rgba(255, 0, 0, 1)";
@@ -276,7 +276,7 @@ InteractiveTask.SamplePoint = function(options){
     this.point.add(this.center);
     this.point.add(this.area);
     this.options.layer.add(this.point);
-    //console.log("point x = ", this.point.x(), "; point y = ", this.point.y());
+    //InteractiveTask.log("point x = ", this.point.x(), "; point y = ", this.point.y());
 };
 
 InteractiveTask.SamplePoint.prototype.getID = function(){

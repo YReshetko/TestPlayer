@@ -44,7 +44,7 @@ InteractiveTask.TestProgress = function(options){
 		this.deltaX = 0;
 	};
 
-	console.log("this.deltaX = " + this.deltaX);
+	InteractiveTask.log("this.deltaX = " + this.deltaX);
 	this.progressStage.add(this.layer);
 };
 
@@ -77,8 +77,8 @@ InteractiveTask.TestProgress.prototype.select = function(taskID){
 			this.equalsArray[i].point.select();
 			num = (i>((l-1)/2))?(i+1):(i);
 			pos = ((-1)*this.deltaX) * num;
-			console.log("num = " + num);
-			console.log("new position = " + pos);
+			InteractiveTask.log("num = " + num);
+			InteractiveTask.log("new position = " + pos);
 
 			this.layer.x(pos);
 			this.layer.batchDraw();

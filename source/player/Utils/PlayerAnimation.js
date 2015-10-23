@@ -53,13 +53,13 @@ InteractiveTask.AnimationController = function(){
 InteractiveTask.AnimationController.prototype.add = function(options){
 	var id = this.bufferAnimation.length;
 	this.bufferAnimation.push(new InteractiveTask.AnimationObject(options));
-	//console.log(this.bufferAnimation[id]);
+	//InteractiveTask.log(this.bufferAnimation[id]);
 	return this.bufferAnimation[id];
 };
 InteractiveTask.AnimationController.prototype.addSprite = function(options){
 	var id = this.bufferAnimation.length;
 	this.bufferAnimation.push(new InteractiveTask.AnimationSprite(options));
-	//console.log(this.bufferAnimation[id]);
+	//InteractiveTask.log(this.bufferAnimation[id]);
 	return this.bufferAnimation[id];
 };
 
@@ -78,7 +78,7 @@ InteractiveTask.AnimationController.prototype.totalPlaye = function(){
 		    this.bufferAnimation[i].moveToAnimationLayer();
 		    //  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
 		    this.playAnimation.push(this.bufferAnimation[i]);
-		    //console.log(this.playAnimation[this.playAnimation.length-1]);
+		    //InteractiveTask.log(this.playAnimation[this.playAnimation.length-1]);
 		    this.bufferAnimation.splice(i,1);
 		    //  поскольку мы вырезали анимацию из буфера, то понижаем и ндекс и длину массива буфера
 		    --l;
@@ -97,14 +97,14 @@ InteractiveTask.AnimationController.prototype.moveToBuffer = function(i){
 	this.playAnimation.splice(i,1);
 };
 InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
-//	console.log("animation play");
+//	InteractiveTask.log("animation play");
 	var i,l;
 	l = this.playAnimation.length;
 	var flag = false;
 	if(l>0){
 		//  По всем анимациям проигрывания перемещаем объекты в новые точки
 		for(i=0;i<l;i++){
-			//console.log(animations[i]);
+			//InteractiveTask.log(animations[i]);
 			this.playAnimation[i].gotoNextPoint();
 			if(this.playAnimation[i].isComplate()){
 				flag = true;
@@ -117,7 +117,7 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 					if(this.playAnimation[i].multiple){
 						this.playAnimation[i].isPointsPrepared = false;
 						this.moveToBuffer(i);
-						//console.log("push back to buffer");
+						//InteractiveTask.log("push back to buffer");
 					}else{
 						InteractiveTask.disposeObject(this.playAnimation[i]);
 						this.playAnimation[i] = null;
@@ -156,26 +156,26 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 	};
 };
 InteractiveTask.AnimationController.prototype.playByLabel = function(label){
-	//console.log("run by label = |" + label + "|");
+	//InteractiveTask.log("run by label = |" + label + "|");
 	var i, l, j,n;
 	l = this.bufferAnimation.length;
-	//console.log("bufferAnimation.length = |" + this.bufferAnimation.length + "|");
+	//InteractiveTask.log("bufferAnimation.length = |" + this.bufferAnimation.length + "|");
 	var flag = false;
 	for(i=0;i<l;i++){
 		if(this.bufferAnimation[i].label != label) {continue;};
-		console.log("[Player Animation] - find label");
+		InteractiveTask.log("[Player Animation] - find label");
 		if(this.bufferAnimation[i].canGetObject()){
 			flag = true;
-			console.log("[Player Animation] - prepare points");
+			InteractiveTask.log("[Player Animation] - prepare points");
 			//  Рассчитываем промежуточные точки
 			this.bufferAnimation[i].middlePointsAnimation();
-			//console.log("add layer");
+			//InteractiveTask.log("add layer");
 			//  Запоминаем слои анимаций
 			//this.KonvaAnimation.addLayer(this.bufferAnimation[i].layer);
 			//  Отправляем объект в слой анимации
 			this.bufferAnimation[i].moveToAnimationLayer();
 			//  Отправляем в массив анимаций проигрывания  и Вырезаем её из буфера
-			//console.log("to animation array");
+			//InteractiveTask.log("to animation array");
 			this.playAnimation.push(this.bufferAnimation[i]);
 			this.bufferAnimation.splice(i,1);
 			//  поскольку мы вырезали анимацию из буфера, то понижаем и ндекс и длину массива буфера
@@ -349,7 +349,7 @@ InteractiveTask.AnimationObject.prototype.middlePointsAnimation = function(){
 				deltaGreen = Math.ceil((InteractiveTask.getGreen(newColor) -  InteractiveTask.getGreen(oldColor))/sempleTime);
 				deltaBlue = Math.ceil((InteractiveTask.getBlue(newColor) -  InteractiveTask.getBlue(oldColor))/sempleTime);
 			};
-			//console.log("delta: red ",deltaRed,"; green",deltaGreen," ; blue",deltaBlue);
+			//InteractiveTask.log("delta: red ",deltaRed,"; green",deltaGreen," ; blue",deltaBlue);
 			//	Запись в массив всех анимационных точек
 			for(j=0;j<sempleTime;j++){
 				//  Определяем индекс новой точки
@@ -533,7 +533,7 @@ InteractiveTask.AnimationSprite = function(options){
 };
 
 InteractiveTask.AnimationSprite.prototype.parseXML = function(){
-	console.log("[Player Animation] - xml -", this.xml);
+	InteractiveTask.log("[Player Animation] - xml -", this.xml);
 	//  Запоминаем время через которое необходимо стартовать анимацию
 	this.startFrom = parseFloat(this.xml["-startTime"]);
 	//  Зацикливать или нет анимацию
@@ -548,7 +548,7 @@ InteractiveTask.AnimationSprite.prototype.parseXML = function(){
 	this.label = this.xml["-label"];
 	//  Имя текущей анимации  animation : 'standing'
 	this.animationName = this.xml["-name"];
-	console.log("[Player Animation] - this.address -", this.address);
+	InteractiveTask.log("[Player Animation] - this.address -", this.address);
 
 };
 InteractiveTask.AnimationSprite.prototype.middlePointsAnimation = function(){

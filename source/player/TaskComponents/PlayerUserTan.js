@@ -206,10 +206,10 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
 	var colorTanLineColor = InteractiveTask.formatColor(this.xml.COLOR.COLORLINE, parseInt(this.xml.COLOR.CONTOUR));
 
     this.trueColor = InteractiveTask.formatColor16(this.xml.COLOR.COLOR);
-	//console.log("this.xml.BLACK.ALPHA = " + this.xml.BLACK.ALPHA);
+	//InteractiveTask.log("this.xml.BLACK.ALPHA = " + this.xml.BLACK.ALPHA);
     if(parseInt(this.xml.BLACK.ALPHA)=="1"){
         var blackTanFillColor = InteractiveTask.formatColor(0, 0);
-	    //console.log("black tan color = " + blackTanFillColor);
+	    //InteractiveTask.log("black tan color = " + blackTanFillColor);
         var blackTanLineColor = InteractiveTask.formatColor(0,0);
     }else{
 	    if(parseInt(this.xml.BLACK.ALPHABG)=="1") {
@@ -224,11 +224,11 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
 	    };
 
     };
-	//console.log("black tan color = " + blackTanFillColor);
+	//InteractiveTask.log("black tan color = " + blackTanFillColor);
     var thickLine = parseInt(this.xml.COLOR.THICKLINE);
 
     var alpha = parseFloat(this.xml.COLOR.ALPHA);
-	//console.log("this.xml.COLOR.ALPHA = " + alpha);
+	//InteractiveTask.log("this.xml.COLOR.ALPHA = " + alpha);
     var points;
     if(this.xml.POINTS[0] == undefined){
         points = this.xml.POINTS;
@@ -275,7 +275,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
 		if(Y>InteractiveTask.STAGE.height()){Y=InteractiveTask.STAGE.height();};
 		return({x:X, y:Y});
 	});
-//	console.log("this.colorTan.strokeAlpha() = " + this.colorTan.strokeAlpha());
+//	InteractiveTask.log("this.colorTan.strokeAlpha() = " + this.colorTan.strokeAlpha());
     this.blackTan = new Konva.Shape({
         fill: blackTanFillColor,
         stroke: blackTanLineColor,
@@ -417,7 +417,7 @@ InteractiveTask.SampleUserTan.prototype.init = function(json){
             this.fillBlue(blue);
         };
         this.colorTan.animation_fill = function(color){
-            //console.log("current color = " + color);
+            //InteractiveTask.log("current color = " + color);
             this.fill(color);
             //this.layer.draw();
         };
@@ -580,7 +580,7 @@ InteractiveTask.SampleUserTan.prototype.rotate = function(degree){
         rot = rot - 360;
     };
     //alert("color rotation = " + rot + "; black rotation = " + this.blackTan.rotation());
-   // console.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation());
+   // InteractiveTask.log("color rotation = ",rot,"; black rotation = ",this.blackTan.rotation());
     this.colorTan.rotation(rot);
 };
 InteractiveTask.SampleUserTan.prototype.simplePosition = function(diap){
@@ -709,7 +709,7 @@ InteractiveTask.SampleUserTan.prototype.checkOtherTan = function(settings){
 InteractiveTask.SampleUserTan.prototype.backPosition = function(){
     if(this.xml.ISSTARTPOS!="true") return;
     if(this.isEnterArea()){
-       // console.log("is enter area = true");
+       // InteractiveTask.log("is enter area = true");
         if(this.isEnter()) return;
     };
     this.colorTan.x(parseFloat(this.xml.COLOR.X));

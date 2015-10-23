@@ -182,7 +182,7 @@ InteractiveTask.StartFrame = function(player){
 		//image.src = "http://kidnet.ru/sites/default/files/TaskPlayer/Images/load.png";
 		image.src = InteractiveTask.CONST.STANDARD_IMAGES_PATH + InteractiveTask.CONST.PLAY_BUTTON_LINK;
 	}catch(error){
-		console.log("Load start button error = ", error);
+		InteractiveTask.log("Load start button error = ", error);
 	};
 	/*
 	InteractiveTask.BUTTONS_LAYER.add(button);
