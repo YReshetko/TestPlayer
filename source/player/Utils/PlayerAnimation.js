@@ -56,6 +56,12 @@ InteractiveTask.AnimationController.prototype.add = function(options){
 	//console.log(this.bufferAnimation[id]);
 	return this.bufferAnimation[id];
 };
+InteractiveTask.AnimationController.prototype.addSprite = function(options){
+	var id = this.bufferAnimation.length;
+	this.bufferAnimation.push(new InteractiveTask.AnimationSprite(options));
+	//console.log(this.bufferAnimation[id]);
+	return this.bufferAnimation[id];
+};
 
 //  Старт автоматических анимаций в начале задания
 InteractiveTask.AnimationController.prototype.totalPlaye = function(){
@@ -498,3 +504,98 @@ InteractiveTask.AnimationObject.prototype.tryRemoveObject = function(){
 	return false;
 };
 
+/************************************************************************************************************************/
+/************ Объект содержащий промежуточные состояния сложной анимации из картинок ************************************/
+/************************************************************************************************************************/
+/**
+ * @param options сложный объект:
+ *      - xml - конфиг анимации
+ *      - class - родительский класс анимируемого объекта  ???? - наверное не нужен
+ *      - object - анимируемый оюъект (Konva.Sprite)
+ * @constructor
+ */
+InteractiveTask.AnimationSprite = function(options){
+	//alert("create Animation object");
+	this.xml = options.xml;
+	this.class = options.class;
+	this.object = options.object;
+	this.layer;
+
+
+	this.isPointsPrepared = false;
+	this.isStopOnFrame = false;
+
+	this.zIndex = 0;
+
+	this.parseXML();
+};
+
+InteractiveTask.AnimationSprite.prototype.parseXML = function(){
+	//  Запоминаем время через которое необходимо стартовать анимацию
+	this.startFrom = parseFloat(this.xml["-startTime"]);
+	//  Зацикливать или нет анимацию
+	this.cicling = (this.xml["-cicling"] == "true");
+	//  Удалять ли объект по завершении анимации
+	this.isRemoveObject = (this.xml["-removeObject"] == "true");
+	//  Устанавливаем число запросов до запуска анимации
+	if(this.xml["-address"]!="") this.address = parseInt(this.xml["-address"]);
+	//  Определяем необходим ли множественный запуск анимации
+	this.multiple = (this.xml["-multiple"]=="true");
+	//  метка для запуска анимации
+	this.label = this.xml["-label"];
+	//  Имя текущей анимации  animation : 'standing'
+	this.animationName = this.xml["-name"];
+};
+InteractiveTask.AnimationSprite.prototype.middlePointsAnimation = function(){
+	var animObjectArrays = this.object.animations();
+	this.animationsArray = new Object();
+	for(var node in animObjectArrays){
+		this.animationsArray[node] = new Object();
+		this.animationsArray[node]["name"] = node;
+		this.animationsArray[node]["points"] = animObjectArrays[node];
+		this.animationsArray[node]["numPoints"] = animObjectArrays[node].length/4;
+		this.animationsArray[node]["currentPoint"] = 0;
+	};
+};
+InteractiveTask.AnimationSprite.prototype.gotoNextPoint = function(){
+	++this.animationsArray[this.animationName]["currentPoint"];
+	var currentPoint = this.animationsArray[this.animationName]["currentPoint"];
+	if(currentPoint==this.animationsArray[this.animationName]["numPoints"]){
+		if(this.cicling){
+			currentPoint = this.animationsArray[this.animationName]["currentPoint"] = 0;
+		}else{
+			return;
+		};
+	};
+	this.object.frameIndex(currentPoint);
+};
+InteractiveTask.AnimationSprite.prototype.isComplate = function(){
+	return this.animationsArray[this.animationName]["currentPoint"] == this.animationsArray[this.animationName]["numPoints"];
+};
+InteractiveTask.AnimationSprite.prototype.canGetObject = function(){
+	if(this.address==0) return true;
+	--this.address;
+	return false;
+};
+InteractiveTask.AnimationSprite.prototype.isAutoPlay = function(){
+	return this.label==undefined;
+};
+InteractiveTask.AnimationSprite.prototype.moveToAnimationLayer = function(){
+	this.zIndex = (this.object.remZIndex)?this.object.remZIndex:this.object.getZIndex();
+	this.layer = this.object.getLayer();
+	this.object.moveTo(InteractiveTask.ANIMATION_LAYER);
+};
+
+InteractiveTask.AnimationSprite.prototype.moveToNativeLayer = function(){
+	this.object.moveTo(this.layer);
+	if(InteractiveTask.CONST.IS_SET_BACK){
+		this.object.setZIndex(this.zIndex);
+	};
+};
+InteractiveTask.AnimationSprite.prototype.tryRemoveObject = function(){
+	if(this.isRemoveObject){
+		this.object.remove();
+		return true;
+	};
+	return false;
+};
