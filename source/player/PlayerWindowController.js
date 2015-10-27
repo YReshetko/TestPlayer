@@ -142,7 +142,7 @@ InteractiveTask.Player = function(options){
 
 	var self = this;
 	window.onresize = function(){
-		setTimeout(function(){self.resizePlayer();}, 1000);
+			self.resizePlayer();
 	};
 
 
@@ -227,8 +227,8 @@ InteractiveTask.Player.prototype.changeFullScreen = function(){
 };
 InteractiveTask.Player.prototype.resizePlayer = function(){
 	var contWidth = parseInt($("#"+this.containerID).width());
-	//var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10) || $("#"+this.containerID).height();
-	var contHeight = parseInt($("#"+this.containerID).height());
+	var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10) || $("#"+this.containerID).height();
+	//var contHeight = parseInt($("#"+this.containerID).height());
 	var scaleX, scaleY, minScale;
 	InteractiveTask.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){
