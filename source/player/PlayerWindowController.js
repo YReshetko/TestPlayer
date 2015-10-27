@@ -140,11 +140,12 @@ InteractiveTask.Player = function(options){
     InteractiveTask.LIBRARY = new InteractiveTask.ImageLibrary(options.xml, this, options.imagesPath);
     InteractiveTask.LIBRARY.findImages();
 
+	var self = this;
 	window.onresize = function(){
-		self.resizePlayer();
+		setTimeout(function(){self.resizePlayer();}, 1000);
 	};
 
-	var self = this;
+
 	if(InteractiveTask.isMobileBrowser()){
 		InteractiveTask.StartFrame(this);
 	}else{
@@ -225,8 +226,9 @@ InteractiveTask.Player.prototype.changeFullScreen = function(){
 	this.isFullScreen = !this.isFullScreen;
 };
 InteractiveTask.Player.prototype.resizePlayer = function(){
-	var contWidth = $("#"+this.containerID).width();
-	var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10) || $("#"+this.containerID).height();
+	var contWidth = parseInt($("#"+this.containerID).width());
+	//var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10) || $("#"+this.containerID).height();
+	var contHeight = parseInt($("#"+this.containerID).height());
 	var scaleX, scaleY, minScale;
 	InteractiveTask.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){
