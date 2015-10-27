@@ -176,6 +176,9 @@ InteractiveTask.StartFrame = function(player){
 			hintText : "Start task",
 			hintPD : "down"
 		});
+
+		player.resizePlayer();
+		InteractiveTask.BUTTONS_LAYER.batchDraw();
 	};
 	//trace(InteractiveTask.CONST.PRELOADER_IMAGE);
 	try{

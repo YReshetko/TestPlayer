@@ -7,7 +7,7 @@
  */
 
 if(typeof(InteractiveTask) == 'undefined') InteractiveTask = function(){};
-InteractiveTask.VERSION = "2.0.5";
+InteractiveTask.VERSION = "2.0.6";
 
 InteractiveTask.STAGE;
 InteractiveTask.BACKGROUND_LAYER;
@@ -139,17 +139,17 @@ InteractiveTask.Player = function(options){
 	InteractiveTask.log("[Player] - start init library");
     InteractiveTask.LIBRARY = new InteractiveTask.ImageLibrary(options.xml, this, options.imagesPath);
     InteractiveTask.LIBRARY.findImages();
-	var self = this;
 
 	window.onresize = function(){
 		self.resizePlayer();
 	};
+
+	var self = this;
 	if(InteractiveTask.isMobileBrowser()){
 		InteractiveTask.StartFrame(this);
 	}else{
 		this.startFillLibrary();
 	};
-
 };
 InteractiveTask.Player.prototype.startFillLibrary = function(){
 	if(InteractiveTask.LIBRARY.hasAudio()){
@@ -226,7 +226,7 @@ InteractiveTask.Player.prototype.changeFullScreen = function(){
 };
 InteractiveTask.Player.prototype.resizePlayer = function(){
 	var contWidth = $("#"+this.containerID).width();
-	var contHeight = $("#"+this.containerID).height();
+	var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10);
 	var scaleX, scaleY, minScale;
 	InteractiveTask.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){

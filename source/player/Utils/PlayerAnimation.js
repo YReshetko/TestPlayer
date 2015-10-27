@@ -148,9 +148,9 @@ InteractiveTask.AnimationController.prototype.kinetikAnimation = function(){
 	var self = this;
 	var func = function(){self.kinetikAnimation()};
 	if(this.playAnimation.length != 0){
-		this.timeout = setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
+		//this.timeout = setTimeout(function(){self.kinetikAnimation()}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
 		//this.timeout = setTimeout(function(){requestAnimationFrame(func, self);}, Math.floor(1000/InteractiveTask.CONST.ANIMATION_FRAME_RATE));
-		//requestAnimationFrame(func, self);
+		requestAnimationFrame(func, self);
 	}else{
 		this.isRuning = false;
 	};
