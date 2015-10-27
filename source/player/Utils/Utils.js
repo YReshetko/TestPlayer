@@ -429,7 +429,7 @@ InteractiveTask.audioControl = function(player){
 
 		}else{
 			audio = new Audio(link);
-			playAudio = _loadPlayAudio
+			playAudio = _loadPlayAudio;
 		}
 		playAudio();
 	};

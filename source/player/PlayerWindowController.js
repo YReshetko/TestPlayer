@@ -226,7 +226,7 @@ InteractiveTask.Player.prototype.changeFullScreen = function(){
 };
 InteractiveTask.Player.prototype.resizePlayer = function(){
 	var contWidth = $("#"+this.containerID).width();
-	var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10);
+	var contHeight = parseInt($("#"+this.containerID).css('max-height'), 10) || $("#"+this.containerID).height();
 	var scaleX, scaleY, minScale;
 	InteractiveTask.log("[Player] - parent width = " + contWidth + "; parent height = " + contHeight);
 	if(!this.isFullScreen){
