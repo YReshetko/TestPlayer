@@ -213,6 +213,7 @@ InteractiveTask.ImageLibrary.prototype.loadLabelComplate = function(image){
 
     this.layer.add(this.loadingLabel);
     this.layer.draw();
+	this.controller.resizePlayer();
     this.loadingLabel.start();
 
     this.currentIndex = -1;
