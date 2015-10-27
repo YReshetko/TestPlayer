@@ -52,8 +52,10 @@ InteractiveTask.Player = function(options){
 	}catch(e){
 		InteractiveTask.log(e);
 	};
-	if(options.isPrintLog){
-		InteractiveTask.CONST.IS_PRINT_LOG = options.isPrintLog;
+	if(options.isPrintLog!=undefined){
+		if(options.isPrintLog == true){
+			InteractiveTask.CONST.IS_PRINT_LOG = true;
+		};
 	};
 	InteractiveTask.log("[Player] - start init - ", this);
 
