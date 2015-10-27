@@ -192,7 +192,7 @@ InteractiveTask.Player.prototype.clear = function(){
 		InteractiveTask.BUTTONS_LAYER.destroyChildren();
 
 		InteractiveTask.PATH = null;
-		InteractiveTask.CONST = null;
+
 		InteractiveTask.EVENTS = null;
 
 		InteractiveTask.log("[Player] - clear stage");
@@ -218,6 +218,7 @@ InteractiveTask.Player.prototype.clear = function(){
 		};
 		InteractiveTask.log("[Player] - dispose player");
 		//InteractiveTask.disposeObject(this);
+		InteractiveTask.CONST = null;
 	}catch(e){
 		InteractiveTask.log("[Player] - clear error:");
 		InteractiveTask.error(e);
