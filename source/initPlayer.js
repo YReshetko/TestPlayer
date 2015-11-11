@@ -311,6 +311,7 @@ function cancelFullscreen() {
      } else if(document.webkitCancelFullScreen) {
      document.webkitCancelFullScreen();
      }
+
 }
 function onfullscreenchange(e){
      var fullscreenElement =
@@ -328,13 +329,23 @@ function onfullscreenchange(e){
 	     }else{
 		     fullScreenPlayer();
 	     }
+     } else{
+	     setFSClass("tp-of-fullscreen");
      }
+
 }
 
 function setFullScreenToPlayer(){
 	player.changeFullScreen();
 	player.resizePlayer();
+	setFSClass("tp-fullscreen");
 }
+
+function setFSClass(fsClass){
+	$("#"+contID).toggleClass(fsClass);
+	setTimeout(function(){player.resizePlayer()}, 1050);
+}
+
 
 function logDOMObject(){
 	clear();
