@@ -1565,10 +1565,11 @@ InteractiveTask.SampleTask.prototype.addLayersToStage = function(){
 	var j;
     for(i=0;i<leng;i++){
         getLayer = this.getLayerByIndex(parseInt(indexis[i]));
-
-	    for(j=0;j<getLayer.controller.length; j++){
-		    if(this[getLayer.controller[j]]){
-			    this[getLayer.controller[j]][getLayer.method](InteractiveTask.COMPONENTS_LAYER);
+	    if (getLayer != null){
+		    for(j=0;j<getLayer.controller.length; j++){
+			    if(this[getLayer.controller[j]]){
+				    this[getLayer.controller[j]][getLayer.method](InteractiveTask.COMPONENTS_LAYER);
+			    };
 		    };
 	    };
         /*if(getLayer.isUse){

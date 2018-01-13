@@ -11,7 +11,7 @@ var audioPath;
 function initTaskPlayer(resourcePath, imagesPath, containerID, progressContainerID){
     //alert(resourcePath);
     //alert(canvasID);
-    var path = resourcePath+"Position.xml";
+    var path = resourcePath+"Position.txt";
 	audioPath =  resourcePath+"audio/";
     contID = containerID;
     if (window.XMLHttpRequest)
@@ -79,12 +79,13 @@ function canvasCreateSuccess(){
 function taskIsComplate(answer){
     //alert("Task complate in main script " + answer);
     trace(answer);
+	currentResult();
 }
 
 
 
 function trace(string){
-    console.log(string);
+    //console.log(string);
 }
 function restart(){
 	//var audio = new Audio(); // Создаём новый элемент Audio
@@ -280,6 +281,18 @@ function onTimeOut(){
 
 /*Для DL*/
 function currentResult(){
+	var result = player.getOutResult();
+	trace(result);
+	if(result.maxScore == 1){
+		var ans1 = result.currentScore;
+		flash0_DoFSCommand("ans1", ans1);
+	}
+	else if(result.maxScore > 0){
+		var res = result.currentScore;
+		var cmt = result.tableResult;
+		flash0_DoFSCommand("res", res);
+		flash0_DoFSCommand("cmt", JSON.stringify(cmt));
+	};
 
 }
 
